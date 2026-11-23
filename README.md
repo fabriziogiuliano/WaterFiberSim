@@ -4,12 +4,30 @@ Simulatore di **sensori distribuiti in fibra ottica** (DFOS) posati su una rete 
 
 Le tecniche di base: **DAS** (vibrazioni, Rayleigh), **DTS** (temperatura, Raman), **DSS** (deformazione + temperatura, Brillouin). Per misurare la pressione sulle pareti del tubo servono DSS + DTS. Il documento di contesto è [docs/fibra-ottica-dfos.md](docs/fibra-ottica-dfos.md). Decisioni, ricerca e piano della sessione iniziale: [docs/sessione-2026-11-23.md](docs/sessione-2026-11-23.md).
 
+## INSTALL
+
+> **Serve Python 3.11.** L'idraulica usa [owa-epanet](https://pypi.org/project/owa-epanet/) 2.3.5, la stessa versione di `edge-slm-emulator`, che ha pacchetti precompilati solo per:
+>
+> | Sistema | Python |
+> |---|---|
+> | Linux x86_64 | 3.11, 3.12 |
+> | macOS Apple Silicon | 3.11 |
+> | Windows | nessuno |
+>
+> Con altre versioni (per esempio 3.13) pip prova a compilarlo dai sorgenti e fallisce, perché mancano SWIG e CMake. Per questo `environment.yml` fissa `python=3.11`.
+
+```bash
+conda env create -f environment.yml
+conda activate waterfibersim
+pip install -e .
+```
+
 ## Il piano
 
 | Passo | Cosa | Uscita |
 |---|---|---|
 | **1** | **rete di prova, parametri dei tubi, percorso della fibra** | **mappa "metro di fibra → tubo" e disegno** |
-| 2 | pressione lungo la fibra (WNTR) → strain → frequenza Brillouin | ν_B(z, t), ancora senza ottica |
+| 2 | pressione lungo la fibra (EPANET, owa-epanet) → strain → frequenza Brillouin | ν_B(z, t), ancora senza ottica |
 | 3 | segnale grezzo: spettro Brillouin con rumore + un fit di esempio | L0 e un primo DSP |
 | 4 | eventi: perdita (idraulica), cedimento (meccanico) | etichette |
 | 5 | temperatura (DTS) e separazione pressione/temperatura | |

@@ -1,0 +1,9 @@
+numpy
+scipy
+pandas
+matplotlib
+pyyaml
+owa-epanet==2.3.5
+
+[test]
+pytest

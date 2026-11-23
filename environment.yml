@@ -1,0 +1,14 @@
+name: waterfibersim
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11        # obbligatorio: owa-epanet 2.3.5 non ha pacchetti per 3.13 (vedi README, INSTALL)
+  - numpy
+  - scipy
+  - pandas
+  - matplotlib
+  - pyyaml
+  - pytest
+  - pip
+  - pip:
+      - owa-epanet==2.3.5   # stessa versione di edge-slm-emulator

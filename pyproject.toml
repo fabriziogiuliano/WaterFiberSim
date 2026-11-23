@@ -1,0 +1,19 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "waterfibersim"
+version = "0.1.0"
+description = "Simulatore di sensori distribuiti in fibra ottica (DSS/DTS) su reti idriche EPANET"
+requires-python = ">=3.11,<3.13"  # owa-epanet 2.3.5: pacchetti precompilati solo per 3.11 (e 3.12 su Linux)
+dependencies = ["numpy", "scipy", "pandas", "matplotlib", "pyyaml", "owa-epanet==2.3.5"]
+
+[project.optional-dependencies]
+test = ["pytest"]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
