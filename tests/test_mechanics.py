@@ -40,3 +40,18 @@ def test_helix_limits():
 def test_liner_not_silently_ignored():
     with pytest.raises(NotImplementedError):
         wall_strain_ue(pipe(liner=Liner(6, 8)), 0.1)
+
+
+def test_demand_multiplier_increases_daily_variation():
+    import os
+    from pathlib import Path
+
+    import numpy as np
+
+    from waterfibersim.hydraulics import run_hydraulics
+    root = Path(__file__).resolve().parents[1]
+    os.chdir(root)
+    r1 = run_hydraulics("network/grid_3x3.inp", 86_400, 3600, 1.0)
+    r3 = run_hydraulics("network/grid_3x3.inp", 86_400, 3600, 3.0)
+    j = r1.nodes.index("J33")
+    assert np.ptp(r3.pressure_m[:, j]) > 5 * np.ptp(r1.pressure_m[:, j])   # perdite di carico ~ Q^1,852

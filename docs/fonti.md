@@ -95,6 +95,8 @@ Differenza da tenere a mente: in [B23] la fibra è fissata **all'esterno** del t
 | La deformazione della parete si trasferisce alla fibra al 100 % | ⚠️ | Ipotesi. Il trasferimento dipende da rivestimento e incollaggio (Ansari & Libo 1998, da verificare) |
 | Comportamento elastico istantaneo del PE | ⚠️ | Semplificazione: [B23] mostra il creep (modello di Burgers, Fig. 8) |
 | ν_B0 = 10 880 MHz | ✅ forma, ⚠️ valore | [B23] Fig. 7a, fibra non tirata, letto a occhio; non cambia i Δν |
+| Profilo a riposo nel simulatore: elica con inizio e fine di ogni tubo estratti in [105, 180] MHz (pendenza casuale), tratto libero +65 MHz, cavi 0, ondulazioni di circa 1 MHz su circa 8 m | ✅ valori di partenza, ⚠️ forma | Valori da [B23] Fig. 7a, letti a occhio (fibra fissata con nastro, tubo PN16). Pendenza casuale per tubo e ondulazioni: **ipotesi**. Per la fibra annegata (MATRIS) i valori sono solo un segnaposto |
+
 
 ### Misura di base e minimo misurabile
 

@@ -1,6 +1,7 @@
 """Riga di comando:
     python -m waterfibersim map scenario_paths/A_main_line.yaml --out out/A
     python -m waterfibersim run scenario_paths/A_main_line.yaml --out out/A --hours 24 --step-min 15
+    python -m waterfibersim run scenario_paths/A_main_line.yaml --out out/A_x3 --demand-multiplier 3
 """
 
 import argparse
@@ -23,6 +24,9 @@ def main(argv=None):
     r.add_argument("--out", default="out")
     r.add_argument("--hours", type=float, default=24)
     r.add_argument("--step-min", type=float, default=15)
+    r.add_argument("--demand-multiplier", type=float, default=1.0, help="multiply all demands (EPANET Demand Multiplier)")
+    r.add_argument("--seed", type=int, default=0, help="seed of the random rest profile")
+    r.add_argument("--no-rest-profile", action="store_true", help="flat rest profile (all metres at nu_B0)")
     a = ap.parse_args(argv)
 
     if a.cmd == "map":
@@ -39,7 +43,8 @@ def main(argv=None):
 
     if a.cmd == "run":
         sc = load_scenario(a.scenario)
-        sig = simulate_true(sc, duration_s=int(a.hours * 3600), step_s=int(a.step_min * 60))
+        sig = simulate_true(sc, duration_s=int(a.hours * 3600), step_s=int(a.step_min * 60),
+                            demand_multiplier=a.demand_multiplier, seed=a.seed, rest_profile=not a.no_rest_profile)
         npz = sig.save(a.out)
         for f in sc.fibers:
             plot_true_signal(sig, Path(a.out) / f"signal_true_{f.id}.png", f.id)

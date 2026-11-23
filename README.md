@@ -174,6 +174,15 @@ Scenario A: 2001,5 m di fibra (2 × 215 m di cavo + 400 m di tubo × 2,92 + 2 m 
 python -m waterfibersim run scenario_paths/A_main_line.yaml --out out/A --hours 24 --step-min 15
 ```
 
+Con `--demand-multiplier` si moltiplicano tutti i consumi della rete (opzione EPANET *Demand Multiplier*), per provare reti più cariche senza toccare l'`.inp`. Il valore usato è salvato in `signal_true.npz` e scritto nel titolo della figura. Sulla rete di prova la variazione giornaliera della pressione dipende molto dai consumi, perché le perdite di carico crescono circa come Q^1,852 (Hazen-Williams):
+
+| consumi | pressione sull'elica | variazione giornaliera | in MHz |
+|---|---|---|---|
+| ×1 | 4,70–4,90 bar | 0,09–0,19 bar | 1,3–2,8 |
+| ×3 (`--out out/A_x3 --demand-multiplier 3`) | 3,33–4,86 bar | 0,69–1,48 bar | 10–22 |
+
+La rete di prova con consumi ×1 è poco carica (velocità massima 0,77 m/s): per valutare il sensore serviranno consumi più realistici o una rete reale.
+
 La catena, un modulo per anello:
 
 ```
@@ -198,17 +207,17 @@ Cosa si vede, nello scenario A:
 
 ### Cosa il simulatore non fa ancora
 
-Oggi il segnale è **ideale**: la frequenza segue la pressione in modo esatto e proporzionale. È la **verità** (le etichette). Quello che riceverà chi elabora i dati (L0) sarà questa verità con i disturbi reali, aggiunti uno alla volta:
+Il **profilo a riposo** c'è già: ogni metro ha la sua frequenza a tubo vuoto (elica da +105 a +180 MHz, tratto libero +65 MHz, come in Bertulessi 2023 Fig. 7a; forma per tubo casuale, `--seed`), e la misura di base lo cancella. Per il resto il segnale è **ideale**: la frequenza segue la pressione in modo esatto e proporzionale. È la **verità** (le etichette). Quello che riceverà chi elabora i dati (L0) sarà questa verità con i disturbi reali, aggiunti uno alla volta:
 
 | Cosa manca | Effetto sul segnale | Quando | Fonte |
 |---|---|---|---|
 | rumore dello strumento | ogni misura sbaglia; ±0,5 MHz è solo **indicativo** (da 0,1 a 2 MHz secondo strumento, lunghezza e tempo di media) | passo 3, come parametro calcolato con Soto & Thévenaz 2013 | Bertulessi 2023: *"better than 0.5 °C/10 µε"*; schede OZ Optics e Prysmian DITEST (vedi `docs/fonti.md`) |
 | spettro invece del valore | si riceve la curva intera, il picco va trovato | passo 3 | Bertulessi 2023 §2.1, Fig. 7b |
-| nota a riposo per metro | ogni metro parte da un valore diverso; serve la misura di base | passo 3 | Bertulessi 2023 Fig. 7a |
 | risoluzione spaziale | lo strumento media su circa 2 m: i passaggi tra tubi si sfumano | passo 3 | Bertulessi 2023: 20 ns, *"equivalent to a 2 m spatial resolution"* |
 | temperatura | sposta la frequenza come la pressione (circa 11 MHz/°C sull'elica) | passo 5 | Bertulessi 2023, Eq. 1 e 9 |
 | creep del PE | la deformazione arriva in ritardo e continua a crescere | più avanti | Bertulessi 2023, modello di Burgers, Fig. 8 |
 | trasferimento alla fibra < 100 % | la fibra sente solo una parte della deformazione | da decidere | ⚠️ oggi ipotesi: 100 % |
+| calibrazione del rapporto MHz → bar | nella realtà il rapporto (coefficienti della fibra, rigidezza del tubo, trasferimento) va calibrato; il simulatore oggi lo conosce esatto | da decidere | Bertulessi 2023 Eq. 1: i coefficienti *"are highly influenced by the cable coating properties and the bonding conditions"* |
 | guaina + tubo ospite | il rapporto MHz/bar dipende dal laminato e dal tubo dietro; i tubi risanati danno errore | quando arriverà il laminato (MATRIS OR1) | modello a più strati da fare |
 
 Altre semplificazioni: pressione a scalini di un'ora (gli andamenti di consumo nell'`.inp` sono orari), tubi dritti tra i due nodi.
