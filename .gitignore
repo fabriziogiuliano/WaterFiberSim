@@ -5,3 +5,4 @@ __pycache__/
 *.blend1
 out/
 dataset/
+CLAUDE.md
