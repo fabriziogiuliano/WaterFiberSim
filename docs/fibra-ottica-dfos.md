@@ -6,6 +6,7 @@ Questo documento spiega come funziona un sensore distribuito in fibra ottica (DF
 
 1. [Il contesto: da MATRIS al follow-up](#1-il-contesto-da-matris-al-follow-up)
 2. [Il principio: un cavo, migliaia di sensori](#2-il-principio-un-cavo-migliaia-di-sensori)
+   - [2.1 Come funziona la BOTDA, passo per passo](#21-come-funziona-la-botda-passo-per-passo)
 3. [Tre fenomeni, tre sensori: DAS, DTS, DSS](#3-tre-fenomeni-tre-sensori-das-dts-dss)
 4. [I numeri che contano](#4-i-numeri-che-contano)
 5. [Perché una perdita "suona"](#5-perché-una-perdita-suona)
@@ -28,9 +29,11 @@ Il follow-up propone di sostituire o affiancare i nodi MEMS con una **fibra otti
 
 Una fibra ottica è un filo di vetro che guida la luce. Il vetro non è perfetto: contiene microscopiche disomogeneità che **rimandano indietro una piccolissima parte della luce** in ogni punto (*backscattering*).
 
-A un'estremità della fibra c'è un solo apparecchio, l'**interrogatore**:
+Alla fibra è collegato un solo apparecchio, l'**interrogatore**. Nelle tecniche più semplici è attaccato a un capo solo; nella BOTDA, quella usata in questo progetto, a **entrambi i capi**, perché la fibra fa un anello (§2.1):
 
-![Interrogatore DAS: impulso laser, backscattering e canali lungo la fibra](img/dfos-interrogatore.drawio.svg)
+![Interrogatore BOTDA con fibra ad anello: schema a blocchi](img/dfos-interrogatore.drawio.svg)
+
+*Lo schema mostra il caso usato in questo progetto, la BOTDA ad anello (Bertulessi et al., Sensors 23, 6205, 2023, Fig. 2). La BOTDA misura con due luci in versi opposti; il principio del tempo di volo descritto qui sotto vale per tutte le tecniche. Fonti: [fonti.md](fonti.md).*
 
 1. Il laser manda un **impulso** brevissimo (decine di nanosecondi).
 2. L'impulso viaggia nella fibra; ogni punto ne rimanda indietro un po'.
@@ -42,6 +45,70 @@ A un'estremità della fibra c'è un solo apparecchio, l'**interrogatore**:
    dove c è la velocità della luce nel vuoto, n ≈ 1,47 l'indice di rifrazione del vetro, e il 2 c'è perché la luce fa andata e ritorno. In pratica **circa 10 ns di ritardo corrispondono a 1 m di fibra**.
 
 La traccia di ritorno viene divisa in "fette" di tempo, ognuna corrispondente a un tratto di fibra: ogni fetta è un **canale**, cioè un sensore virtuale. Un cavo di 2 km letto con passo di 1 m sono **2000 sensori**, con un solo apparecchio attivo. È la tecnica OTDR (*Optical Time-Domain Reflectometry*), la stessa usata dai tecnici per trovare un'interruzione in un cavo di telecomunicazioni.
+
+### 2.1 Come funziona la BOTDA, passo per passo
+
+La BOTDA (*Brillouin Optical Time-Domain Analysis*) è la tecnica scelta per misurare la pressione (DSS, §3). Funziona in modo diverso dallo schema "un impulso e la luce che torna indietro" descritto sopra: usa **due luci** che percorrono la stessa fibra **in versi opposti**. Le fonti di ogni affermazione sono in [fonti.md](fonti.md). Le sigle usate sono: **[B23]** = Bertulessi et al., *Sensors* 23, 6205 (2023), §2.1; **[OZ]** = scheda tecnica OZ Optics DTS0115.
+
+**1. Una fibra ad anello, due capi sullo stesso strumento.** La fibra parte dalla **porta A** dell'interrogatore, percorre il tubo e torna alla **porta B** dello stesso interrogatore. La BOTDA ha bisogno di entrambi i capi ([OZ]: *"requires both ends of fiber to be connected"*).
+
+**2. Due luci, con ruoli opposti.**
+
+| | nome tecnico | com'è | da dove esce | che ruolo ha | si legge? |
+|---|---|---|---|---|---|
+| **impulso di interrogazione** | pompa (*pump*) | impulsi brevi (20 ns) e forti, ripetuti 30 000 volte al secondo [B23] | porta A | **scrive** l'informazione sulla luce di lettura | no |
+| **luce di lettura** | sonda (*probe*) | tono ottico continuo e debole | porta B [B23] | **porta** l'informazione fino allo strumento | **sì, alla porta A** |
+
+```
+            impulsi (pompa)  →→→→→→→→→→→→→→→→→→→→→→→→→
+porta A ═══════════════════ anello di fibra ═══════════════════ porta B
+            ←←←←←←←←←←←←←←←←←←←←←←←←←  luce di lettura (sonda)
+   ↓
+ circolatore C2 → fotodiodo → ADC → elaborazione        (qui si legge)
+```
+
+Ognuna delle due luci percorre **tutto** l'anello. Gli impulsi, arrivati in B, hanno finito il loro lavoro e non si leggono. La luce di lettura rientra da A, e il circolatore C2 la devia al fotodiodo ([B23]: *"The same circulator also routs the probe signal to a 125 MHz photodetector"*). Il circolatore è una "rotatoria a senso unico": manda fuori da A gli impulsi e manda verso il fotodiodo la luce che entra da A.
+
+**3. Due frequenze vicinissime, ricavate dallo stesso laser.** Le due luci sono onde ottiche a frequenze leggermente diverse:
+
+| | frequenza | lunghezza d'onda |
+|---|---|---|
+| impulsi | ν₀ ≈ 196 THz (laser a 1530 nm [B23]) | 1530 nm |
+| luce di lettura | ν₀ − Δν, con Δν ≈ 10,8 GHz [B23] | circa 1530,08 nm |
+
+La differenza è di circa lo 0,005 % (calcolo nostro). Le due luci vengono **dallo stesso laser**, diviso in due da un accoppiatore. Su uno dei due rami un modulatore, pilotato da un **generatore RF** (una sinusoide elettrica a circa 10,8 GHz), sposta la frequenza esattamente di Δν ([B23]: *"sinusoidally modulated by a Mach–Zehnder Modulator (MZM) driven by an RF generator … downshifted by approximately 10.8 GHz from the pump frequency"*). Così la differenza tra le due luci è fissata **elettronicamente** e con precisione. Serve, perché 1 MHz di errore su Δν vale circa 20 µε di allungamento (calcolo nostro, da C_ε ≈ 0,05 MHz/µε). Il generatore RF è "la manopola" della misura: girandolo si sceglie Δν.
+
+**4. Lo scambio di energia: dove e quando.** Le onde sonore del vetro hanno, in ogni punto, una frequenza propria ν_B, circa 10,8 GHz, che cambia con l'allungamento e la temperatura della fibra in quel punto (§3). Dove l'impulso incrocia la luce di lettura, **e** Δν coincide con la ν_B di quel punto, l'impulso **cede energia** alla luce di lettura ([OZ]: *"When the frequency difference between the two lasers is equal to the 'Brillouin frequency' of the fiber, there is a strong interaction … This interaction causes a strong amplification"*).
+
+⚠️ *Perché proprio quella differenza (da verificare su una fonte):* è un bilancio di energia. L'impulso perde un po' di energia; una parte va alla luce di lettura, il resto all'onda sonora del vetro, che ha frequenza ν_B. Il conto torna solo se la differenza di frequenza è ν_B.
+
+**5. L'impulso "scrive", la luce di lettura "porta".** Senza impulsi, la luce di lettura arriva in A sempre uguale: un livello piatto, che non contiene informazione. L'impulso, in ogni istante, si trova in un solo punto della fibra. Solo lì cede energia, e solo se Δν è "intonato" con quel punto. Il pezzetto di luce di lettura rinforzato prosegue fino ad A, dove arriva come un **gradino** di potenza.
+
+Un'immagine: l'impulso è un evidenziatore che scorre su un foglio. L'evidenziatore non lo leggi, leggi i segni che lascia; il foglio è la luce di lettura, che li porta fino allo strumento.
+
+In termini tecnici, l'impulso **modula in ampiezza** il tono continuo della luce di lettura. Cambia la sua potenza nel tempo, non la sua frequenza.
+
+**6. Il tempo dà la posizione.** L'impulso parte da A all'istante 0. Il gradino nato nel punto z torna ad A dopo un tempo 2·z·n/c, cioè circa 10 ns per ogni metro (andata dell'impulso + ritorno della luce di lettura):
+
+| istante | dov'è l'impulso | quando quel gradino arriva in A |
+|---|---|---|
+| 5 ns | a 1 m | 10 ns |
+| 50 ns | a 10 m | 100 ns |
+| 500 ns | a 100 m | 1000 ns |
+
+La potenza letta in A nel tempo, P(t), è quindi il profilo della fibra "srotolato" nel tempo. La durata dell'impulso fissa la risoluzione: 20 ns corrispondono a circa 2 m. La velocità di campionamento fissa il passo: 125 milioni di campioni al secondo danno un campione ogni 0,8 m [B23].
+
+**7. La frequenza dà la grandezza fisica.** L'altezza del gradino in un punto dipende da quanto Δν è vicino alla ν_B di quel punto. Lo strumento ripete la misura per tanti valori di Δν: [B23] scansiona 1 GHz. Per ogni punto z ottiene una curva "altezza del gradino in funzione di Δν", lo **spettro di guadagno Brillouin**. Il **picco** della curva è ν_B(z). Da ν_B(z), confrontata con una misura di base, si ricavano allungamento e temperatura (§3 e [fonti.md](fonti.md)).
+
+**8. Cosa significa per il simulatore.**
+
+| Livello | Contenuto | Chi lo produce |
+|---|---|---|
+| **L0** | per ogni Δν della scansione, la potenza letta in A nel tempo, cioè per posizione: P(z, Δν), con rumore | simulatore |
+| L1 | il picco per ogni z: ν_B(z, t) | DSP dell'utente (fit) |
+| L2–L3 | allungamento, temperatura, pressione | DSP dell'utente |
+
+⚠️ *Variante (da verificare su una fonte):* in [B23] la luce di lettura ha frequenza **più bassa** degli impulsi e quindi **riceve** energia: il gradino è in su. Esiste anche la configurazione opposta, con la luce di lettura più alta, in cui la luce di lettura **perde** energia e il gradino è in giù. Il principio è lo stesso.
 
 ## 3. Tre fenomeni, tre sensori: DAS, DTS, DSS
 

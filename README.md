@@ -164,26 +164,37 @@ Nel caso MATRIS la fibra si annega nel composito della guaina durante la produzi
 
 ---
 
-## Modello 3D
+## Modello 3D e figura del sensore
 
-![Tubo risanato con fibra a elica](blender/tubo_fibra.png)
+![Il sensore in fibra ottica sul tubo](blender/tubo_fibra.png)
 
-[blender/tubo_fibra.py](blender/tubo_fibra.py) costruisce in Blender un tratto di tubo risanato, in sezione "a cipolla":
+La figura spiega il sistema a chi non conosce la fibra: **una sola fibra ad anello**, i cui due capi arrivano allo **stesso interrogatore** (BOTDA).
 
-- **tubo ospite** (grigio), tagliato corto per lasciare vedere dentro;
-- **guaina** in composito (semitrasparente);
-- **fibra a elica** (arancione, luminosa) annegata nella guaina;
-- **fibra di riferimento** dritta (blu);
-- **interrogatore** a un capo, con il cavo di collegamento.
+- **Porta A** (z = 0): esce l'impulso laser ed entra la luce che lo strumento legge.
+- **Andata a elica**, incollata nella guaina: sente pressione + temperatura.
+- **Giunzione** in fondo al tratto.
+- **Ritorno dritto** in un tubetto libero: sente solo temperatura.
+- **Porta B**: entra il laser continuo, che percorre l'anello al contrario.
 
-Spessori e diametro della fibra sono **esagerati** per renderli visibili.
+La figura spiega anche l'effetto Brillouin e la fibra "srotolata", in cui ogni punto del tubo compare due volte (z₁ sull'elica, z₂ sul ritorno). Per differenza tra i due punti si separano temperatura e pressione.
+
+Si genera in due passi:
+
+| Script | Cosa fa | Serve |
+|---|---|---|
+| [blender/tubo_fibra.py](blender/tubo_fibra.py) | spaccato 3D → `tubo_fibra_3d.png` + `tubo_fibra_3d.json` (posizione in pixel dei punti notevoli) e, a richiesta, il `.blend` | Blender (o il modulo `bpy`) |
+| [blender/schema_sensore.py](blender/schema_sensore.py) | render + didascalie + pannelli → `tubo_fibra.png` | solo matplotlib |
 
 ```bash
-# apre Blender con la scena pronta
-blender --python WaterFiberSim/blender/tubo_fibra.py
+# apre Blender con la scena pronta (le etichette 3D sono visibili nella vista, non nel render)
+blender --python blender/tubo_fibra.py
 
-# oppure: render senza interfaccia → PNG + file .blend
-blender -b --python WaterFiberSim/blender/tubo_fibra.py -- --render WaterFiberSim/blender/tubo_fibra.png --save WaterFiberSim/blender/tubo_fibra.blend
+# render senza interfaccia + file .blend, poi la figura finale
+blender -b --python blender/tubo_fibra.py -- --render blender/tubo_fibra_3d.png --save blender/tubo_fibra.blend
+python blender/schema_sensore.py
 ```
 
-I parametri (diametro, lunghezza, angolo α) sono in cima allo script: cambiando `ALFA_DEG` si vede subito come cambia il passo dell'elica.
+- Il `.blend` va generato con la **stessa versione di Blender** con cui lo si apre: un file salvato con Blender 5.0 non si apre con la 4.2. Per questo non è in git.
+- Spessori e fibra sono **esagerati** per renderli visibili.
+- I numeri dei pannelli (PE DN110, elica a 70°, coefficienti Brillouin) sono **indicativi**.
+- I parametri della scena (angolo `ALFA_DEG`, raggi, lunghezza) sono in cima a `tubo_fibra.py`.
