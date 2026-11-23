@@ -83,6 +83,17 @@ Differenza da tenere a mente: in [B23] la fibra è fissata **all'esterno** del t
 | Sull'elica la temperatura pesa circa 1 + 0,05 × 200 ≈ 11 MHz/°C | 🧮 | Coefficienti di [B23]. La fibra solidale al tubo segue la dilatazione termica del PE, che è isotropa e quindi non dipende da α. [B23] aggiunge un coefficiente empirico K_T per l'inerzia termica del tubo |
 | Ordine di grandezza misurato: 73 MHz a 5 bar e 200 MHz a 10 bar rispetto a 0 bar (tubo **PN16**, §3.1: *"BFS profiles and raw BGS measured by the BOTDA interrogator on the PN16 pipe"*) | ✅ | [B23], §3.1: *"a clear shift of 73 and 200 MHz due to increased hoop strain with respect to the reference 0 bar BGS is evident"* |
 
+### Ipotesi del simulatore (passo 2)
+
+| Affermazione | Stato | Fonte o motivo |
+|---|---|---|
+| La pressione varia linearmente lungo un tubo tra i due nodi | 🧮 | Con portata costante nel tubo la perdita di carico è uniforme lungo il tubo (Hazen-Williams: carico lineare); con quota lineare tra i nodi anche la pressione è lineare |
+| 1 m di colonna d'acqua = 9,80665 kPa | — | ρ·g con ρ = 1000 kg/m³, g = 9,80665 m/s² |
+| Il tratto di riferimento libero non si deforma con la pressione | ✅ principio | [B23]: fibra di ritorno *"loosely fixed to the pipe for the thermal effect compensation"*; nella Fig. 7c il riferimento non si sposta con la pressione |
+| La deformazione della parete si trasferisce alla fibra al 100 % | ⚠️ | Ipotesi. Il trasferimento dipende da rivestimento e incollaggio (Ansari & Libo 1998, da verificare) |
+| Comportamento elastico istantaneo del PE | ⚠️ | Semplificazione: [B23] mostra il creep (modello di Burgers, Fig. 8) |
+| ν_B0 = 10 880 MHz | ✅ forma, ⚠️ valore | [B23] Fig. 7a, fibra non tirata, letto a occhio; non cambia i Δν |
+
 ### Misura di base e minimo misurabile
 
 | Affermazione | Stato | Fonte e citazione |

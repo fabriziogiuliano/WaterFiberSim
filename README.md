@@ -24,13 +24,13 @@ pip install -e .
 
 ## Il piano
 
-| Passo | Cosa | Uscita |
-|---|---|---|
-| **1** | **rete di prova, parametri dei tubi, percorso della fibra** | **mappa "metro di fibra → tubo" e disegno** |
-| 2 | pressione lungo la fibra (EPANET, owa-epanet) → strain → frequenza Brillouin | ν_B(z, t), ancora senza ottica |
-| 3 | segnale grezzo: spettro Brillouin con rumore + un fit di esempio | L0 e un primo DSP |
-| 4 | eventi: perdita (idraulica), cedimento (meccanico) | etichette |
-| 5 | temperatura (DTS) e separazione pressione/temperatura | |
+| Passo | Cosa | Uscita | Stato |
+|---|---|---|---|
+| 1 | rete di prova, parametri dei tubi, percorso della fibra | mappa "metro di fibra → tubo" e disegno | ✅ fatto |
+| 2 | pressione lungo la fibra (EPANET, owa-epanet) → strain → frequenza Brillouin | ν_B(z, t) vero, ancora senza ottica | ✅ fatto (scenario A) |
+| 3 | segnale grezzo: spettro Brillouin con rumore, nota a riposo per metro, misura di base + un fit di esempio | L0 e un primo DSP | |
+| 4 | eventi: perdita (idraulica), cedimento (meccanico) | etichette | |
+| 5 | temperatura (DTS) e separazione pressione/temperatura | | |
 
 I livelli del dato:
 
@@ -157,6 +157,61 @@ Sull'elica **un metro di fibra copre meno di un metro di tubo**: s_pipe avanza d
 - Disegno della rete con la fibra sopra, colorata per distanza dall'interrogatore.
 - La lunghezza totale della fibra torna con: 2 × cavi `lead` + tubi × 1/cos α (elica) + giunzione + tubi × 1 (riferimento).
 - Ogni tubo coperto compare nella mappa due volte (misura e riferimento), con s_pipe che va da 0 alla sua lunghezza.
+
+```bash
+python -m waterfibersim map scenario_paths/A_main_line.yaml --out out/A    # out/A/fiber_map.csv + fiber_map.png
+pytest                                                                     # tests/test_fibermap.py
+```
+
+Scenario A: 2386,3 m di fibra, 4773 campioni ogni 0,5 m; l'elica va da z = 15 a 1769 m, il riferimento da 1771,5 a 2371 m.
+
+![Mappa fibra → tubo, scenario A](docs/img/A_fiber_map.png)
+
+---
+
+## Passo 2 — segnale vero lungo la fibra
+
+```bash
+python -m waterfibersim run scenario_paths/A_main_line.yaml --out out/A --hours 24 --step-min 15
+```
+
+La catena, un modulo per anello:
+
+```
+hydraulics.py   EPANET (owa-epanet): pressione nei nodi, una misura ogni 15 minuti
+simulate.py     pressione lungo il tubo, lineare tra i due nodi
+mechanics.py    deformazione della parete, Lamé sulla superficie esterna      [Bertulessi 2023, Eq. 4–6]
+                deformazione della fibra a elica: ε_θ·sin²α + ε_z·cos²α; riferimento libero = 0
+brillouin.py    ν_B = ν_B0 + C_ε·ε + C_T·ΔT, con C_ε = 0,05 MHz/µε, C_T = 1 MHz/°C   [Bertulessi 2023, Eq. 1]
+```
+
+In `out/A/`:
+- `signal_true.npz`: matrici **tempo × posizione** (97 × 4773 per lo scenario A) di `nu_b_mhz`, `strain_ue`, `pressure_bar`, più `z_m`, `leg`, `pipe` di ogni colonna e `times_s`;
+- `signal_true_<fibra>.png`: la figura qui sotto.
+
+![Segnale vero, scenario A](docs/img/A_signal_true.png)
+
+Cosa si vede, nello scenario A:
+- Sull'**elica dei tubi in PE** la frequenza sta circa 70 MHz sopra il tubo vuoto (circa 4,8 bar) e varia di 2–3 MHz nella giornata, seguendo i consumi: circa 14,5 MHz per bar sul PE DN110.
+- Sul **tratto di riferimento** e su cavi e giunzione resta a 0.
+- Su **P0 (ghisa)** quasi niente: circa 0,2 MHz per bar, sotto l'accuratezza tipica dello strumento (circa 0,5 MHz). È lo stesso problema di una guaina appoggiata a un tubo ospite rigido.
+
+### Cosa il simulatore non fa ancora
+
+Oggi il segnale è **ideale**: la frequenza segue la pressione in modo esatto e proporzionale. È la **verità** (le etichette). Quello che riceverà chi elabora i dati (L0) sarà questa verità con i disturbi reali, aggiunti uno alla volta:
+
+| Cosa manca | Effetto sul segnale | Quando | Fonte |
+|---|---|---|---|
+| rumore dello strumento | ogni misura sbaglia di circa ±0,5 MHz | passo 3 | Bertulessi 2023: *"better than 0.5 °C/10 µε"* |
+| spettro invece del valore | si riceve la curva intera, il picco va trovato | passo 3 | Bertulessi 2023 §2.1, Fig. 7b |
+| nota a riposo per metro | ogni metro parte da un valore diverso; serve la misura di base | passo 3 | Bertulessi 2023 Fig. 7a |
+| risoluzione spaziale | lo strumento media su circa 2 m: i passaggi tra tubi si sfumano | passo 3 | Bertulessi 2023: 20 ns, *"equivalent to a 2 m spatial resolution"* |
+| temperatura | sposta la frequenza come la pressione (circa 11 MHz/°C sull'elica) | passo 5 | Bertulessi 2023, Eq. 1 e 9 |
+| creep del PE | la deformazione arriva in ritardo e continua a crescere | più avanti | Bertulessi 2023, modello di Burgers, Fig. 8 |
+| trasferimento alla fibra < 100 % | la fibra sente solo una parte della deformazione | da decidere | ⚠️ oggi ipotesi: 100 % |
+| guaina + tubo ospite | il rapporto MHz/bar dipende dal laminato e dal tubo dietro; i tubi risanati danno errore | quando arriverà il laminato (MATRIS OR1) | modello a più strati da fare |
+
+Altre semplificazioni: pressione a scalini di un'ora (gli andamenti di consumo nell'`.inp` sono orari), tubi dritti tra i due nodi.
 
 ---
 
