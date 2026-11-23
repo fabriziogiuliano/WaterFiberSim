@@ -75,8 +75,8 @@ def plot_true_signal(sig, path: str | Path, fiber_id: str | None = None) -> Path
     h = sig.times_s / 3600
     z = f["z_m"].to_numpy()
 
-    fig = plt.figure(figsize=(15, 23), dpi=100)
-    gs = fig.add_gridspec(5, 1, height_ratios=[1, 1, 1.6, 1, 1.1], hspace=0.55, top=0.945)
+    fig = plt.figure(figsize=(15, 20), dpi=100)
+    gs = fig.add_gridspec(4, 1, height_ratios=[1, 1, 1.6, 1.1], hspace=0.6, top=0.94)
     consumi = "" if sig.demand_multiplier == 1 else f", consumi \u00d7{sig.demand_multiplier:g}"
     fig.suptitle(f"Segnale vero (senza rumore, temperatura costante), fibra {fid}{consumi}", fontsize=15,
                  fontweight="bold", x=0.02, ha="left")
@@ -168,45 +168,25 @@ def plot_true_signal(sig, path: str | Path, fiber_id: str | None = None) -> Path
         m = np.flatnonzero((f["pipe"] == pid).to_numpy() & (f["leg"] == leg).to_numpy())
         return m[int(np.argmin(abs(f["s_pipe_m"].to_numpy()[m] - sig_mid(f, pid))))] if len(m) else None
 
-    # 4. fibra a elica sul tubo in PE nel tempo + pressione
+    # tubi coperti dall'elica, nell'ordine in cui li percorre la fibra; arancione via via più scuro
+    tubi = list(pd.unique(f.loc[sens, "pipe"]))
+    colori = plt.get_cmap("Oranges")(np.linspace(0.45, 0.95, len(tubi)))
+    punti = {pid: punto(pid, "sensing") for pid in tubi}
+
+    # 4. tutti i tubi nel tempo: Δν_B a metà di ciascun tubo (a destra la pressione in bar)
     ax = fig.add_subplot(gs[3])
-    j = punto("P1", "sensing")
-    ax.step(h, dnu[:, j], where="post", color="#ff6a00", lw=2, label=f"\u0394\u03bd_B, elica a metà di P1 (z = {z[j]:.0f} m)")
-    ax.set_ylabel("\u0394\u03bd_B [MHz]", color="#ff6a00")
-    ax2 = ax.twinx()
-    ax2.step(h, press[:, j], where="post", color="#2b8a3e", lw=1.2, ls="--", label="pressione dell'acqua in quel punto")
-    ax2.set_ylabel("pressione [bar]", color="#2b8a3e")
-    ax.legend(loc="lower left", fontsize=9)
-    ax2.legend(loc="lower right", fontsize=9)
+    for pid, c in zip(tubi, colori):
+        j = punti[pid]
+        esc = f"{np.ptp(dnu[:, j]):.1f} MHz = {np.ptp(press[:, j]):.2f} bar".replace(".", ",")
+        ax.step(h, dnu[:, j], where="post", color=c, lw=2,
+                label=f"{pid}, a metà (z = {z[j]:.0f} m): {np.nanmean(press[:, j]):.2f} bar in media, "
+                      f"escursione {esc}".replace(".", ",", 1))
+    ax.set_ylabel("\u0394\u03bd_B [MHz]")
+    asse_bar(ax, nome="pressione")
     ax.set_xlabel("ora del giorno [h]")
-    escursione = f"{np.ptp(dnu[:, j]):.1f} MHz = {np.ptp(press[:, j]):.2f} bar".replace(".", ",")
-    ax.set_title(f"4. nel tempo, fibra a elica sul tubo in PE (plastica), a metà di P1: segue la pressione (escursione {escursione})", fontsize=11, loc="left")
-
-    # 5. si vede o no? variazione nella giornata in tre punti contro l'errore tipico dello strumento
-    ax = fig.add_subplot(gs[4])
-    ERRORE_MHZ = 0.5          # indicativo: Bertulessi 2023 §2.1, "better than ... 10 µε" (limite superiore,
-                              # statistica non dichiarata). Al passo 3 diventa un parametro (Soto & Thévenaz 2013).
-
-    j = punto("P1", "sensing")
-    for pid, leg, c, lab in (("P1", "sensing", "#ff6a00", "fibra a elica sul tubo in PE (P1)"),
-                             ("P1", "reference", "#1f5fbf", "fibra di riferimento, libera (P1)")):
-        jj = punto(pid, leg)
-        if jj is not None:
-            serie = dnu[:, jj] - dnu[:, jj].mean()
-            esc = f"{np.ptp(serie):.2f} MHz = {np.ptp(serie) / mhz_per_bar:.3f} bar".replace(".", ",")
-            ax.step(h, serie, where="post", color=c, lw=2.2 if leg == "sensing" else 1.8,
-                    label=f"{lab}: escursione {esc}")
-    ax.axhspan(-ERRORE_MHZ, ERRORE_MHZ, color="#adb5bd", alpha=0.35, lw=0, zorder=0,
-               label=f"errore indicativo dello strumento, ±0,5 MHz = ±{ERRORE_MHZ / mhz_per_bar:.3f} bar "
-                     f"(Bertulessi 2023: limite superiore, statistica non dichiarata)".replace("0.", "0,"))
-    lim = max(2.0, 1.15 * np.abs(dnu[:, j] - dnu[:, j].mean()).max())
-    ax.set_ylim(-lim, lim)
-    asse_bar(ax, nome="variazione")
-    ax.set_ylabel("variazione rispetto\nalla media del giorno [MHz]")
-    ax.set_xlabel("ora del giorno [h]")
-    ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.28), fontsize=9, ncol=1, frameon=False)
-    ax.set_title("5. SI VEDE O NO? Variazione nella giornata a metà di P1, fibra a elica e fibra di riferimento, "
-                 "confrontata con un errore indicativo dello strumento", fontsize=11, loc="left")
+    ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.2), fontsize=9, ncol=2, frameon=False)
+    ax.set_title("4. nel tempo, fibra a elica a metà di OGNI tubo: segue la pressione; più lontano dal serbatoio, "
+                 "pressione più bassa e cali più forti", fontsize=11, loc="left")
 
     path = Path(path)
     fig.savefig(path, bbox_inches="tight", facecolor="white")

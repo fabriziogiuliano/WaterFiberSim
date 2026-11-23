@@ -203,7 +203,7 @@ Cosa si vede, nello scenario A:
 - Sulla **fibra a elica dei tubi in PE (plastica)** la frequenza sta circa 70 MHz sopra il tubo vuoto (circa 4,8 bar) e varia di 2–3 MHz nella giornata, seguendo i consumi: circa 14,5 MHz per bar sul PE DN110.
 - Sul **tratto di riferimento** e su cavi e giunzione resta a 0.
 - **P0, l'adduttrice in ghisa, non ha l'elica**: la fibra ci passa solo come cavo. Su un tubo così rigido la fibra a elica sentirebbe circa 0,2 MHz per bar, sotto un errore indicativo dello strumento (circa 0,5 MHz, vedi sotto): non avrebbe senso. È lo stesso problema di una guaina appoggiata a un tubo ospite rigido.
-- La variazione nella giornata (circa ±0,9 MHz) è **al limite** di un errore indicativo di ±0,5 MHz per una singola misura in un singolo punto: per vederla bene servirà la media nello spazio e nel tempo (pannello 4).
+- La variazione nella giornata (circa ±0,9 MHz) è **al limite** di un errore indicativo di ±0,5 MHz per una singola misura in un singolo punto: per vederla bene servirà la media nello spazio e nel tempo.
 
 ### Cosa il simulatore non fa ancora
 
