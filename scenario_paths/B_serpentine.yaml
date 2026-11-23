@@ -1,7 +1,7 @@
-# Scenario B - serpentine: the most pipes one fiber can cover without passing twice (10 of 13).
-# Covers all demands and P12 (the relined pipe). Uncovered: P4, P9, P11.
+# Scenario B - serpentine: the most PE pipes one fiber can cover without passing twice (9 of 12).
+# Covers all demands and P12 (the relined pipe). Uncovered: P4, P9, P11; P0 (cast iron) only as lead.
 title: "B. Serpentina"
-description: "Il massimo con una sola fibra senza ripassi.\nPassa su P12 (il tubo risanato).\nRestano scoperti P4, P9, P11."
+description: "Il massimo con una sola fibra senza ripassi.\nPassa su P12 (il tubo risanato).\nScoperti P4, P9, P11; P0 (ghisa) solo cavo."
 network: network/grid_3x3.inp
 pipes: network/pipes.yaml
 
@@ -12,8 +12,7 @@ fibers:
     sensing_leg:   {layout: helix, angle_deg: 70, bonding: bonded}
     reference_leg: {layout: straight, bonding: loose_tube}
     route:
-      - {lead: 15, to: R1}
-      - {pipe: P0,  from: R1}
+      - {lead: 215, to: J11}    # lead-in cable along P0: no helix on the cast-iron main (it would sense almost nothing)
       - {pipe: P1,  from: J11}
       - {pipe: P2,  from: J12}
       - {pipe: P7,  from: J13}

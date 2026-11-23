@@ -1,7 +1,7 @@
-# Scenario C - two fibers on two channels of the same interrogator: full coverage (13 of 13).
+# Scenario C - two fibers on two channels of the same interrogator: all 12 grid pipes (P0, cast iron, only as lead).
 # Fiber 1: the perimeter. Fiber 2: the inner cross, reached with lead cables (450 m not on pipes).
 title: "C. Due fibre"
-description: "Fibra 1: il perimetro. Fibra 2: la croce interna.\nCopertura completa; servono 2 canali\ndello stesso interrogatore e più cavo morto."
+description: "Fibra 1: il perimetro. Fibra 2: la croce interna.\nTutta la griglia; servono 2 canali\ndello stesso interrogatore e più cavo."
 network: network/grid_3x3.inp
 pipes: network/pipes.yaml
 
@@ -12,8 +12,7 @@ fibers:
     sensing_leg:   {layout: helix, angle_deg: 70, bonding: bonded}
     reference_leg: {layout: straight, bonding: loose_tube}
     route:
-      - {lead: 15, to: R1}
-      - {pipe: P0,  from: R1}
+      - {lead: 215, to: J11}    # lead-in cable along P0: no helix on the cast-iron main (it would sense almost nothing)
       - {pipe: P1,  from: J11}
       - {pipe: P2,  from: J12}
       - {pipe: P7,  from: J13}

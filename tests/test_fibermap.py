@@ -23,13 +23,13 @@ def test_total_length(scen):
     f = scen.fibers[0]
     pipes_m = sum(scen.network.pipes[s.pipe].length_m for s in f.route if s.kind == "pipe")
     leads_m = sum(s.lead_m for s in f.route if s.kind == "lead")
-    assert pipes_m == 600 and leads_m == 15
+    assert pipes_m == 400 and leads_m == 215
     assert fiber_length_m(f, scen) == pytest.approx(2 * leads_m + pipes_m * K + f.junction_m + pipes_m)
 
 
 def test_each_pipe_twice_full_range(scen):
     m = build_fiber_map(scen.fibers[0], scen)
-    for pid in ["P0", "P1", "P2", "P7", "P8"]:
+    for pid in ["P1", "P2", "P7", "P8"]:
         for leg in ["sensing", "reference"]:
             s = m[(m["pipe"] == pid) & (m.leg == leg)]["s_pipe_m"]
             L = scen.network.pipes[pid].length_m
@@ -43,7 +43,8 @@ def test_order_and_ends(scen):
     legs = m["leg"].tolist()
     assert legs[0] == "lead" and legs[-1] == "lead"
     first = m[m.leg == "sensing"].iloc[0]
-    assert first["pipe"] == "P0" and first.s_pipe_m == pytest.approx(0.0)        # parte da R1, inizio di P0
+    assert first["pipe"] == "P1" and first.s_pipe_m == pytest.approx(0.0)        # parte da J11, inizio di P1
+    assert "P0" not in set(m["pipe"].dropna())                                    # P0 (ghisa) solo come cavo
     jn = m[m.leg == "junction"].iloc[0]
     assert (jn.x, jn.y) == scen.network.node_xy["J33"]                           # giunzione in fondo, su J33
 

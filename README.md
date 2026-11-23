@@ -112,8 +112,7 @@ fibers:
     sensing_leg:   {layout: helix, angle_deg: 70, bonding: bonded}   # embedded | bonded
     reference_leg: {layout: straight, bonding: loose_tube}
     route:                     # ordered from port A; the reference leg retraces it backwards to port B
-      - {lead: 15, to: R1}     # lead-in cable from the interrogator
-      - {pipe: P0, from: R1}
+      - {lead: 215, to: J11}   # lead-in cable along P0: no helix on the cast-iron main
       - {pipe: P1, from: J11}
       - {pipe: P2, from: J12}
       - {pipe: P7, from: J13}
@@ -127,9 +126,9 @@ Gli scenari si conservano tutti e servono per esperimenti diversi:
 
 | Scenario | Fibre | Tubi coperti | Uso |
 |---|---|---|---|
-| [A_main_line](scenario_paths/A_main_line.yaml) | 1 | 5 su 13 | collaudare il codice: si verifica a mano |
-| [B_serpentine](scenario_paths/B_serpentine.yaml) | 1 | 10 su 13 | il massimo con una fibra; passa sul tubo risanato P12 |
-| [C_two_fibers](scenario_paths/C_two_fibers.yaml) | 2 (2 canali) | 13 su 13 | copertura completa, più fibre e cavi di collegamento |
+| [A_main_line](scenario_paths/A_main_line.yaml) | 1 | 4 su 13 | collaudare il codice: si verifica a mano |
+| [B_serpentine](scenario_paths/B_serpentine.yaml) | 1 | 9 su 13 | il massimo con una fibra; passa sul tubo risanato P12 |
+| [C_two_fibers](scenario_paths/C_two_fibers.yaml) | 2 (2 canali) | 12 su 13 | tutta la griglia, più fibre e cavi di collegamento |
 
 La figura si rigenera dai YAML con `python docs/img/scenario_paths.py`, che scrive anche [scenario_paths.drawio.svg](docs/img/scenario_paths.drawio.svg), modificabile in draw.io.
 
@@ -163,7 +162,7 @@ python -m waterfibersim map scenario_paths/A_main_line.yaml --out out/A    # out
 pytest                                                                     # tests/test_fibermap.py
 ```
 
-Scenario A: 2386,3 m di fibra, 4773 campioni ogni 0,5 m; l'elica va da z = 15 a 1769 m, il riferimento da 1771,5 a 2371 m.
+Scenario A: 2001,5 m di fibra (2 × 215 m di cavo + 400 m di tubo × 2,92 + 2 m di giunzione + 400 m di riferimento), 4004 campioni ogni 0,5 m.
 
 ![Mappa fibra → tubo, scenario A](docs/img/A_fiber_map.png)
 
@@ -186,15 +185,16 @@ brillouin.py    ν_B = ν_B0 + C_ε·ε + C_T·ΔT, con C_ε = 0,05 MHz/µε, C_
 ```
 
 In `out/A/`:
-- `signal_true.npz`: matrici **tempo × posizione** (97 × 4773 per lo scenario A) di `nu_b_mhz`, `strain_ue`, `pressure_bar`, più `z_m`, `leg`, `pipe` di ogni colonna e `times_s`;
+- `signal_true.npz`: matrici **tempo × posizione** (97 × 4004 per lo scenario A) di `nu_b_mhz`, `strain_ue`, `pressure_bar`, più `z_m`, `leg`, `pipe` di ogni colonna e `times_s`;
 - `signal_true_<fibra>.png`: la figura qui sotto.
 
 ![Segnale vero, scenario A](docs/img/A_signal_true.png)
 
 Cosa si vede, nello scenario A:
-- Sull'**elica dei tubi in PE** la frequenza sta circa 70 MHz sopra il tubo vuoto (circa 4,8 bar) e varia di 2–3 MHz nella giornata, seguendo i consumi: circa 14,5 MHz per bar sul PE DN110.
+- Sulla **fibra a elica dei tubi in PE (plastica)** la frequenza sta circa 70 MHz sopra il tubo vuoto (circa 4,8 bar) e varia di 2–3 MHz nella giornata, seguendo i consumi: circa 14,5 MHz per bar sul PE DN110.
 - Sul **tratto di riferimento** e su cavi e giunzione resta a 0.
-- Su **P0 (ghisa)** quasi niente: circa 0,2 MHz per bar, sotto l'accuratezza tipica dello strumento (circa 0,5 MHz). È lo stesso problema di una guaina appoggiata a un tubo ospite rigido.
+- **P0, l'adduttrice in ghisa, non ha l'elica**: la fibra ci passa solo come cavo. Su un tubo così rigido la fibra a elica sentirebbe circa 0,2 MHz per bar, sotto un errore indicativo dello strumento (circa 0,5 MHz, vedi sotto): non avrebbe senso. È lo stesso problema di una guaina appoggiata a un tubo ospite rigido.
+- La variazione nella giornata (circa ±0,9 MHz) è **al limite** di un errore indicativo di ±0,5 MHz per una singola misura in un singolo punto: per vederla bene servirà la media nello spazio e nel tempo (pannello 4).
 
 ### Cosa il simulatore non fa ancora
 
@@ -202,7 +202,7 @@ Oggi il segnale è **ideale**: la frequenza segue la pressione in modo esatto e 
 
 | Cosa manca | Effetto sul segnale | Quando | Fonte |
 |---|---|---|---|
-| rumore dello strumento | ogni misura sbaglia di circa ±0,5 MHz | passo 3 | Bertulessi 2023: *"better than 0.5 °C/10 µε"* |
+| rumore dello strumento | ogni misura sbaglia; ±0,5 MHz è solo **indicativo** (da 0,1 a 2 MHz secondo strumento, lunghezza e tempo di media) | passo 3, come parametro calcolato con Soto & Thévenaz 2013 | Bertulessi 2023: *"better than 0.5 °C/10 µε"*; schede OZ Optics e Prysmian DITEST (vedi `docs/fonti.md`) |
 | spettro invece del valore | si riceve la curva intera, il picco va trovato | passo 3 | Bertulessi 2023 §2.1, Fig. 7b |
 | nota a riposo per metro | ogni metro parte da un valore diverso; serve la misura di base | passo 3 | Bertulessi 2023 Fig. 7a |
 | risoluzione spaziale | lo strumento media su circa 2 m: i passaggi tra tubi si sfumano | passo 3 | Bertulessi 2023: 20 ns, *"equivalent to a 2 m spatial resolution"* |

@@ -64,9 +64,11 @@ Differenza da tenere a mente: in [B23] la fibra è fissata **all'esterno** del t
 
 | Affermazione | Stato | Fonte e citazione |
 |---|---|---|
-| Accuratezza tipica: circa 10 µε (0,5 MHz) e 0,5 °C | ✅ | [B23], §2.1: *"The measurement accuracy of the employed BOTDA interrogator has been verified to be better than 0.5 °C/10 µε."* |
+| Accuratezza dello strumento in [B23]: meglio di 10 µε (0,5 MHz) e 0,5 °C. **Limite superiore** (*"better than"*), statistica (1σ, 2σ, massimo) **non dichiarata**, valida per quello strumento e quella configurazione | ✅ | [B23], §2.1: *"The measurement accuracy of the employed BOTDA interrogator has been verified to be better than 0.5 °C/10 µε."* |
 | Accuratezza dichiarata da un costruttore: ±2 µε, ±0,1 °C (2σ) | ✅ | [OZ]: *"Strain Accuracy (2σ) ± 2 με (Whole sensing range for BOTDA)"*, *"Temperature Accuracy (2σ) ± 0.1°C"* |
 | Su lunghe distanze la ripetibilità peggiora molto | ✅ | [DIT]: *"Temperature and Strain Repeatability, 1σ (typical): < 2 °C or < 40 με for 80 km, G652 fiber, 5 m spatial resolution and 20 minutes measurement time."* |
+| **Errore usato nelle figure: ±0,5 MHz, solo indicativo.** Secondo le fonti varia da circa 0,1 MHz (OZ Optics, ±2 µε 2σ) a circa 2 MHz (DITEST, 40 µε 1σ a 80 km, 5 m, 20 min) | 🧮 | Conversione con C_ε = 0,05 MHz/µε. Al passo 3 diventa un parametro dello scenario, calcolato con il modello di Soto & Thévenaz 2013 (SNR, larghezza di riga, passo di scansione) |
+| SNR dello spettro di guadagno Brillouin > 40 dB nell'esperimento | ✅ | [B23], §3.1: *"the Signal-to-Noise Ratio (SNR) of the BGS measurement is always greater than 40 dB"* |
 | L'incertezza sul picco dipende da SNR, larghezza di riga e passo di scansione | ⚠️ | M. A. Soto, L. Thévenaz, "Modeling and evaluating the performance of Brillouin distributed optical fiber sensors", *Opt. Express* 21(25), 31347–31366, 2013, DOI 10.1364/OE.21.031347. Accesso libero: [EPFL Infoscience](https://infoscience.epfl.ch/record/191250/files/oe-21-25-31347.pdf?version=1). **Da leggere prima del passo 3** (modello del rumore) |
 
 ### Meccanica del tubo in PE

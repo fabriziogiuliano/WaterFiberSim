@@ -76,7 +76,7 @@ def plot_true_signal(sig, path: str | Path, fiber_id: str | None = None) -> Path
     z = f["z_m"].to_numpy()
 
     fig = plt.figure(figsize=(15, 17), dpi=100)
-    gs = fig.add_gridspec(4, 1, height_ratios=[1.5, 1, 1, 0.8], hspace=0.5)
+    gs = fig.add_gridspec(4, 1, height_ratios=[1.5, 1, 1, 1.1], hspace=0.5)
     fig.suptitle(f"Segnale vero (senza rumore, temperatura costante), fibra {fid}", fontsize=15, fontweight="bold",
                  x=0.02, ha="left")
 
@@ -111,14 +111,14 @@ def plot_true_signal(sig, path: str | Path, fiber_id: str | None = None) -> Path
     ax.set_ylabel("\u0394\u03bd_B = \u03bd_B \u2212 \u03bd_B0 [MHz]")
     ax.set_xlabel("z [m]")
     ax.legend(loc="upper right")
-    ax.set_title("2. profilo lungo la fibra rispetto al tubo vuoto: elica sul PE circa +70 MHz (circa 4,8 bar); "
-                 "ghisa (P0) e riferimento circa 0", fontsize=11, loc="left", pad=16)
+    ax.set_title("2. profilo lungo la fibra rispetto al tubo vuoto: fibra a elica sui tubi in PE circa +70 MHz "
+                 "(circa 4,8 bar); riferimento e cavi 0", fontsize=11, loc="left", pad=16)
 
     def punto(pid, leg):
         m = np.flatnonzero((f["pipe"] == pid).to_numpy() & (f["leg"] == leg).to_numpy())
         return m[int(np.argmin(abs(f["s_pipe_m"].to_numpy()[m] - sig_mid(f, pid))))] if len(m) else None
 
-    # 3. elica su PE nel tempo + pressione
+    # 3. fibra a elica sul tubo in PE nel tempo + pressione
     ax = fig.add_subplot(gs[2])
     j = punto("P1", "sensing")
     ax.step(h, dnu[:, j], where="post", color="#ff6a00", lw=2, label=f"\u0394\u03bd_B, elica a metà di P1 (z = {z[j]:.0f} m)")
@@ -130,21 +130,27 @@ def plot_true_signal(sig, path: str | Path, fiber_id: str | None = None) -> Path
     ax2.legend(loc="lower right", fontsize=9)
     ax.set_xlabel("ora del giorno [h]")
     escursione = f"{np.ptp(dnu[:, j]):.1f} MHz = {np.ptp(press[:, j]):.2f} bar".replace(".", ",")
-    ax.set_title(f"3. nel tempo, elica su PE: segue la pressione (escursione {escursione})", fontsize=11, loc="left")
+    ax.set_title(f"3. nel tempo, fibra a elica sul tubo in PE (plastica), a metà di P1: segue la pressione (escursione {escursione})", fontsize=11, loc="left")
 
-    # 4. riferimento e ghisa
+    # 4. si vede o no? variazione nella giornata in tre punti contro l'errore tipico dello strumento
     ax = fig.add_subplot(gs[3])
-    for pid, leg, c, lab in (("P1", "reference", "#1f5fbf", "riferimento a metà di P1"),
-                             ("P0", "sensing", "#868e96", "elica a metà di P0 (ghisa)")):
+    ERRORE_MHZ = 0.5          # indicativo: Bertulessi 2023 §2.1, "better than ... 10 µε" (limite superiore,
+                              # statistica non dichiarata). Al passo 3 diventa un parametro (Soto & Thévenaz 2013).
+    ax.axhspan(-ERRORE_MHZ, ERRORE_MHZ, color="#adb5bd", alpha=0.35, lw=0,
+               label="errore indicativo dello strumento, ±0,5 MHz (Bertulessi 2023: limite superiore, statistica non dichiarata)")
+    for pid, leg, c, lab in (("P1", "sensing", "#ff6a00", "fibra a elica sul tubo in PE (P1)"),
+                             ("P1", "reference", "#1f5fbf", "fibra di riferimento, libera (P1)")):
         jj = punto(pid, leg)
         if jj is not None:
-            ax.step(h, dnu[:, jj], where="post", color=c, lw=2, label=f"{lab} (z = {z[jj]:.0f} m)")
-    ax.set_ylim(-0.2, 1.2)
-    ax.set_ylabel("\u0394\u03bd_B [MHz]")
+            serie = dnu[:, jj] - dnu[:, jj].mean()
+            ax.step(h, serie, where="post", color=c, lw=2.2 if leg == "sensing" and pid == "P1" else 1.8,
+                    label=f"{lab}: escursione {np.ptp(serie):.2f} MHz".replace(".", ","))
+    ax.set_ylim(-2, 2)
+    ax.set_ylabel("variazione rispetto\nalla media del giorno [MHz]")
     ax.set_xlabel("ora del giorno [h]")
-    ax.legend(loc="upper right", fontsize=9)
-    ax.set_title("4. stessa scala in MHz ma ingrandita: il riferimento non sente la pressione; sulla ghisa quasi niente",
-                 fontsize=11, loc="left")
+    ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.28), fontsize=9, ncol=1, frameon=False)
+    ax.set_title("4. SI VEDE O NO? Variazione nella giornata a metà di P1, fibra a elica e fibra di riferimento, "
+                 "confrontata con un errore indicativo dello strumento", fontsize=11, loc="left")
 
     path = Path(path)
     fig.savefig(path, bbox_inches="tight", facecolor="white")

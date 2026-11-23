@@ -68,7 +68,7 @@ fig.text(0.03, 0.905, "Arancione/viola: tubi coperti, numerati nell'ordine in cu
 
 for ax, (titolo, sotto, fibre, nota) in zip(axs, OPZIONI):
     ax.set_aspect("equal")
-    ax.set_xlim(-95, 300)
+    ax.set_xlim(-120, 300)
     ax.set_ylim(-45, 470)
     ax.axis("off")
     ax.set_title(f"{titolo}\n", fontsize=17, fontweight="bold", color=TESTO, loc="left")
@@ -96,8 +96,9 @@ for ax, (titolo, sotto, fibre, nota) in zip(axs, OPZIONI):
             if s[0] == "lead":
                 if s[2] is None and s[3] != "R1":      # cavo dall'interrogatore a un nodo lontano
                     (x1, y1) = XY[s[3]]
-                    ax.plot([-26, -45, -45, x1], [395 - 8 * f, 395 - 8 * f, y1, y1], color=col, lw=2, ls="--", zorder=3)
-                    ax.text(-50, (395 + y1) / 2, f"lead {s[1]} m", color=col, fontsize=10, rotation=90, ha="right",
+                    xl = -45 - 22 * f
+                    ax.plot([-26, xl, xl, x1], [395 - 8 * f, 395 - 8 * f, y1, y1], color=col, lw=2, ls="--", zorder=3)
+                    ax.text(xl - 4, (395 + y1) / 2, f"lead {s[1]} m", color=col, fontsize=10, rotation=90, ha="right",
                             va="center")
                 elif s[2] is not None:
                     (x0, y0), (x1, y1) = XY[s[2]], XY[s[3]]
@@ -180,8 +181,9 @@ for i, (titolo, sotto, fibre, nota) in enumerate(OPZIONI):
             if s[0] == "lead":
                 if s[2] is None and s[3] != "R1":
                     x1, y1 = P2(ox, s[3])
-                    d.line([(ox - 58, Y0 + 14), (ox - 58, y1), (x1, y1)], color=col, sw=2, dashed=True)
-                    d.label(ox - 64, (Y0 + y1) / 2 + 40, f"lead {s[1]} m", size=10, color=col, rotation=-90, w=90)
+                    xl = ox - 58 - 24 * f
+                    d.line([(xl, Y0 + 14), (xl, y1), (x1, y1)], color=col, sw=2, dashed=True)
+                    d.label(xl - 6, (Y0 + y1) / 2 + 40, f"lead {s[1]} m", size=10, color=col, rotation=-90, w=90)
                 elif s[2] is not None:
                     (x0, y0), (x1, y1) = P2(ox, s[2]), P2(ox, s[3])
                     d.line([(x0, y0), (x1, y1)], color=col, sw=2, dashed=True)
