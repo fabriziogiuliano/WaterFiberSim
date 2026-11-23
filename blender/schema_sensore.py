@@ -54,7 +54,7 @@ EPS_THETA = (2 - NU_PE) * BETA**2 / (1 - BETA**2) * P_1BAR / E_PE * 1e6     # µ
 EPS_Z = (1 - 2 * NU_PE) * BETA**2 / (1 - BETA**2) * P_1BAR / E_PE * 1e6     # µε
 S2 = np.sin(np.radians(ALFA)) ** 2
 EPS_1BAR = EPS_THETA * S2 + EPS_Z * (1 - S2)  # µε sentiti dall'elica per 1 bar
-K_T_ELICA = C_T + C_EPS * ALFA_PE         # MHz/°C sull'elica: la fibra incollata segue la dilatazione del PE
+K_T_ELICA = C_T + C_EPS * ALFA_PE         # MHz/°C sull'elica: la fibra solidale segue la dilatazione del PE
 
 
 def box(ax, x, y, w, h, colore="#f4f6f9", bordo="#c9ced6"):
@@ -133,11 +133,12 @@ def main():
         (3, "Porta B  =  fine della fibra",
          "ESCE la luce di lettura (\"sonda\"): un tono ottico continuo e debole, che percorre l'anello al contrario "
          "fino ad A. Gli impulsi che arrivano in B non si leggono."),
-        (4, "Tratto a ELICA, incollato nella guaina", "Gira intorno al tubo (70° rispetto all'asse). Quando la "
-                                                    "pressione dilata il tubo, la fibra viene tirata.\n"
+        (4, "Tratto a ELICA, annegato nella guaina", "Gira intorno al tubo (70° rispetto all'asse). La guaina "
+                                                   "polimerizza in opera e ancora la fibra: quando la pressione "
+                                                   "dilata il tubo, la fibra viene tirata.\n"
                                                     "Sente: PRESSIONE + TEMPERATURA."),
-        (5, "Tratto DRITTO, libero in un tubetto", "La fibra scorre libera, come un filo in una cannuccia: il tubo "
-                                                 "si dilata ma lei non viene tirata.\nSente: SOLO TEMPERATURA."),
+        (5, "Tratto DRITTO, libero in un tubetto", "Il tubetto è annegato nella guaina, ma la fibra dentro scorre libera, come un filo in una "
+                                                 "cannuccia: il tubo si dilata ma lei non viene tirata.\nSente: SOLO TEMPERATURA."),
         (6, "Giunzione", "Qui il tratto a elica e il tratto dritto sono saldati: è la STESSA fibra che torna "
                          "indietro."),
         (7, "Acqua in pressione", "Spinge sulle pareti (frecce rosse) e le dilata pochissimo: in PE circa "
@@ -268,7 +269,7 @@ def main():
         (f"a z₁ (elica, pressione + temperatura): lo strumento vede +{EPS_1BAR * C_EPS + K_T_ELICA:.0f} MHz   →   "
          f"tolgo la parte della temperatura (1 °C × {K_T_ELICA:.0f} MHz per °C sull'elica*) = "
          f"{EPS_1BAR * C_EPS:.0f} MHz   →   {EPS_1BAR:.0f} µε   →   ≈ 1 bar", False),
-        (f"* sull'elica il calore pesa di più: la fibra è incollata al PE, che col caldo si dilata ({ALFA_PE} µε/°C) e "
+        (f"* sull'elica il calore pesa di più: la fibra è solidale al PE, che col caldo si dilata ({ALFA_PE} µε/°C) e "
          f"la tira: {C_T:.0f} + {str(C_EPS).replace('.', ',')} × {ALFA_PE} ≈ {K_T_ELICA:.0f} MHz/°C. Il simulatore fornisce anche i valori VERI "
          "di pressione, temperatura e allungamento.", False),
         ("Fonti: Bertulessi et al., Sensors 23, 6205 (2023), doi:10.3390/s23136205;  schede tecniche OZ Optics "

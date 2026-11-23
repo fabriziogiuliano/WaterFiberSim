@@ -1,43 +1,43 @@
 [TITLE]
-WaterFiberSim - rete di prova: serbatoio R1, adduttrice P0, griglia 3x3 (tubi da 100 m)
-Utenze su J13, J31, J33. Coordinate in metri.
+WaterFiberSim - test network: reservoir R1, supply main P0, 3x3 grid (100 m pipes)
+Demands at J13, J31, J33. Coordinates in metres.
 
 [JUNCTIONS]
-;ID   Quota_m  Domanda_LPS  Pattern
+;ID   Elev_m   Demand_LPS   Pattern
  J11  10       0
  J12  10       0
- J13  10       2.0          GIORNO
+ J13  10       2.0          DAILY
  J21  10       0
  J22  10       0
  J23  10       0
- J31  10       2.0          GIORNO
+ J31  10       2.0          DAILY
  J32  10       0
- J33  10       2.0          GIORNO
+ J33  10       2.0          DAILY
 
 [RESERVOIRS]
-;ID   Carico_m
+;ID   Head_m
  R1   60
 
 [TANKS]
 
 [PIPES]
-;ID   Nodo1  Nodo2  Lunghezza_m  Diametro_mm  Scabrezza_HW  PerditeMinori  Stato
-; adduttrice in ghisa (DE 160, sp. 8 -> DI 144)
+;ID   Node1  Node2  Length_m     Diameter_mm  Roughness_HW  MinorLoss      Status
+; supply main, cast iron (OD 160, wall 8 -> ID 144)
  P0   R1     J11    200          144          100           0              Open
-; orizzontali, riga per riga (PE100 DE 110, sp. 10 -> DI 90)
+; horizontal, row by row (PE100 OD 110, wall 10 -> ID 90)
  P1   J11    J12    100          90           140           0              Open
  P2   J12    J13    100          90           140           0              Open
  P3   J21    J22    100          90           140           0              Open
  P4   J22    J23    100          90           140           0              Open
  P5   J31    J32    100          90           140           0              Open
  P6   J32    J33    100          90           140           0              Open
-; verticali
+; vertical
  P7   J13    J23    100          90           140           0              Open
  P8   J23    J33    100          90           140           0              Open
  P9   J12    J22    100          90           140           0              Open
  P10  J22    J32    100          90           140           0              Open
  P11  J11    J21    100          90           140           0              Open
-; P12 risanato: guaina da 6 mm all'interno -> DI 90 - 2*6 = 78
+; P12 rehabilitated: 6 mm liner inside -> ID 90 - 2*6 = 78
  P12  J21    J31    100          78           140           0              Open
 
 [PUMPS]
@@ -45,11 +45,11 @@ Utenze su J13, J31, J33. Coordinate in metri.
 [VALVES]
 
 [PATTERNS]
-;ID      Moltiplicatori orari (00-23), media 1
- GIORNO  0.50 0.40 0.35 0.35 0.40 0.60
- GIORNO  0.90 1.40 1.60 1.40 1.20 1.20
- GIORNO  1.30 1.20 1.00 0.90 0.90 1.10
- GIORNO  1.40 1.60 1.50 1.20 0.90 0.65
+;ID      Hourly multipliers (00-23), mean 1
+ DAILY  0.50 0.40 0.35 0.35 0.40 0.60
+ DAILY  0.90 1.40 1.60 1.40 1.20 1.20
+ DAILY  1.30 1.20 1.00 0.90 0.90 1.10
+ DAILY  1.40 1.60 1.50 1.20 0.90 0.65
 
 [TIMES]
  Duration           24:00
@@ -64,7 +64,7 @@ Utenze su J13, J31, J33. Coordinate in metri.
  Pattern            1
 
 [COORDINATES]
-;Nodo  X    Y
+;Node  X    Y
  R1    0    400
  J11   0    200
  J12   100  200

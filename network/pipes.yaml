@@ -1,0 +1,17 @@
+# Mechanical parameters of the pipes in network/grid_3x3.inp.
+# The .inp stays standard EPANET: this file holds only what EPANET does not know.
+# Every pipe takes the values in `default`; `pipes` lists only the overrides.
+# Consistency check: outer_diameter_mm - 2*wall_thickness_mm (- 2*liner thickness, the liner
+# sits inside the host pipe) must match the pipe diameter in the .inp.
+
+default:
+  material: PE100
+  outer_diameter_mm: 110
+  wall_thickness_mm: 10
+  E_GPa: 1.0          # elastic modulus
+  nu: 0.40            # Poisson's ratio
+  depth_m: 1.0        # burial depth (used for temperature, step 5)
+
+pipes:
+  P0:  {material: cast_iron, outer_diameter_mm: 160, wall_thickness_mm: 8, E_GPa: 170, nu: 0.26}
+  P12: {liner: {thickness_mm: 6, E_GPa: 8}}   # rehabilitated pipe (relining)

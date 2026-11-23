@@ -1,7 +1,7 @@
-"""Rete idrica: EPANET .inp (idraulica, letto con owa-epanet) + tubi.yaml (meccanica).
+"""Rete idrica: EPANET .inp (idraulica, letto con owa-epanet) + pipes.yaml (meccanica).
 
 L'.inp non si modifica; i parametri meccanici di ogni tubo sono
-`default` del YAML, sovrascritti dalle voci in `tubi`.
+`default` del YAML, sovrascritti dalle voci in `pipes`. Chiavi YAML in inglese.
 """
 
 from __future__ import annotations
@@ -21,17 +21,9 @@ warnings.filterwarnings("ignore", module="epanet")
 # unità di portata SI: con queste EPANET dà lunghezze in m e diametri in mm
 _SI_FLOW_UNITS = {en.LPS, en.LPM, en.MLD, en.CMH, en.CMD, en.CMS}
 
-# chiavi YAML (italiano) -> attributi Python (inglese)
-_PIPE_KEYS = {
-    "materiale": "material",
-    "diametro_esterno_mm": "outer_diameter_mm",
-    "spessore_mm": "wall_thickness_mm",
-    "E_GPa": "E_GPa",
-    "nu": "nu",
-    "profondita_m": "depth_m",
-    "guaina": "liner",
-}
-_LINER_KEYS = {"spessore_mm": "thickness_mm", "E_GPa": "E_GPa"}
+# chiavi ammesse in pipes.yaml (uguali agli attributi Python)
+_PIPE_KEYS = {"material", "outer_diameter_mm", "wall_thickness_mm", "E_GPa", "nu", "depth_m", "liner"}
+_LINER_KEYS = {"thickness_mm", "E_GPa"}
 
 # tolleranza sul confronto tra diametro interno dal YAML e diametro dell'.inp
 _DIAMETER_TOL_MM = 0.5
@@ -47,7 +39,7 @@ class Liner:
 
 @dataclass(frozen=True)
 class PipeSpec:
-    """Un tubo: geometria dall'.inp, meccanica da tubi.yaml."""
+    """Un tubo: geometria dall'.inp, meccanica da pipes.yaml."""
 
     id: str
     start_node: str
@@ -72,11 +64,11 @@ class Network:
     node_xy: dict[str, tuple[float, float]]
 
 
-def _translate(raw: dict, keys: dict, where: str) -> dict:
-    unknown = set(raw) - set(keys)
+def _check_keys(raw: dict, keys: set, where: str) -> dict:
+    unknown = set(raw) - keys
     if unknown:
-        raise ValueError(f"{where}: chiavi sconosciute {sorted(unknown)}; ammesse {sorted(keys)}")
-    return {keys[k]: v for k, v in raw.items()}
+        raise ValueError(f"{where}: unknown keys {sorted(unknown)}; allowed {sorted(keys)}")
+    return dict(raw)
 
 
 def _read_inp(inp_path: Path) -> tuple[dict[str, dict], dict[str, tuple[float, float]]]:
@@ -86,7 +78,7 @@ def _read_inp(inp_path: Path) -> tuple[dict[str, dict], dict[str, tuple[float, f
     try:
         en.open(ph, str(inp_path), rpt, "")
         if en.getflowunits(ph) not in _SI_FLOW_UNITS:
-            raise ValueError(f"{inp_path}: servono unità SI (LPS, CMH, ...), non unità US")
+            raise ValueError(f"{inp_path}: SI flow units required (LPS, CMH, ...), not US units")
         node_xy = {
             en.getnodeid(ph, i): tuple(en.getcoord(ph, i))
             for i in range(1, en.getcount(ph, en.NODECOUNT) + 1)
@@ -109,7 +101,7 @@ def _read_inp(inp_path: Path) -> tuple[dict[str, dict], dict[str, tuple[float, f
 
 
 def load_network(inp_path: str | Path, pipes_yaml: str | Path) -> Network:
-    """Legge l'.inp con owa-epanet e associa a ogni tubo i parametri di tubi.yaml.
+    """Legge l'.inp con owa-epanet e associa a ogni tubo i parametri di pipes.yaml.
 
     Errore se il YAML nomina tubi inesistenti, usa chiavi sconosciute o se il
     diametro interno ricavato dal YAML non coincide con quello dell'.inp.
@@ -118,18 +110,18 @@ def load_network(inp_path: str | Path, pipes_yaml: str | Path) -> Network:
     inp_pipes, node_xy = _read_inp(inp_path)
     cfg = yaml.safe_load(Path(pipes_yaml).read_text())
 
-    default = _translate(cfg.get("default", {}), _PIPE_KEYS, "default")
-    overrides = cfg.get("tubi", {}) or {}
+    default = _check_keys(cfg.get("default", {}), _PIPE_KEYS, "default")
+    overrides = cfg.get("pipes", {}) or {}
 
     missing = set(overrides) - set(inp_pipes)
     if missing:
-        raise ValueError(f"tubi.yaml: tubi non presenti nell'.inp: {sorted(missing)}")
+        raise ValueError(f"pipes.yaml: pipes not in the .inp: {sorted(missing)}")
 
     pipes: dict[str, PipeSpec] = {}
     for name, geom in inp_pipes.items():
-        params = {**default, **_translate(overrides.get(name, {}), _PIPE_KEYS, f"tubi.{name}")}
+        params = {**default, **_check_keys(overrides.get(name, {}), _PIPE_KEYS, f"pipes.{name}")}
         if params.get("liner") is not None:
-            params["liner"] = Liner(**_translate(params["liner"], _LINER_KEYS, f"tubi.{name}.guaina"))
+            params["liner"] = Liner(**_check_keys(params["liner"], _LINER_KEYS, f"pipes.{name}.liner"))
 
         spec = PipeSpec(id=name, **geom, **params)
 
@@ -137,8 +129,8 @@ def load_network(inp_path: str | Path, pipes_yaml: str | Path) -> Network:
         expected = spec.outer_diameter_mm - 2 * spec.wall_thickness_mm - 2 * liner_t
         if abs(expected - spec.inner_diameter_mm) > _DIAMETER_TOL_MM:
             raise ValueError(
-                f"{name}: diametro interno dal YAML {expected:.1f} mm "
-                f"≠ diametro nell'.inp {spec.inner_diameter_mm:.1f} mm"
+                f"{name}: inner diameter from YAML {expected:.1f} mm "
+                f"!= diameter in the .inp {spec.inner_diameter_mm:.1f} mm"
             )
         pipes[name] = spec
 

@@ -67,65 +67,86 @@ Una rete piccola, che si capisce a colpo d'occhio:
 - **J11…J33**: griglia 3×3 di nodi, tubi da 100 m.
 - **Utenze**: una domanda (con il suo andamento giornaliero) sui nodi del bordo, per esempio J13, J31, J33.
 
-Il file è `rete/griglia_3x3.inp`, in formato EPANET standard: si apre anche con EPANET o QGIS.
+Il file è `network/grid_3x3.inp`, in formato EPANET standard: si apre anche con EPANET o QGIS.
+
+I file di ingresso (`.inp`, YAML) hanno **nomi e chiavi in inglese**, come l'API Python; i commenti e la documentazione restano in italiano.
 
 ### 1.2 I parametri dei tubi
 
 L'`.inp` non si tocca: i parametri meccanici stanno in un file a parte, con valori di default e override per singolo tubo.
 
 ```yaml
-# rete/tubi.yaml
+# network/pipes.yaml
 default:
-  materiale: PE100
-  diametro_esterno_mm: 110
-  spessore_mm: 10
-  E_GPa: 1.0          # modulo elastico
-  nu: 0.40            # coefficiente di Poisson
-  profondita_m: 1.0   # interramento (serve per la temperatura)
-tubi:
-  P0:  {materiale: ghisa, diametro_esterno_mm: 160, spessore_mm: 8, E_GPa: 170, nu: 0.26}
-  P12: {guaina: {spessore_mm: 6, E_GPa: 8}}   # tubo risanato con relining
+  material: PE100
+  outer_diameter_mm: 110
+  wall_thickness_mm: 10
+  E_GPa: 1.0          # elastic modulus
+  nu: 0.40            # Poisson's ratio
+  depth_m: 1.0        # burial depth (used for temperature, step 5)
+pipes:
+  P0:  {material: cast_iron, outer_diameter_mm: 160, wall_thickness_mm: 8, E_GPa: 170, nu: 0.26}
+  P12: {liner: {thickness_mm: 6, E_GPa: 8}}   # rehabilitated pipe (relining)
 ```
 
-### 1.3 La fibra in overlay
+### 1.3 La fibra: un anello sull'interrogatore BOTDA
 
-Una fibra **non si dirama**: è un percorso lineare. Il percorso è una lista ordinata di tratti, che possono essere tubi (in un verso) o **tratti morti**, cioè cavo che collega senza stare su un tubo.
+Una fibra **non si dirama**: è un percorso lineare. Con la BOTDA i due capi tornano allo stesso strumento (porta A e porta B), quindi la fibra è un **anello** con due tratti (vedi la figura del sensore più sotto e [docs/fibra-ottica-dfos.md §2.1](docs/fibra-ottica-dfos.md#21-come-funziona-la-botda-passo-per-passo)):
+
+- **tratto di misura** (*sensing leg*): dalla porta A, a **elica solidale** al tubo; nel caso MATRIS è **annegata nella guaina**, che polimerizza in opera e la ancora; sente pressione + temperatura;
+- **tratto di riferimento** (*reference leg*): ritorna alla porta B ripercorrendo **gli stessi tubi** al contrario, **dritto e libero in un tubetto**; sente solo la temperatura.
+
+Nel file si scrive solo il percorso di andata. Il ritorno è sempre lo stesso percorso al contrario, perché il riferimento deve misurare la temperatura negli stessi punti.
 
 ```yaml
-# fibre/fibra_A.yaml
-interrogatore: {nodo: R1, tecnica: BOTDA}       # BOTDA: la fibra deve tornare all'interrogatore
-avvolgimento: {tipo: elica, alfa_deg: 70}      # angolo rispetto all'asse del tubo
-passo_campionamento_m: 0.5
-percorso:
-  - {morto: 15}                # cavo dall'interrogatore al primo tubo
-  - {tubo: P0,  da: R1}
-  - {tubo: P1,  da: J11}       # J11 → J12
-  - {tubo: P2,  da: J12}       # J12 → J13
-  - {morto: 5}
-  - {tubo: P7,  da: J13}       # J13 → J23
+# fibers/fiber_A.yaml   (formato; il file è il prossimo passo)
+interrogator:
+  node: R1                  # where the instrument sits
+  technique: BOTDA          # loop: both fiber ends on the instrument (port A, port B)
+sampling_step_m: 0.5
+
+sensing_leg:                # outgoing leg, from port A: helix attached to the pipe, senses strain + temperature
+  layout: helix
+  angle_deg: 70             # helix angle to the pipe axis
+  bonding: embedded         # embedded (in the cured liner, MATRIS) | bonded (fixed outside, as in Bertulessi 2023)
+reference_leg:              # return leg, back to port B: straight, free in a loose tube, temperature only
+  layout: straight
+  bonding: loose_tube
+
+route:                      # ordered path from port A; the reference leg retraces it backwards
+  - {lead: 15}              # lead-in cable, not on a pipe
+  - {pipe: P0, from: R1}
+  - {pipe: P1, from: J11}   # J11 -> J12
+  - {pipe: P2, from: J12}   # J12 -> J13
+  - {pipe: P7, from: J13}   # J13 -> J23
   # ...
-ritorno: {morto: 400}          # solo BOTDA: cavo che riporta all'interrogatore
+junction_m: 2               # splice at the far end: sensing leg -> reference leg
 ```
 
-Se la rete non si copre con un solo percorso, si usano più fibre, cioè più file (oppure più canali dello stesso interrogatore).
+- `lead` è un cavo che collega senza stare su un tubo (prima si chiamava "tratto morto"). Viene percorso due volte, all'andata e al ritorno.
+- Se la rete non si copre con un solo percorso, si usano più fibre, cioè più file (oppure più canali dello stesso interrogatore).
 
 ### 1.4 La mappa "metro di fibra → tubo"
 
-È il prodotto del passo 1 e servirà a tutti i passi successivi. Per ogni campione lungo la fibra:
+È il prodotto del passo 1 e servirà a tutti i passi successivi. Per ogni campione lungo la fibra, con z contato dalla porta A (dove si legge):
 
-| z_fibra_m | tratto | tubo | s_tubo_m | x, y |
+| z_m | leg | pipe | s_pipe_m | x, y |
 |---|---|---|---|---|
-| 0.0 | morto | — | — | … |
-| 15.0 | 1 | P0 | 0.00 | … |
-| 15.5 | 1 | P0 | 0.17 | … |
+| 0.0 | lead | — | — | … |
+| 15.0 | sensing | P0 | 0.00 | … |
+| 15.5 | sensing | P0 | 0.17 | … |
+| … | junction | — | — | … |
+| … | reference | P0 | 199.5 | … |
 
-Con l'avvolgimento a elica, **un metro di fibra copre meno di un metro di tubo**: s_tubo avanza di `passo · cos α` per ogni passo di fibra. Con α = 70° servono ~2,9 m di fibra per ogni metro di tubo.
+**Ogni punto di un tubo compare due volte**: sul tratto di misura e sul tratto di riferimento. È così che si separano pressione e temperatura.
+
+Sull'elica **un metro di fibra copre meno di un metro di tubo**: s_pipe avanza di `passo · cos α` per ogni passo di fibra. Con α = 70° servono circa 2,9 m di fibra per ogni metro di tubo. Sul tratto di riferimento, dritto, s_pipe avanza di un passo intero, all'indietro.
 
 ### 1.5 Come si verifica il passo 1
 
 - Disegno della rete con la fibra sopra, colorata per distanza dall'interrogatore.
-- La lunghezza totale della fibra torna con la somma di tratti morti e tubi × 1/cos α.
-- Ogni tubo coperto compare nella mappa con s_tubo che va da 0 alla sua lunghezza.
+- La lunghezza totale della fibra torna con: 2 × cavi `lead` + tubi × 1/cos α (elica) + giunzione + tubi × 1 (riferimento).
+- Ogni tubo coperto compare nella mappa due volte (misura e riferimento), con s_pipe che va da 0 alla sua lunghezza.
 
 ---
 
@@ -171,7 +192,7 @@ Nel caso MATRIS la fibra si annega nel composito della guaina durante la produzi
 La figura spiega il sistema a chi non conosce la fibra: **una sola fibra ad anello**, i cui due capi arrivano allo **stesso interrogatore** (BOTDA).
 
 - **Porta A** (z = 0): esce l'impulso laser ed entra la luce che lo strumento legge.
-- **Andata a elica**, incollata nella guaina: sente pressione + temperatura.
+- **Andata a elica**, annegata nella guaina e ancorata dalla polimerizzazione: sente pressione + temperatura.
 - **Giunzione** in fondo al tratto.
 - **Ritorno dritto** in un tubetto libero: sente solo temperatura.
 - **Porta B**: entra il laser continuo, che percorre l'anello al contrario.
