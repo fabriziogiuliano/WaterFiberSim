@@ -98,33 +98,43 @@ Una fibra **non si dirama**: è un percorso lineare. Con la BOTDA i due capi tor
 
 Nel file si scrive solo il percorso di andata. Il ritorno è sempre lo stesso percorso al contrario, perché il riferimento deve misurare la temperatura negli stessi punti.
 
+Le fibre si descrivono in uno **scenario di percorso**: un file YAML in [scenario_paths/](scenario_paths/) con la lista delle fibre (una o più, ciascuna su un canale dell'interrogatore). Esempio, lo scenario A:
+
 ```yaml
-# fibers/fiber_A.yaml   (formato; il file è il prossimo passo)
-interrogator:
-  node: R1                  # where the instrument sits
-  technique: BOTDA          # loop: both fiber ends on the instrument (port A, port B)
-sampling_step_m: 0.5
-
-sensing_leg:                # outgoing leg, from port A: helix attached to the pipe, senses strain + temperature
-  layout: helix
-  angle_deg: 70             # helix angle to the pipe axis
-  bonding: embedded         # embedded (in the cured liner, MATRIS) | bonded (fixed outside, as in Bertulessi 2023)
-reference_leg:              # return leg, back to port B: straight, free in a loose tube, temperature only
-  layout: straight
-  bonding: loose_tube
-
-route:                      # ordered path from port A; the reference leg retraces it backwards
-  - {lead: 15}              # lead-in cable, not on a pipe
-  - {pipe: P0, from: R1}
-  - {pipe: P1, from: J11}   # J11 -> J12
-  - {pipe: P2, from: J12}   # J12 -> J13
-  - {pipe: P7, from: J13}   # J13 -> J23
-  # ...
-junction_m: 2               # splice at the far end: sensing leg -> reference leg
+# scenario_paths/A_main_line.yaml
+title: "A. Linea principale"
+network: network/grid_3x3.inp
+pipes: network/pipes.yaml
+fibers:
+  - id: A1
+    interrogator: {node: R1, technique: BOTDA, channel: 1}   # loop: both fiber ends on the instrument
+    sampling_step_m: 0.5
+    sensing_leg:   {layout: helix, angle_deg: 70, bonding: bonded}   # embedded | bonded
+    reference_leg: {layout: straight, bonding: loose_tube}
+    route:                     # ordered from port A; the reference leg retraces it backwards to port B
+      - {lead: 15, to: R1}     # lead-in cable from the interrogator
+      - {pipe: P0, from: R1}
+      - {pipe: P1, from: J11}
+      - {pipe: P2, from: J12}
+      - {pipe: P7, from: J13}
+      - {pipe: P8, from: J23}
+    junction_m: 2              # splice at the far end: sensing leg -> reference leg
 ```
 
-- `lead` è un cavo che collega senza stare su un tubo (prima si chiamava "tratto morto"). Viene percorso due volte, all'andata e al ritorno.
-- Se la rete non si copre con un solo percorso, si usano più fibre, cioè più file (oppure più canali dello stesso interrogatore).
+Gli scenari si conservano tutti e servono per esperimenti diversi:
+
+![Scenari di percorso](docs/img/scenario_paths.png)
+
+| Scenario | Fibre | Tubi coperti | Uso |
+|---|---|---|---|
+| [A_main_line](scenario_paths/A_main_line.yaml) | 1 | 5 su 13 | collaudare il codice: si verifica a mano |
+| [B_serpentine](scenario_paths/B_serpentine.yaml) | 1 | 10 su 13 | il massimo con una fibra; passa sul tubo risanato P12 |
+| [C_two_fibers](scenario_paths/C_two_fibers.yaml) | 2 (2 canali) | 13 su 13 | copertura completa, più fibre e cavi di collegamento |
+
+La figura si rigenera dai YAML con `python docs/img/scenario_paths.py`, che scrive anche [scenario_paths.drawio.svg](docs/img/scenario_paths.drawio.svg), modificabile in draw.io.
+
+- `lead` è un cavo che collega senza stare su un tubo (prima si chiamava "tratto morto"); `to`/`from` dicono quali nodi collega. Viene percorso due volte, all'andata e al ritorno.
+- Una fibra non può passare due volte sullo stesso tubo. Se la rete non si copre con un solo percorso, si usano più fibre nello stesso scenario, su più canali dello stesso interrogatore (scenario C).
 
 ### 1.4 La mappa "metro di fibra → tubo"
 

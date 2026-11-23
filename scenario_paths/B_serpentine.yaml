@@ -1,0 +1,26 @@
+# Scenario B - serpentine: the most pipes one fiber can cover without passing twice (10 of 13).
+# Covers all demands and P12 (the relined pipe). Uncovered: P4, P9, P11.
+title: "B. Serpentina"
+description: "Il massimo con una sola fibra senza ripassi.\nPassa su P12 (il tubo risanato).\nRestano scoperti P4, P9, P11."
+network: network/grid_3x3.inp
+pipes: network/pipes.yaml
+
+fibers:
+  - id: B1
+    interrogator: {node: R1, technique: BOTDA, channel: 1}
+    sampling_step_m: 0.5
+    sensing_leg:   {layout: helix, angle_deg: 70, bonding: bonded}
+    reference_leg: {layout: straight, bonding: loose_tube}
+    route:
+      - {lead: 15, to: R1}
+      - {pipe: P0,  from: R1}
+      - {pipe: P1,  from: J11}
+      - {pipe: P2,  from: J12}
+      - {pipe: P7,  from: J13}
+      - {pipe: P8,  from: J23}
+      - {pipe: P6,  from: J33}
+      - {pipe: P5,  from: J32}
+      - {pipe: P12, from: J31}
+      - {pipe: P3,  from: J21}
+      - {pipe: P10, from: J22}
+    junction_m: 2

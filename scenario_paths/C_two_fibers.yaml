@@ -1,0 +1,39 @@
+# Scenario C - two fibers on two channels of the same interrogator: full coverage (13 of 13).
+# Fiber 1: the perimeter. Fiber 2: the inner cross, reached with lead cables (450 m not on pipes).
+title: "C. Due fibre"
+description: "Fibra 1: il perimetro. Fibra 2: la croce interna.\nCopertura completa; servono 2 canali\ndello stesso interrogatore e più cavo morto."
+network: network/grid_3x3.inp
+pipes: network/pipes.yaml
+
+fibers:
+  - id: C1
+    interrogator: {node: R1, technique: BOTDA, channel: 1}
+    sampling_step_m: 0.5
+    sensing_leg:   {layout: helix, angle_deg: 70, bonding: bonded}
+    reference_leg: {layout: straight, bonding: loose_tube}
+    route:
+      - {lead: 15, to: R1}
+      - {pipe: P0,  from: R1}
+      - {pipe: P1,  from: J11}
+      - {pipe: P2,  from: J12}
+      - {pipe: P7,  from: J13}
+      - {pipe: P8,  from: J23}
+      - {pipe: P6,  from: J33}
+      - {pipe: P5,  from: J32}
+      - {pipe: P12, from: J31}
+      - {pipe: P11, from: J21}
+    junction_m: 2
+
+  - id: C2
+    interrogator: {node: R1, technique: BOTDA, channel: 2}
+    sampling_step_m: 0.5
+    sensing_leg:   {layout: helix, angle_deg: 70, bonding: bonded}
+    reference_leg: {layout: straight, bonding: loose_tube}
+    route:
+      - {lead: 300, to: J21}            # from the interrogator to J21, alongside P0 and P11
+      - {pipe: P3,  from: J21}
+      - {pipe: P4,  from: J22}
+      - {lead: 150, from: J23, to: J12} # jump across the block, not on a pipe
+      - {pipe: P9,  from: J12}
+      - {pipe: P10, from: J22}
+    junction_m: 2

@@ -1,0 +1,21 @@
+# Scenario A - main line: from the reservoir to the farthest demand (J33).
+# Simplest case: one fiber, 5 pipes, easy to check by hand. Good to write and test the code.
+title: "A. Linea principale"
+description: "Dal serbatoio all'utenza più lontana (J33).\nPiù semplice da verificare: buona per\nscrivere e collaudare il codice."
+network: network/grid_3x3.inp
+pipes: network/pipes.yaml
+
+fibers:
+  - id: A1
+    interrogator: {node: R1, technique: BOTDA, channel: 1}   # loop: both fiber ends on the instrument
+    sampling_step_m: 0.5
+    sensing_leg:   {layout: helix, angle_deg: 70, bonding: bonded}   # bonded: fixed outside the pipe (test network)
+    reference_leg: {layout: straight, bonding: loose_tube}
+    route:                     # ordered from port A; the reference leg retraces it backwards to port B
+      - {lead: 15, to: R1}     # lead-in cable from the interrogator
+      - {pipe: P0, from: R1}
+      - {pipe: P1, from: J11}
+      - {pipe: P2, from: J12}
+      - {pipe: P7, from: J13}
+      - {pipe: P8, from: J23}
+    junction_m: 2              # splice at the far end: sensing leg -> reference leg
