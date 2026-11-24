@@ -13,7 +13,7 @@ Questo documento spiega come funziona un sensore distribuito in fibra ottica (DF
 
 1. [Il contesto: da MATRIS al follow-up](#1-il-contesto-da-matris-al-follow-up)
 2. [Il principio: un cavo, migliaia di sensori](#2-il-principio-un-cavo-migliaia-di-sensori)
-   - [2.1 Come funziona la BOTDA, passo per passo](#21-come-funziona-la-botda-passo-per-passo)
+   - [2.1 Come funziona la BOTDA, passo per passo](02-principio-di-misura.md#22-il-principio-botda-con-le-parole-del-produttore)
 3. [Tre fenomeni, tre sensori: DAS, DTS, DSS](#3-tre-fenomeni-tre-sensori-das-dts-dss)
 4. [I numeri che contano](#4-i-numeri-che-contano)
 5. [Perché una perdita "suona"](#5-perché-una-perdita-suona)

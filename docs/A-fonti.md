@@ -72,6 +72,14 @@ Dove si trova: <https://cris.unibo.it/bitstream/11585/987154/1/engproc-69-00127-
 US EPA, *EPANET 2.2 User Manual* (autori e numero di rapporto da riportare dal frontespizio del PDF). Cap. 3 "The Network Model"  
 Dove si trova: <https://epanet-manual.readthedocs.io/en/latest/3_network_model.html> · [PDF EPA](https://www.epa.gov/system/files/documents/2021-07/epanet_users_manual_2.2.0-1.pdf)
 
+### NBX
+
+Neubrex, *NBX-7031* (NEUBRESCOPE, PPP-BOTDA + TW-COTDR), pagina prodotto, aggiornata il 17/09/2026. Letti il 2026-11-24:
+*"Highest spatial resolution 2cm"*, *"Readout Resolution 5 cm (default), 1 cm (minimum)"*, *"Distance range 50m ～
+27km"*, *"Measurement time … 5 seconds（minimum）"*, *"Average count 2^5～2^23 times"*; impulsi di 0,2–10 ns per
+risoluzioni di 2–100 cm.  
+Dove si trova: <https://www.neubrex.com/products/NEUBRESCOPE/dtss_2/NBX-7031>
+
 ### UPO
 
 Uponor Infra Oy, *PE100 pressure pipes – Technical factsheet*, 09/2020 (cita EN 12201, EN 1555)  
@@ -328,9 +336,9 @@ Verificato il 2026-11-23. **I componenti si comprano; il sistema completo, cioè
 | Prysmian **DITEST** | BOTDA e BOTDR | *"Loop (2 fibers/channel) or Single-ended"*; BOTDA fino a 80 km (anello di 160 km) | ✅ scheda letta | [scheda](https://asean.prysmian.com/sites/asean.prysmian.com/files/media/documents/Prysmian_DITEST.pdf) |
 | OZ Optics **Foresight DSTS**, modulo BOTDA | BOTDA (combinazione con BOTDR opzionale) | *"requires both ends of fiber to be connected"*; ±2 µε, ±0,1 °C (2σ); risoluzione da 0,1 a 50 m | ✅ scheda letta | [DTS0115](https://www.ozoptics.com/ALLNEW_PDF/DTS0115.pdf) |
 | fibrisTerre **fTB 5020** (Polytec) | BOFDA (dominio della frequenza) | ad anello | ⚠️ solo dal riassunto della ricerca | [scheda](https://polytec.com/fileadmin/website/optical-systems/faseroptische-messtechnik/pdf/ftb5020-datenblatt.pdf) |
-| Neubrex **NBX-7031** | Rayleigh TW-COTDR + Brillouin PPP-BOTDA | — | ⚠️ citato da un rivenditore, scheda del produttore non letta | [Solexperts](https://www.solexperts.com/files/downloads/FP_Mesures_fibre_optique_en.pdf) |
+| Neubrex **NBX-7031** | Rayleigh TW-COTDR + Brillouin PPP-BOTDA | 50 m – 27 km; risoluzione fino a 2 cm | ✅ pagina del produttore letta (2026-11-24) | [\[NBX\]](#nbx) |
 | Viavi **MTS-8000 DTSS** | BOTDR (un solo capo) | un solo capo | ⚠️ scheda trovata, non letta | [scheda](https://www.lasercomponents.com/fileadmin/user_upload/home/Datasheets/viavi/mts-8000-dtss.pdf) |
-| **Cohaerentia** S.r.l. (Milano) | BOTDA | ad anello | ⚠️ è l'interrogatore usato in [\[B23\]](#b23); nessuna pagina prodotto trovata | [\[B23\]](#b23) |
+| **Cohaerentia** S.r.l. (Milano) | BOTDA | ad anello | ✅ è l'interrogatore usato in [\[B23\]](#b23) (*"provided by Cohaerentia Srl—relies on the standard BOTDA"*); ⚠️ nessuna pagina prodotto trovata | [\[B23\]](#b23) |
 
 ### Cavi sensore
 

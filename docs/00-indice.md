@@ -9,6 +9,9 @@ Simulatore di sensori in fibra ottica (Brillouin, BOTDA) posati lungo i tubi di 
 misurano la **pressione dell'acqua** metro per metro. Questo libro spiega il problema, la fisica, il simulatore, i
 parametri, le verifiche e i risultati. Ogni capitolo rimanda agli altri; le fonti sono in appendice A.
 
+> **In evidenza: gli strumenti BOTDA esistono già e si possono usare da subito** — Prysmian DITEST, OZ Optics DSTS,
+> Neubrex NBX-7031, Cohaerentia: confronto e come impostarli nel simulatore nel [§2.5](02-principio-di-misura.md#25-strumenti-botda-in-commercio-utilizzabili-da-subito).
+
 ## Indice
 
 **Parte I — Il problema e la fisica**

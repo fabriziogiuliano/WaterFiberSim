@@ -3,6 +3,7 @@
 > **Documentazione completa: [il libro del simulatore](docs/00-indice.md)** — capitoli su fisica, modelli, parametri
 > ([scheda tecnica](docs/09-parametri-del-simulatore.md)), [validazione](docs/10-validazione.md) e
 > [risultati](docs/11-risultati-e-questioni-aperte.md). Questo README resta la guida pratica (installazione, comandi).
+> **Gli strumenti BOTDA esistono già** (Prysmian DITEST, OZ Optics DSTS, Neubrex, Cohaerentia): [§2.5 del libro](docs/02-principio-di-misura.md#25-strumenti-botda-in-commercio-utilizzabili-da-subito).
 
 Simulatore di **sensori distribuiti in fibra ottica** (DFOS) posati su una rete idrica descritta in EPANET. Prende la rete (`.inp`), sovrappone una o più fibre ai tubi, trasforma pressione e temperatura dell'acqua in una grandezza ottica lungo tutta la fibra e produce il **segnale grezzo** che leggerebbe l'interrogatore. Il DSP su quel segnale è il lavoro di chi usa il simulatore.
 
@@ -113,7 +114,7 @@ pipes:
 
 ### 1.3 La fibra: un anello sull'interrogatore BOTDA
 
-Una fibra **non si dirama**: è un percorso lineare. Con la BOTDA i due capi tornano allo stesso strumento (porta A e porta B), quindi la fibra è un **anello** con due tratti (vedi la figura del sensore più sotto e [docs/B-fibra-ottica-dfos.md §2.1](docs/B-fibra-ottica-dfos.md#21-come-funziona-la-botda-passo-per-passo)):
+Una fibra **non si dirama**: è un percorso lineare. Con la BOTDA i due capi tornano allo stesso strumento (porta A e porta B), quindi la fibra è un **anello** con due tratti (vedi la figura del sensore più sotto e [docs/B-fibra-ottica-dfos.md §2.1](docs/02-principio-di-misura.md#22-il-principio-botda-con-le-parole-del-produttore)):
 
 - **tratto di misura** (*sensing leg*): dalla porta A, a **elica solidale** al tubo; nel caso MATRIS è **annegata nella guaina**, che polimerizza in opera e la ancora; sente pressione + temperatura;
 - **tratto di riferimento** (*reference leg*): ritorna alla porta B ripercorrendo **gli stessi tubi** al contrario, **dritto e libero in un tubetto**; sente solo la temperatura.
