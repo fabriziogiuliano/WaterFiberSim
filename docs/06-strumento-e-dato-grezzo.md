@@ -22,7 +22,10 @@ dove:
 | f_ADC | frequenza di campionamento dell'ADC | campioni/s | 125·10⁶ |
 | τ | durata dell'impulso | s | 20·10⁻⁹ |
 
-Il fattore 2 tiene conto dell'andata e ritorno della luce.
+Il **2 al denominatore** nasce dal percorso della luce. L'impulso parte dalla porta A e arriva al punto z; il segnale
+che nasce lì torna indietro fino alla porta A, dove viene letto. Un punto più lontano di Δz costa quindi Δz in più
+all'andata **e** Δz in più al ritorno: il suo segnale arriva dopo un tempo 2·Δz·n/c in più. Per questo 10 ns di tempo
+corrispondono a circa 1 m di fibra, e non a 2 m.
 
 ✅ [\[B23\]](A-fonti.md#b23) dichiara 0,8 m e 2 m; la definizione di risoluzione è quella di [\[ST13\]](A-fonti.md#st13) §2.
 L'indice di gruppo n = 1,468 è ⚠️ (scheda della fibra da leggere).
