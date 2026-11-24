@@ -3,7 +3,7 @@
 |:---|:---:|---:|
 <!-- /nav -->
 
-![WaterFiberSim](img/logo.svg)
+![WaterFiberSim](img/logo.png)
 
 # WaterFiberSim — Documentazione tecnica
 

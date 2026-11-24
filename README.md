@@ -1,4 +1,4 @@
-![WaterFiberSim](docs/img/logo.svg)
+![WaterFiberSim](docs/img/logo.png)
 
 # WaterFiberSim
 
