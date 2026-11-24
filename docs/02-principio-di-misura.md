@@ -60,10 +60,8 @@ Cohaerentia).
 ## 2.4 Relazione con il simulatore
 
 Il simulatore non riproduce i blocchi interni: parte da ν_B vera lungo la fibra e produce gli spettri che lo strumento
-restituirebbe (dato grezzo L0), con la risoluzione, il passo, la scansione e il rumore impostati nello scenario. Il
-modello dell'incertezza è quello di Soto & Thévenaz [\[ST13\]](A-fonti.md#st13) (cap. 6); ogni parametro è studiato nel **cap. 9**.
-
-Il simulatore produce quindi il dato grezzo L0 e le etichette vere dei livelli successivi (livelli definiti nel §1.1).
+restituirebbe (dato grezzo L0, §1.1), insieme alle etichette vere dei livelli successivi, con la risoluzione, il passo,
+la scansione e il rumore impostati nello scenario. Il modello dell'incertezza è quello di Soto & Thévenaz [\[ST13\]](A-fonti.md#st13) (cap. 6); ogni parametro è studiato nel **cap. 9**.
 
 ## 2.5 Interrogatori BOTDA commerciali
 
