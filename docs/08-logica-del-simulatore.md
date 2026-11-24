@@ -1,5 +1,5 @@
 <!-- nav -->
-| [← 7. Temperatura e compensazione](07-temperatura-e-compensazione.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 8 di 11 · Parte III — Il simulatore</sub> | [9. I parametri del simulatore →](09-parametri-del-simulatore.md) |
+| [← 7. Temperatura e compensazione](07-temperatura-e-compensazione.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 8 di 11 · Parte III — Simulatore</sub> | [9. Parametri del simulatore →](09-parametri-del-simulatore.md) |
 |:---|:---:|---:|
 <!-- /nav -->
 
@@ -8,23 +8,23 @@
 Cosa fa, in che ordine, con quali ipotesi, e cosa abbiamo imparato. I parametri sono nella
 [scheda tecnica](09-parametri-del-simulatore.md) (cap. 9), le fonti in [A-fonti.md](A-fonti.md), le verifiche in [validazione](10-validazione.md) (cap. 10).
 
-## 1. La domanda
+## 8.1 Obiettivo del simulatore
 
 Una fibra ottica posata lungo un tubo dell'acqua (a elica nella guaina di risanamento, con un ritorno libero) può
 misurare la **pressione dell'acqua**, metro per metro, con uno strumento Brillouin (BOTDA)? Con quale errore, e dove
 smette di funzionare? Il simulatore produce i dati che darebbe lo strumento (L0) e i valori veri (etichette), per
 rispondere prima di andare in campo.
 
-## 2. La catena, dall'acqua al dato grezzo
+## 8.2 Catena di calcolo
 
 ![Catena del simulatore](img/catena_simulatore.drawio.svg)
 
-*Schema modificabile in draw.io; si rigenera con `python docs/img/schemi_libro.py`.*
+*Schema modificabile in draw.io; si rigenera con `python docs/img/schemi.py`.*
 
 Comandi: `map` (geometria), `run` (segnale vero), `instrument` (incertezza attesa), `measure` (dato grezzo L0),
 `compensate [--measured]` (compensazione), `validate` (campagna di validazione).
 
-## 3. Ipotesi principali (tutte dichiarate nel codice)
+## 8.3 Ipotesi di modello
 
 1. Pressione lineare lungo il tubo tra due nodi; regime quasi stazionario (EPANET a scalini).
 2. Materiali elastici lineari; il creep del PE non è modellato (a 5 bar sottostima circa il 20 %, vedi validazione).
@@ -33,7 +33,7 @@ Comandi: `map` (geometria), `run` (segnale vero), `instrument` (incertezza attes
 5. Strumento: rumore gaussiano bianco, nessuna polarizzazione, nessuno svuotamento della pompa, misura istantanea.
 6. Temperatura dell'acqua: modello di Blokker, mescolamento nei nodi, velocità dell'ora corrente.
 
-## 4. Cosa dice la validazione
+## 8.4 Sintesi della validazione
 
 | verifica | esito |
 |---|---|
@@ -49,7 +49,7 @@ Comandi: `map` (geometria), `run` (segnale vero), `instrument` (incertezza attes
 La catena è coerente con le fonti nelle condizioni di [\[B23\]](A-fonti.md#b23) (tubo in PE, pressioni fino a 5 bar). Le due differenze
 (creep oltre 5 bar, fattore del fit) sono capite.
 
-## 5. Cosa abbiamo imparato (risultati scientifici)
+## 8.5 Risultati
 
 1. **Sul tubo in PE la misura è fattibile.** Circa 13–14 MHz/bar sull'elica contro 0,4–0,5 MHz di rumore per misura:
    circa 0,03 bar per misura. La variazione giornaliera di una rete ben progettata (0,1–0,3 bar) si vede.
@@ -72,13 +72,13 @@ La catena è coerente con le fonti nelle condizioni di [\[B23\]](A-fonti.md#b23)
 7. **I punti dove la finestra di 2 m mescola tratti diversi** (giunzione, cavi) danno spettri a più picchi e vanno
    scartati: il simulatore li segna.
 
-## 6. Cosa non c'è ancora
+## 8.6 Sviluppi futuri
 
 Creep del PE; temperatura del serbatoio che cambia nel tempo; ritardo termico della parete; polarizzazione e altri
 rumori dello strumento; transitori (colpo d'ariete, DAS); perdite d'acqua (passo 4); rete reale.
 
 <!-- nav-fondo -->
 
-| [← 7. Temperatura e compensazione](07-temperatura-e-compensazione.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 8 di 11 · Parte III — Il simulatore</sub> | [9. I parametri del simulatore →](09-parametri-del-simulatore.md) |
+| [← 7. Temperatura e compensazione](07-temperatura-e-compensazione.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 8 di 11 · Parte III — Simulatore</sub> | [9. Parametri del simulatore →](09-parametri-del-simulatore.md) |
 |:---|:---:|---:|
 <!-- /nav-fondo -->

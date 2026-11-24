@@ -1,25 +1,39 @@
 <!-- nav -->
-| [← 4. Rete idraulica e scenari](04-rete-idraulica-e-scenari.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 5 di 11 · Parte II — I modelli</sub> | [6. Lo strumento e il dato grezzo →](06-strumento-e-dato-grezzo.md) |
+| [← 4. Rete idraulica e scenari](04-rete-idraulica-e-scenari.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 5 di 11 · Parte II — I modelli</sub> | [6. Modello dello strumento e dato grezzo →](06-strumento-e-dato-grezzo.md) |
 |:---|:---:|---:|
 <!-- /nav -->
 
 # 5. Meccanica del tubo e della guaina
 
-## 5.1 Tubo a un solo strato (Lamé)
+## 5.1 Tubo monostrato (soluzione di Lamé)
 
 La pressione p allarga il tubo. Sulla superficie esterna (dove sta la fibra nella rete di prova) ✅ [\[B23\]](A-fonti.md#b23) Eq. 4–6:
 
-  ε_θ = (2 − ν) β² / (1 − β²) · p / E,  ε_z = (1 − 2ν) β² / (1 − β²) · p / E  (fondi chiusi),  β = r_int / r_est
+  **ε_θ = (2 − ν) · β² / (1 − β²) · p / E**  ·  **ε_z = (1 − 2ν) · β² / (1 − β²) · p / E**  ·  **β = r_int / r_est**
+
+dove:
+
+| simbolo | nome | unità | valore tipico (PE100) |
+|---|---|---|---|
+| ε_θ | deformazione circonferenziale (lungo il giro) sulla superficie esterna | µε | circa 309 per bar (SDR11) |
+| ε_z | deformazione assiale (lungo l'asse), tubo a fondi chiusi | µε | circa 39 per bar |
+| p | pressione interna dell'acqua | MPa (0,1 MPa = 1 bar) | — |
+| E | modulo elastico del materiale del tubo | MPa | circa 1000 |
+| ν | coefficiente di Poisson | — | 0,40 |
+| β | rapporto tra raggio interno e raggio esterno | — | 0,82 (SDR11) |
+| r_int, r_est | raggio interno ed esterno del tubo | m | — |
 
 Per il PE100 SDR11 (E circa 1 GPa): circa 309 µε per bar sul giro, 277 µε sull'elica a 70°, **circa 14 MHz/bar**.
 Con tubi SDR11 la sensibilità non dipende dal diametro 🧮.
 
-## 5.2 L'elica
+## 5.2 Deformazione della fibra a elica
 
-ε_fibra = ε_θ sin²α + ε_z cos²α (trasformazione della deformazione). A 70° la fibra raccoglie l'88 % della
-deformazione del giro.
+  **ε_fibra = ε_θ · sin²α + ε_z · cos²α**  (trasformazione della deformazione)
 
-## 5.3 Più strati: tubo ospite + guaina
+dove ε_fibra è la deformazione lungo la fibra [µε], α l'angolo dell'elica rispetto all'asse del tubo [°], ε_θ e ε_z
+come sopra. A 70° la fibra raccoglie l'88 % della deformazione del giro.
+
+## 5.3 Tubo multistrato: tubo ospite e guaina
 
 Con la guaina la fibra sta **dentro** la guaina, e la guaina sta dentro il tubo ospite. Il simulatore risolve Lamé a
 N strati incollati (spostamento e pressione continui alle interfacce, fondi chiusi) 🧮; con uno strato coincide con
@@ -35,13 +49,13 @@ Risultati (cap. 10, esperimenti), MHz per bar sull'elica:
 | guaina in ghisa degradata (rigidezza 1/10) | 2,5–3,8 |
 | **guaina in ghisa integra** | **0,4–0,5** (pari al rumore di una misura) |
 
-## 5.4 Perché il tubo rigido "spegne" la fibra
+## 5.4 Guaina in un tubo ospite rigido
 
 La guaina dentro un tubo rigido viene schiacciata nello spessore, ma la sua circonferenza non può crescere più di
 quella del tubo: la fibra a elica, che misura l'allungamento del giro, non si allunga. Una gomma morbida non aiuta
 perché è incomprimibile: conta la rigidezza **confinata**, non solo il modulo E.
 
-## 5.5 Idea: lo strato comprimibile
+## 5.5 Strato comprimibile (ipotesi)
 
 Uno strato di 10 mm con rigidezza confinata circa 70 MPa tra una pelle sottile (con la fibra) e la ghisa restituisce
 circa **7 MHz/bar** (pelle in feltro) o 3 (pelle in vetro) 🧮. Materiale, creep e durata da verificare (cap. 11).
@@ -53,6 +67,6 @@ entro il 6 %, a 10 bar sottostima (cap. 10). La temperatura dilata il tubo: cap.
 
 <!-- nav-fondo -->
 
-| [← 4. Rete idraulica e scenari](04-rete-idraulica-e-scenari.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 5 di 11 · Parte II — I modelli</sub> | [6. Lo strumento e il dato grezzo →](06-strumento-e-dato-grezzo.md) |
+| [← 4. Rete idraulica e scenari](04-rete-idraulica-e-scenari.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 5 di 11 · Parte II — I modelli</sub> | [6. Modello dello strumento e dato grezzo →](06-strumento-e-dato-grezzo.md) |
 |:---|:---:|---:|
 <!-- /nav-fondo -->

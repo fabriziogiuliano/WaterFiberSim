@@ -1,6 +1,6 @@
-"""Schemi del libro (docs/), in .drawio.svg: posa della fibra (cap. 3) e catena del simulatore (cap. 8).
+"""Schemi della documentazione (docs/), in .drawio.svg: posa della fibra (cap. 3) e catena del simulatore (cap. 8).
 
-    python docs/img/schemi_libro.py
+    python docs/img/schemi.py
 """
 from pathlib import Path
 

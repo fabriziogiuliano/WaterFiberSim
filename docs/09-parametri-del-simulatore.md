@@ -1,5 +1,5 @@
 <!-- nav -->
-| [← 8. Logica del simulatore](08-logica-del-simulatore.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 9 di 11 · Parte III — Il simulatore</sub> | [10. Validazione →](10-validazione.md) |
+| [← 8. Logica del simulatore](08-logica-del-simulatore.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 9 di 11 · Parte III — Simulatore</sub> | [10. Validazione →](10-validazione.md) |
 |:---|:---:|---:|
 <!-- /nav -->
 
@@ -14,7 +14,7 @@ I grafici si rigenerano con `python -m waterfibersim parameters` (modulo `parame
 simulatore, su un tubo PE100 DN110 SDR11 e uno strumento con le impostazioni di [\[B23\]](A-fonti.md#b23). Quando un grafico è in MHz,
 l'asse di destra dà l'equivalente in bar sull'elica in PE (1 bar ≈ 14,5 MHz). Simboli delle fonti come nell'appendice A.
 
-## 9.1 I parametri dello strumento
+## 9.1 Parametri dello strumento
 
 ![Parametri dello strumento](img/parametri_strumento.png)
 
@@ -65,17 +65,17 @@ Tutte entrano nell'incertezza di una misura attraverso il modello di Soto & Thé
   morti, [\[B23\]](A-fonti.md#b23) dichiara 7–20 s); con 65 000 medie si superano i 15 minuti del passo idraulico.
 - **Consiglio.** È il parametro più utile: il tempo c'è (la pressione cambia in ore). Fino a qualche migliaio di medie.
 
-### 9.1.5 Qualità dello strumento: `snr0_db`, `snr0_resolution_m`, `linewidth_mhz`
+### 9.1.5 Prestazioni dello strumento: `snr0_db`, `snr0_resolution_m`, `linewidth_mhz`
 
 - **Cos'è.** SNR₀ riassume potenze, rivelatore e perdite: SNR della traccia all'inizio della fibra con una sola media.
   `linewidth_mhz` è la larghezza della campana.
-- **Valore.** SNR₀ = 0 dB a 2 m, *"realistic"* ✅ [\[ST13\]](A-fonti.md#st13); campana 58 MHz a 2 m ✅ [\[ST13\]](A-fonti.md#st13).
+- **Valore.** SNR₀ = 0 dB a 2 m, valore indicato come realistico ✅ [\[ST13\]](A-fonti.md#st13); campana 58 MHz a 2 m ✅ [\[ST13\]](A-fonti.md#st13).
 - **Se lo cambi.** σ ∝ 1/SNR₀ e ∝ √Δν_B. Con questi valori il modello dà 0,40 MHz per le impostazioni di [\[B23\]](A-fonti.md#b23), che
   dichiara meno di 0,5 MHz ✅ (cap. 10).
 - **Da sapere.** [\[B23\]](A-fonti.md#b23) dichiara SNR > 40 dB, che con [\[ST13\]](A-fonti.md#st13) darebbe incertezze 500 volte più piccole: definizioni
   diverse ⚠️. Questo parametro va **tarato sullo strumento vero**, il giorno che lo si sceglie.
 
-### 9.1.6 Fibra: `attenuation_db_per_km`, `group_index`, `calc_step_m`
+### 9.1.6 Proprietà della fibra e passo di calcolo: `attenuation_db_per_km`, `group_index`, `calc_step_m`
 
 - **Attenuazione** 0,2 dB/km ✅ [\[ST13\]](A-fonti.md#st13). Grafico 3: a 4 km σ passa da 0,40 a 0,49 MHz; a 50 km 4 MHz. Per i nostri
   anelli (≤ 4 km) è irrilevante.
@@ -83,7 +83,7 @@ Tutte entrano nell'incertezza di una misura attraverso il modello di Soto & Thé
 - **Passo di calcolo** 0,1 m: non è lo strumento, è la griglia su cui il simulatore calcola la verità; deve essere
   ≤ 1/10 della risoluzione (controllato).
 
-## 9.2 I parametri meccaniche
+## 9.2 Parametri meccanici
 
 ![Parametri meccaniche](img/parametri_meccanica.png)
 
@@ -113,7 +113,7 @@ Entrano nella deformazione della fibra (cap. 5): Lamé (uno o più strati) e ε_
 - **Attenzione.** Il PE fa **creep**: sotto pressione costante E apparente cala nel tempo ✅ [\[B23\]](A-fonti.md#b23). È un errore
   sistematico sulla conversione MHz → bar se non calibrato (cap. 10: −20 % a 5 bar dopo minuti).
 
-### 9.2.4 La guaina: `liner` (spessore, E, ν) e il tubo ospite
+### 9.2.4 Guaina e tubo ospite (`liner`)
 
 - **Valore.** 6 mm, 8 GPa, ν 0,35 ⚠️; letteratura: CIPP in feltro almeno 1,7 GPa (ASTM F1216), in vetro circa 10 GPa
   (scheda di una guaina per fognatura) ⚠️. I valori MATRIS veri vengono da OR1.
@@ -125,7 +125,7 @@ Entrano nella deformazione della fibra (cap. 5): Lamé (uno o più strati) e ε_
 - **Soglia pratica.** Con il rumore di [\[B23\]](A-fonti.md#b23) servono almeno circa 4,5 MHz/bar per vedere 0,1 bar in una misura
   (linea rossa).
 
-## 9.3 I parametri della temperatura e della compensazione
+## 9.3 Parametri termici e di compensazione
 
 ![Parametri della temperatura](img/parametri_temperatura.png)
 
@@ -138,7 +138,7 @@ Entrano nella deformazione della fibra (cap. 5): Lamé (uno o più strati) e ε_
   di base, 0,69 bar; con l'escursione stagionale (11–15 °C ✅ [\[SB20\]](A-fonti.md#sb20)) anche di più. Non cala con le medie.
 - **Consiglio.** È il parametro più incerto e più pesante: va **calibrato in opera** (metodo da cercare, cap. 11).
 
-### 9.3.2 Terreno: `baseline_c`, `soil_c`, `drift_c_per_day`, `hotspots`
+### 9.3.2 Temperatura del terreno: `baseline_c`, `soil_c`, `drift_c_per_day`, `hotspots`
 
 - **Valore.** S1t: 18 → 10 °C, −0,15 °C/giorno ✅ [\[SB20\]](A-fonti.md#sb20) (11–15 °C in 90 giorni); punti caldi fino a 7–10 °C ✅ [\[AV17\]](A-fonti.md#av17),
   posizione e ampiezza ⚠️ scelte. `delta_c` può essere positivo o negativo.
@@ -148,7 +148,7 @@ Entrano nella deformazione della fibra (cap. 5): Lamé (uno o più strati) e ε_
   dalla misura di base (grafico 3 della figura del segnale) un punto caldo permanente è una banda verticale, un evento
   un rettangolo; nella variazione giornaliera (grafico 4) il punto caldo permanente sparisce, l'evento resta.
 
-### 9.3.3 Acqua: `water.source_c`, `soil_k_w_mk`, `pipe_k_w_mk`, `tsoi`
+### 9.3.3 Temperatura dell'acqua: `water.source_c`, `soil_k_w_mk`, `pipe_k_w_mk`, `tsoi`
 
 - **Cos'è.** L'acqua esce dal serbatoio a `source_c` e si avvicina al terreno con il tempo di permanenza ✅ [\[BL24\]](A-fonti.md#bl24).
 - **Valore.** +2 °C sul terreno ⚠️ ([\[BL24\]](A-fonti.md#bl24) misura 0,6–1,6 °C); PE 0,38 W/(m·K) ✅ scheda; sabbia 1,6 ✅ [\[BL24\]](A-fonti.md#bl24);
@@ -157,7 +157,7 @@ Entrano nella deformazione della fibra (cap. 5): Lamé (uno o più strati) e ε_
   0,1 m/s (notte) solo il 13 %. La sfera di influenza sposta le curve, non la conclusione: **la temperatura dell'acqua
   segue i consumi** nelle reti piccole.
 
-### 9.3.4 Media del riferimento (compensazione)
+### 9.3.4 Media della fibra di riferimento
 
 - **Cos'è.** Su quanti metri del ritorno si media la temperatura prima di toglierla dall'elica (`compensate`).
 - **Se lo cambi (grafico 3).** Punto per punto: 0,14–0,32 bar di errore casuale (secondo K); mediata su 74 m:
@@ -166,7 +166,7 @@ Entrano nella deformazione della fibra (cap. 5): Lamé (uno o più strati) e ε_
   media **adattiva** (soglia 2σ, mediana su 10 m ⚠️) le conserva (0,2 bar), con poco rumore in più.
 - **Misura di base.** Mediarne 10 riduce di circa 3 volte l'errore "congelato" (cap. 7).
 
-## 9.4 I parametri idrauliche
+## 9.4 Parametri idraulici
 
 ![Parametri idrauliche](img/parametri_idraulica.png)
 
@@ -179,7 +179,7 @@ Entrano nella deformazione della fibra (cap. 5): Lamé (uno o più strati) e ε_
 - **Quota e pendenza** (`Elev` dei nodi, testa del serbatoio): danno pressione statica (circa 0,1 bar/m), fissa nel
   tempo (cap. 4).
 
-## 9.5 Riepilogo: tutti i parametri in tabella
+## 9.5 Tabella riassuntiva
 
 ### Rete e idraulica (file `.inp` di EPANET)
 
@@ -260,6 +260,6 @@ circa 3–6 s per misura (tempi morti esclusi).
 
 <!-- nav-fondo -->
 
-| [← 8. Logica del simulatore](08-logica-del-simulatore.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 9 di 11 · Parte III — Il simulatore</sub> | [10. Validazione →](10-validazione.md) |
+| [← 8. Logica del simulatore](08-logica-del-simulatore.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 9 di 11 · Parte III — Simulatore</sub> | [10. Validazione →](10-validazione.md) |
 |:---|:---:|---:|
 <!-- /nav-fondo -->

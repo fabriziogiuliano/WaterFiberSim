@@ -1,5 +1,5 @@
 <!-- nav -->
-| [← Appendice B. Approfondimento sulla fibra](B-fibra-ottica-dfos.md) | [📖 Indice](00-indice.md)<br><sub>appendici</sub> |   |
+| [← Appendice B. Sensori distribuiti in fibra ottica](B-fibra-ottica-dfos.md) | [📖 Indice](00-indice.md)<br><sub>appendici</sub> |   |
 |:---|:---:|---:|
 <!-- /nav -->
 
@@ -362,7 +362,7 @@ Fatto: `rete/griglia_3x3.inp` (P12 ha diametro 78 mm per via della guaina), `ret
 
 - **Una sola fibra ad anello** sull'interrogatore BOTDA: porta A → **tratto a elica incollato** (sente ε + T) → giunzione → **tratto dritto libero in un tubetto** (sente solo T) → porta B. È la stessa architettura di Bertulessi et al. 2023 (fonte [\[B23\]](A-fonti.md#b23) in [A-fonti.md](A-fonti.md)).
 - **Impulsi di interrogazione (pompa)** escono da A. **Luce di lettura (sonda)**, un tono ottico continuo a frequenza laser − Δν (Δν ≈ 10,8 GHz, scelta dal generatore RF), esce da B. **Si legge in A**, tramite il circolatore C2 e il fotodiodo.
-- L'impulso **modula in ampiezza** la luce di lettura, punto per punto: il tempo dà la posizione, l'altezza del gradino in funzione di Δν dà lo spettro. Spiegazione completa in [B-fibra-ottica-dfos.md §2.1](02-principio-di-misura.md#22-il-principio-botda-con-le-parole-del-produttore).
+- L'impulso **modula in ampiezza** la luce di lettura, punto per punto: il tempo dà la posizione, l'altezza del gradino in funzione di Δν dà lo spettro. Spiegazione completa in [B-fibra-ottica-dfos.md §2.1](02-principio-di-misura.md#22-il-principio-botda-panoramica).
 - **L0 = P(z, Δν)**: lo spettro di guadagno Brillouin per ogni metro e ogni misura, con rumore. **L1 = picco ν_B(z, t)**.
 - Ogni punto del tubo compare **due volte** nei dati: z₁ sull'elica e z₂ sul tratto dritto. La differenza tra i due separa pressione e temperatura.
 
@@ -518,6 +518,6 @@ Passo 3b e compensazione sul dato rumoroso fatti (§13.4l, §13.4m). Prossimo: t
 
 <!-- nav-fondo -->
 
-| [← Appendice B. Approfondimento sulla fibra](B-fibra-ottica-dfos.md) | [📖 Indice](00-indice.md)<br><sub>appendici</sub> |   |
+| [← Appendice B. Sensori distribuiti in fibra ottica](B-fibra-ottica-dfos.md) | [📖 Indice](00-indice.md)<br><sub>appendici</sub> |   |
 |:---|:---:|---:|
 <!-- /nav-fondo -->

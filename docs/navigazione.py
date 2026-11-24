@@ -1,7 +1,7 @@
-"""Navigazione del libro: aggiunge (o aggiorna) in cima e in fondo a ogni capitolo i collegamenti
+"""Navigazione della documentazione: aggiunge (o aggiorna) in cima e in fondo a ogni capitolo i collegamenti
 "capitolo precedente · indice · capitolo successivo"; nelle appendici solo il ritorno all'indice.
 
-    python docs/libro.py
+    python docs/navigazione.py
 """
 import re
 from pathlib import Path
@@ -10,18 +10,18 @@ DOCS = Path(__file__).resolve().parent
 CAPITOLI = [
     ("00-indice.md", "Indice"),
     ("01-introduzione.md", "1. Introduzione"),
-    ("02-principio-di-misura.md", "2. Il principio di misura"),
-    ("03-il-sensore-sul-tubo.md", "3. Il sensore sul tubo"),
+    ("02-principio-di-misura.md", "2. Principio di misura (BOTDA)"),
+    ("03-il-sensore-sul-tubo.md", "3. Configurazione del sensore"),
     ("04-rete-idraulica-e-scenari.md", "4. Rete idraulica e scenari"),
     ("05-meccanica-del-tubo.md", "5. Meccanica del tubo e della guaina"),
-    ("06-strumento-e-dato-grezzo.md", "6. Lo strumento e il dato grezzo"),
+    ("06-strumento-e-dato-grezzo.md", "6. Modello dello strumento e dato grezzo"),
     ("07-temperatura-e-compensazione.md", "7. Temperatura e compensazione"),
     ("08-logica-del-simulatore.md", "8. Logica del simulatore"),
-    ("09-parametri-del-simulatore.md", "9. I parametri del simulatore"),
+    ("09-parametri-del-simulatore.md", "9. Parametri del simulatore"),
     ("10-validazione.md", "10. Validazione"),
     ("11-risultati-e-questioni-aperte.md", "11. Risultati e questioni aperte"),
     ("A-fonti.md", "Appendice A. Fonti"),
-    ("B-fibra-ottica-dfos.md", "Appendice B. Approfondimento sulla fibra"),
+    ("B-fibra-ottica-dfos.md", "Appendice B. Sensori distribuiti in fibra ottica"),
     ("C-diario-sessioni.md", "Appendice C. Diario delle sessioni"),
 ]
 N_CAPITOLI = 11
@@ -34,7 +34,7 @@ def _strip(testo: str) -> str:
     return testo.strip() + "\n"
 
 
-PARTI = {1: "Parte I — Il problema e la fisica", 4: "Parte II — I modelli", 8: "Parte III — Il simulatore",
+PARTI = {1: "Parte I — Problema e principio di misura", 4: "Parte II — I modelli", 8: "Parte III — Simulatore",
          11: "Parte IV — Conclusioni"}
 
 

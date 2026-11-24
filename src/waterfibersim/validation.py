@@ -195,13 +195,13 @@ def run_all(root: Path, with_noise: bool = True) -> tuple[list[Check], list[dict
 
 def write_report(checks: list[Check], liner: list[dict], path: Path) -> Path:
     L = ["# 10. Validazione del simulatore", "",
-         "*Pagina generata da `python -m waterfibersim validate` (poi `python docs/libro.py` per la navigazione).*", "",
+         "*Pagina generata da `python -m waterfibersim validate` (poi `python docs/navigazione.py` per la navigazione).*", "",
          "Ogni riga confronta un risultato del simulatore con un dato indipendente. Esiti: **OK** entro la tolleranza; "
          "**DIFF** differenza capita e spiegata nella nota; **KO** da indagare. Commento e conclusioni nel [capitolo 8](08-logica-del-simulatore.md) e nel [capitolo 11](11-risultati-e-questioni-aperte.md).",
-         "", "| area | cosa | simulatore | riferimento | fonte | esito | nota |", "|---|---|---|---|---|---|---|"]
+         "## 10.1 Confronto con riferimenti indipendenti", "", "| area | cosa | simulatore | riferimento | fonte | esito | nota |", "|---|---|---|---|---|---|---|"]
     for c in checks:
         L.append(f"| {c.area} | {c.cosa} | {c.nostro} | {c.riferimento} | {c.fonte} | **{c.esito}** | {c.nota} |")
-    L += ["", "## Esperimenti: la fibra a elica nella guaina (modello a strati)", "",
+    L += ["", "## 10.2 Sensibilità della fibra nella guaina (modello multistrato)", "",
           "Spostamento Brillouin sull'elica a 70° per 1 bar; fibra a metà guaina (o della pelle). Rumore di una misura "
           "con le impostazioni di [B23]: circa 0,4–0,5 MHz, quindi per vedere 0,1 bar servono almeno circa 4–5 MHz/bar.", "",
           "| caso | MHz per bar | 0,1 bar visibile in una misura? | nota |", "|---|---|---|---|"]

@@ -5,7 +5,7 @@
 
 # Appendice B — Sensori distribuiti in fibra ottica su condotte idriche (approfondimento)
 
-*Primo documento del progetto. Il §2.1 è aggiornato; il resto è il testo iniziale, in parte superato dai capitoli 2–7 del libro.*
+*Primo documento del progetto. Il §2.1 è aggiornato; il resto è il testo iniziale, in parte superato dai capitoli 2–7.*
 
 Questo documento spiega come funziona un sensore distribuito in fibra ottica (DFOS, *Distributed Fibre Optic Sensing*), perché una perdita "si sente" lungo il tubo e come la fibra si inserisce nel Digital Twin dell'OR5 di MATRIS come tecnologia abilitante per un progetto successivo. Serve per capire prima di simulare: il codice verrà dopo, a piccoli passi.
 
@@ -13,7 +13,7 @@ Questo documento spiega come funziona un sensore distribuito in fibra ottica (DF
 
 1. [Il contesto: da MATRIS al follow-up](#1-il-contesto-da-matris-al-follow-up)
 2. [Il principio: un cavo, migliaia di sensori](#2-il-principio-un-cavo-migliaia-di-sensori)
-   - [2.1 Come funziona la BOTDA, passo per passo](02-principio-di-misura.md#22-il-principio-botda-con-le-parole-del-produttore)
+   - [2.1 Come funziona la BOTDA, passo per passo](02-principio-di-misura.md#22-il-principio-botda-panoramica)
 3. [Tre fenomeni, tre sensori: DAS, DTS, DSS](#3-tre-fenomeni-tre-sensori-das-dts-dss)
 4. [I numeri che contano](#4-i-numeri-che-contano)
 5. [Perché una perdita "suona"](#5-perché-una-perdita-suona)
@@ -34,7 +34,7 @@ Il follow-up propone di sostituire o affiancare i nodi MEMS con una **fibra otti
 
 ## 2. Il principio: un cavo, migliaia di sensori
 
-Spostato e aggiornato nel **[capitolo 2](02-principio-di-misura.md)** del libro: la "nota" Brillouin, lo schema a
+Spostato e aggiornato nel **[capitolo 2](02-principio-di-misura.md)**: la diffusione Brillouin, lo schema a
 blocchi dell'interrogatore BOTDA (blocco per blocco), come nascono posizione e misura. Il principio del tempo di volo
 (z = c·t / (2n), circa 10 ns per metro) vale per tutte le tecniche di questa appendice.
 

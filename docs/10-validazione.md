@@ -1,13 +1,14 @@
 <!-- nav -->
-| [← 9. I parametri del simulatore](09-parametri-del-simulatore.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 10 di 11 · Parte III — Il simulatore</sub> | [11. Risultati e questioni aperte →](11-risultati-e-questioni-aperte.md) |
+| [← 9. Parametri del simulatore](09-parametri-del-simulatore.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 10 di 11 · Parte III — Simulatore</sub> | [11. Risultati e questioni aperte →](11-risultati-e-questioni-aperte.md) |
 |:---|:---:|---:|
 <!-- /nav -->
 
 # 10. Validazione del simulatore
 
-*Pagina generata da `python -m waterfibersim validate` (poi `python docs/libro.py` per la navigazione).*
+*Pagina generata da `python -m waterfibersim validate` (poi `python docs/navigazione.py` per la navigazione).*
 
 Ogni riga confronta un risultato del simulatore con un dato indipendente. Esiti: **OK** entro la tolleranza; **DIFF** differenza capita e spiegata nella nota; **KO** da indagare. Commento e conclusioni nel [capitolo 8](08-logica-del-simulatore.md) e nel [capitolo 11](11-risultati-e-questioni-aperte.md).
+## 10.1 Confronto con riferimenti indipendenti
 
 | area | cosa | simulatore | riferimento | fonte | esito | nota |
 |---|---|---|---|---|---|---|
@@ -22,7 +23,7 @@ Ogni riga confronta un risultato del simulatore con un dato indipendente. Esiti:
 | temperatura | costante di tempo acqua–terreno, PE DN110 in sabbia, acqua ferma / 0,2 / 0,8 m/s | 2.4 h / 1.3 h / 1.3 h | "minutes to hours" | [\[BL24\]](A-fonti.md#bl24) §1, Eq. 2 | **OK** |  |
 | compensazione | errore di una misura compensata, riferimento mediato su 74 m (S1t) | 0.059 bar (spettri rumorosi + fit) | 0.055 bar (formula di propagazione) | coerenza interna: [\[ST13\]](A-fonti.md#st13) + propagazione degli errori | **OK** | il fit fa circa il 17 % peggio della formula di [\[ST13\]](A-fonti.md#st13): atteso un valore un po' più alto |
 
-## Esperimenti: la fibra a elica nella guaina (modello a strati)
+## 10.2 Sensibilità della fibra nella guaina (modello multistrato)
 
 Spostamento Brillouin sull'elica a 70° per 1 bar; fibra a metà guaina (o della pelle). Rumore di una misura con le impostazioni di [\[B23\]](A-fonti.md#b23): circa 0,4–0,5 MHz, quindi per vedere 0,1 bar servono almeno circa 4–5 MHz/bar.
 
@@ -42,6 +43,6 @@ Spostamento Brillouin sull'elica a 70° per 1 bar; fibra a metà guaina (o della
 
 <!-- nav-fondo -->
 
-| [← 9. I parametri del simulatore](09-parametri-del-simulatore.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 10 di 11 · Parte III — Il simulatore</sub> | [11. Risultati e questioni aperte →](11-risultati-e-questioni-aperte.md) |
+| [← 9. Parametri del simulatore](09-parametri-del-simulatore.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 10 di 11 · Parte III — Simulatore</sub> | [11. Risultati e questioni aperte →](11-risultati-e-questioni-aperte.md) |
 |:---|:---:|---:|
 <!-- /nav-fondo -->

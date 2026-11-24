@@ -1,17 +1,17 @@
 <!-- nav -->
-| [← 3. Il sensore sul tubo](03-il-sensore-sul-tubo.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 4 di 11 · Parte II — I modelli</sub> | [5. Meccanica del tubo e della guaina →](05-meccanica-del-tubo.md) |
+| [← 3. Configurazione del sensore](03-il-sensore-sul-tubo.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 4 di 11 · Parte II — I modelli</sub> | [5. Meccanica del tubo e della guaina →](05-meccanica-del-tubo.md) |
 |:---|:---:|---:|
 <!-- /nav -->
 
 # 4. Rete idraulica e scenari
 
-## 4.1 EPANET
+## 4.1 Modello idraulico (EPANET)
 
 L'idraulica è calcolata con EPANET 2.2 (libreria owa-epanet): pressione, carico, portate e velocità ogni 15 minuti.
 EPANET non contiene catalogo di tubi né criteri di progetto ✅ [\[EPA\]](A-fonti.md#epa); la perdita di carico segue Hazen-Williams, e il
 simulatore coincide con la formula ufficiale (cap. 10). Lungo un tubo la pressione è lineare tra i nodi.
 
-## 4.2 Pressione statica e perdita di carico
+## 4.2 Pressione statica e perdite di carico
 
 - **Statica**: senza prelievi la pressione è il dislivello tra il pelo dell'acqua del serbatoio e il punto, circa
   0,1 bar per metro ✅ [\[EPA\]](A-fonti.md#epa) (carico = quota + altezza di pressione). È relativa all'atmosfera e non dipende dalla quota
@@ -20,7 +20,7 @@ simulatore coincide con la formula ufficiale (cap. 10). Lungo un tubo la pressio
   portata, quindi nelle ore di punta.
 - Lungo una **discesa** la pressione cresce anche allontanandosi dal serbatoio (la quota vince sulla perdita).
 
-## 4.3 Gli scenari
+## 4.3 Scenari
 
 | scenario | cosa | per studiare |
 |---|---|---|
@@ -32,7 +32,7 @@ simulatore coincide con la formula ufficiale (cap. 10). Lungo un tubo la pressio
 
 Il serbatoio a valle è stato scartato: servirebbe una pompa (appendice C).
 
-## 4.4 Dimensionamento
+## 4.4 Criteri di dimensionamento
 
 Le reti sono dimensionate con criteri di progetto (velocità 0,5–0,9 m/s, perdita ≤ 10 m/km ⚠️ da manuali, EN 805 da
 leggere). Conseguenza: la pressione cambia nella giornata di **0,04–0,8 bar**, non di più. È il segnale da misurare.
@@ -41,6 +41,6 @@ Tutti i parametri della rete: cap. 9, sezione 1.
 
 <!-- nav-fondo -->
 
-| [← 3. Il sensore sul tubo](03-il-sensore-sul-tubo.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 4 di 11 · Parte II — I modelli</sub> | [5. Meccanica del tubo e della guaina →](05-meccanica-del-tubo.md) |
+| [← 3. Configurazione del sensore](03-il-sensore-sul-tubo.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 4 di 11 · Parte II — I modelli</sub> | [5. Meccanica del tubo e della guaina →](05-meccanica-del-tubo.md) |
 |:---|:---:|---:|
 <!-- /nav-fondo -->

@@ -1,5 +1,5 @@
 <!-- nav -->
-| [← 11. Risultati e questioni aperte](11-risultati-e-questioni-aperte.md) | [📖 Indice](00-indice.md)<br><sub>appendici</sub> | [Appendice B. Approfondimento sulla fibra →](B-fibra-ottica-dfos.md) |
+| [← 11. Risultati e questioni aperte](11-risultati-e-questioni-aperte.md) | [📖 Indice](00-indice.md)<br><sub>appendici</sub> | [Appendice B. Sensori distribuiti in fibra ottica →](B-fibra-ottica-dfos.md) |
 |:---|:---:|---:|
 <!-- /nav -->
 
@@ -20,7 +20,7 @@ Ultimo aggiornamento: 2026-11-23.
 
 ## Fonti principali
 
-Ogni fonte ha un titolo con la sua sigla: i riferimenti nel libro portano qui.
+Ogni fonte ha un titolo con la sua sigla: i riferimenti nel documento portano qui.
 
 ### B23
 
@@ -373,6 +373,6 @@ Vengono dal [dump del 2026-11-23](C-diario-sessioni.md) e sono **citate a memori
 
 <!-- nav-fondo -->
 
-| [← 11. Risultati e questioni aperte](11-risultati-e-questioni-aperte.md) | [📖 Indice](00-indice.md)<br><sub>appendici</sub> | [Appendice B. Approfondimento sulla fibra →](B-fibra-ottica-dfos.md) |
+| [← 11. Risultati e questioni aperte](11-risultati-e-questioni-aperte.md) | [📖 Indice](00-indice.md)<br><sub>appendici</sub> | [Appendice B. Sensori distribuiti in fibra ottica →](B-fibra-ottica-dfos.md) |
 |:---|:---:|---:|
 <!-- /nav-fondo -->
