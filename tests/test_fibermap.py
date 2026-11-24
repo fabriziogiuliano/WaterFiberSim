@@ -1,4 +1,4 @@
-"""Verifiche del passo 1 (README §1.5) sullo scenario A."""
+"""Verifiche della mappa metro di fibra -> tubo sullo scenario A (cap. 11)."""
 
 import math
 from pathlib import Path
