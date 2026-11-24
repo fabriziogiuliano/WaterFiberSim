@@ -5,11 +5,9 @@
 
 # 2. Il principio di misura: la fibra Brillouin
 
-> **Nota sul capitolo.** Il funzionamento della BOTDA **non è un contributo di questo progetto** né una nostra
-> competenza: è una tecnica consolidata, venduta da più produttori (§2.5). Qui riassumiamo come la descrivono le
-> fonti: la scheda del produttore OZ Optics [\[OZ\]](A-fonti.md#oz) e l'articolo di Bertulessi et al. [\[B23\]](A-fonti.md#b23), citandole testualmente. I pochi
-> conti nostri sono marcati 🧮. Il simulatore tratta lo strumento come una scatola nera: ne riproduce l'**uscita**
-> (spettri e incertezza, cap. 6) con i parametri delle schede.
+La BOTDA è una tecnica di misura già esistente e disponibile in commercio (§2.5). Questo capitolo la presenta come la
+descrivono le fonti, soprattutto la scheda di OZ Optics [\[OZ\]](A-fonti.md#oz) e l'articolo di Bertulessi et al. [\[B23\]](A-fonti.md#b23). Il simulatore usa
+lo strumento così com'è e ne riproduce l'uscita: gli spettri e la loro incertezza (cap. 6).
 
 ## 2.1 La "nota" della fibra
 
