@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="160" viewBox="0 0 640 160">
+  <defs>
+    <linearGradient id="goccia" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#74c0fc"/>
+      <stop offset="1" stop-color="#1864ab"/>
+    </linearGradient>
+    <linearGradient id="tubo" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f8f9fa"/>
+      <stop offset="0.55" stop-color="#dee2e6"/>
+      <stop offset="1" stop-color="#adb5bd"/>
+    </linearGradient>
+    <clipPath id="dentro">
+      <path d="M70 10 C70 10 22 66 22 98 A48 48 0 0 0 118 98 C118 66 70 10 70 10 Z"/>
+    </clipPath>
+  </defs>
+
+  <!-- goccia d'acqua -->
+  <path d="M70 10 C70 10 22 66 22 98 A48 48 0 0 0 118 98 C118 66 70 10 70 10 Z" fill="url(#goccia)"/>
+  <ellipse cx="52" cy="62" rx="7" ry="13" fill="#ffffff" opacity="0.35" transform="rotate(25 52 62)"/>
+
+  <!-- tubo che attraversa la goccia, con la fibra a elica -->
+  <g clip-path="url(#dentro)">
+    <rect x="10" y="88" width="120" height="26" rx="13" fill="url(#tubo)"/>
+    <!-- tratti dietro il tubo (più tenui) -->
+    <path d="M24 88 C30 101 34 114 38 114 M52 88 C58 101 62 114 66 114 M80 88 C86 101 90 114 94 114 M108 88 C114 101 118 114 122 114"
+          fill="none" stroke="#e03131" stroke-width="3" stroke-linecap="round" opacity="0.35"/>
+    <!-- tratti davanti al tubo -->
+    <path d="M10 114 C14 114 20 101 24 88 M38 114 C42 114 48 101 52 88 M66 114 C70 114 76 101 80 88 M94 114 C98 114 104 101 108 88"
+          fill="none" stroke="#e03131" stroke-width="4.5" stroke-linecap="round"/>
+  </g>
+
+  <!-- impulso di luce lungo la fibra -->
+  <circle cx="73" cy="101" r="3.2" fill="#ffffff"/>
+  <circle cx="73" cy="101" r="6.5" fill="#ffffff" opacity="0.3"/>
+
+  <!-- scritta -->
+  <text x="140" y="92" font-family="Helvetica, Arial, sans-serif" font-size="60" font-weight="700" letter-spacing="-1">
+    <tspan fill="#1864ab">Water</tspan><tspan fill="#e03131">Fiber</tspan><tspan fill="#1b1f24">Sim</tspan>
+  </text>
+  <text x="143" y="124" font-family="Helvetica, Arial, sans-serif" font-size="17" fill="#5c636a" letter-spacing="0.4">
+    Simulatore di sensori in fibra ottica per reti idriche
+  </text>
+</svg>

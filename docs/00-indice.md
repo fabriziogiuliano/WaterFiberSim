@@ -3,6 +3,8 @@
 |:---|:---:|---:|
 <!-- /nav -->
 
+<p align="center"><img src="img/logo.svg" alt="WaterFiberSim" width="560"></p>
+
 # WaterFiberSim — Documentazione tecnica
 
 Simulatore di sensori in fibra ottica (Brillouin, BOTDA) posati lungo i tubi di una rete idrica, per capire se e come

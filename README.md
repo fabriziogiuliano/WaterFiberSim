@@ -1,3 +1,5 @@
+<p align="center"><img src="docs/img/logo.svg" alt="WaterFiberSim" width="560"></p>
+
 # WaterFiberSim
 
 > **Documentazione completa: [documentazione tecnica](docs/00-indice.md)** — capitoli su fisica, modelli, parametri
