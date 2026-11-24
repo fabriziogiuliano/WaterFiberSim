@@ -6,7 +6,7 @@
 # 9. Logica del simulatore
 
 Cosa fa, in che ordine, con quali ipotesi, e cosa abbiamo imparato. I parametri sono nella
-[scheda tecnica](10-parametri-del-simulatore.md) (cap. 10), le fonti in [A-fonti.md](A-fonti.md), le verifiche in [validazione](11-validazione.md) (cap. 11).
+[parametri del simulatore](10-parametri-del-simulatore.md) (cap. 10), le fonti in [A-fonti.md](A-fonti.md), le verifiche in [validazione](11-validazione.md) (cap. 11).
 
 ## 9.1 Obiettivo del simulatore
 

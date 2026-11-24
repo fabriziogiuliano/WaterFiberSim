@@ -3,7 +3,7 @@
 # WaterFiberSim
 
 > **Documentazione completa: [documentazione tecnica](docs/00-indice.md)** — capitoli su fisica, modelli, parametri
-> ([scheda tecnica](docs/10-parametri-del-simulatore.md)), [validazione](docs/11-validazione.md) e
+> ([parametri del simulatore](docs/10-parametri-del-simulatore.md)), [validazione](docs/11-validazione.md) e
 > [risultati](docs/12-risultati-e-questioni-aperte.md). Questo README resta la guida pratica (installazione, comandi).
 > **Interrogatori BOTDA commerciali** (Prysmian DITEST, OZ Optics DSTS, Neubrex, Cohaerentia): [§2.5 della documentazione](docs/02-principio-di-misura.md#25-interrogatori-botda-commerciali).
 
@@ -105,7 +105,7 @@ default:
   wall_thickness_mm: 10
   E_GPa: 1.0          # elastic modulus
   nu: 0.40            # Poisson's ratio
-  depth_m: 1.0        # burial depth (used for temperature, step 5)
+  depth_m: 1.0        # burial depth (not used by the models yet)
 pipes:
   P0:  {material: cast_iron, outer_diameter_mm: 222, wall_thickness_mm: 6.4, E_GPa: 170, nu: 0.26}   # supply main (no helix)
   P1:  {outer_diameter_mm: 160, wall_thickness_mm: 14.6}   # PE100 SDR11 DN160: carries the water into the grid
@@ -209,7 +209,7 @@ python -m waterfibersim map scenario_paths/A_main_line.yaml --out out/A    # out
 pytest                                                                     # tests/test_fibermap.py
 ```
 
-Scenario A: 2001,5 m di fibra (2 × 215 m di cavo + 400 m di tubo × 2,92 + 2 m di giunzione + 400 m di riferimento), 4004 campioni ogni 0,5 m.
+Scenario A: 2001,5 m di fibra (2 × 215 m di cavo + 400 m di tubo × 2,92 + 2 m di giunzione + 400 m di riferimento), 20 016 punti di calcolo ogni 0,1 m.
 
 ![Mappa fibra → tubo, scenario A](docs/img/A_fiber_map.png)
 
@@ -236,7 +236,7 @@ brillouin.py    ν_B = ν_B0 + C_ε·ε + C_T·ΔT, con C_ε = 0,05 MHz/µε, C_
 ```
 
 In `out/A/`:
-- `signal_true.npz`: matrici **tempo × posizione** (97 × 4004 per lo scenario A) di `nu_b_mhz`, `strain_ue`, `pressure_bar`, più `z_m`, `leg`, `pipe` di ogni colonna e `times_s`;
+- `signal_true.npz`: matrici **tempo × posizione** (97 × 20 016 per lo scenario A) di `nu_b_mhz`, `strain_ue`, `pressure_bar`, più `z_m`, `leg`, `pipe` di ogni colonna e `times_s`;
 - `signal_true_<fibra>.png`: la figura qui sotto.
 
 ![Segnale vero, scenario A](docs/img/A_signal_true.png)
@@ -294,7 +294,7 @@ Con le impostazioni di Bertulessi 2023 (20 ns, 1 MHz, 256 medie):
 - In fondo alla strada S1 l'escursione giornaliera (0,27 bar) è circa 6 volte l'incertezza; vicino al serbatoio (0,04 bar) è pari all'incertezza: con una misura sola non si vede.
 - Sulle nostre lunghezze (2–4 km) la distanza pesa poco: +15 % di incertezza.
 - Il comando controlla anche che tutti i picchi cadano nella finestra di scansione (margine oggi circa 120 MHz: circa 10 °C sull'elica).
-- **Da affrontare:** la compensazione della temperatura. L'errore del riferimento (circa 0,47 °C) pesa circa 11 MHz/°C sull'elica: circa 5 MHz ≈ 0,36 bar, dieci volte l'incertezza della sola pressione, se il riferimento non viene mediato su molti metri (🧮, passo 5).
+- **Da affrontare:** la compensazione della temperatura. L'errore del riferimento (circa 0,47 °C per misura) pesa sull'elica 3,5–8 MHz/°C (6 negli scenari): circa 2,8 MHz ≈ 0,2 bar per misura, se il riferimento non viene mediato su molti metri (cap. 7).
 
 ![Incertezza attesa, scenario S1](docs/img/S1_uncertainty.png)
 

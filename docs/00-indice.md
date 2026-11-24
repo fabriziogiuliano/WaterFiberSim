@@ -38,7 +38,7 @@ parametri, le verifiche e i risultati. Ogni capitolo rimanda agli altri; le font
 
 **Appendici**
 A. [Fonti e stato di verifica](A-fonti.md) — ogni affermazione con fonte e stato  
-B. [Sensori distribuiti in fibra ottica (DFOS)](B-fibra-ottica-dfos.md) — primo documento del progetto; §2.1 aggiornato  
+B. [Sensori distribuiti in fibra ottica (DFOS)](B-fibra-ottica-dfos.md) — primo documento del progetto (il principio di misura aggiornato è nel cap. 2)  
 C. [Diario delle sessioni e decisioni](C-diario-sessioni.md) — le decisioni in ordine di tempo
 
 ## Guida alla lettura

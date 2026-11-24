@@ -7,6 +7,6 @@ default:
   wall_thickness_mm: 10
   E_GPa: 1.0          # elastic modulus
   nu: 0.40            # Poisson's ratio
-  depth_m: 1.0        # burial depth (used for temperature, step 5)
+  depth_m: 1.0        # burial depth (not used by the models yet)
 
 pipes: {}

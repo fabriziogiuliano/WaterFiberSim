@@ -65,7 +65,7 @@ default:
   wall_thickness_mm: 10
   E_GPa: 1.0          # modulo elastico
   nu: 0.40            # coefficiente di Poisson
-  depth_m: 1.0        # profondità di posa
+  depth_m: 1.0        # profondità di posa (oggi non usata dai modelli)
 pipes:
   P0:  {material: cast_iron, outer_diameter_mm: 222, wall_thickness_mm: 6.3, E_GPa: 170, nu: 0.26}
   P12: {outer_diameter_mm: 125, wall_thickness_mm: 11.4,
@@ -90,9 +90,6 @@ temperature:                                # facoltativa: senza, la temperatura
   soil_c: 12                # terreno all'inizio della simulazione [°C]
   drift_c_per_day: 0        # deriva stagionale [°C/giorno]
   helix_mhz_per_c: 6        # sensibilità dell'elica alla temperatura [MHz/°C]
-  hotspots:                 # facoltativa: variazioni locali (non insieme a water)
-    - {pipe: P6, from_m: 20, to_m: 60, delta_c: 3}                        # permanente
-    - {pipe: P3, from_m: 30, to_m: 70, delta_c: 4, from_h: 14, to_h: 17}  # evento con orario
   water:                    # facoltativa: temperatura dell'acqua (modello di Blokker)
     source_c: 14            # acqua in uscita dal serbatoio [°C]
     soil_k_w_mk: 1.6        # conducibilità del terreno [W/(m·K)]
@@ -124,6 +121,15 @@ fibers:                                     # una o più fibre
       - {pipe: P2, from: N1}
       # ...
     junction_m: 2               # giunzione in fondo all'andata
+```
+
+In alternativa a `water` (oggi le due cose non si combinano), la sezione `temperature` può contenere variazioni
+locali di temperatura del terreno (scenario S1th):
+
+```yaml
+  hotspots:
+    - {pipe: P6, from_m: 20, to_m: 60, delta_c: 3}                        # permanente, +3 °C tra 20 e 60 m di P6
+    - {pipe: P3, from_m: 30, to_m: 70, delta_c: 4, from_h: 14, to_h: 17}  # evento: +4 °C dalle 14 alle 17
 ```
 
 Regole del percorso (`route`):
