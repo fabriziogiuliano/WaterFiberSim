@@ -7,9 +7,10 @@
 
 ## 6.1 Parametri temporali e risoluzione spaziale
 
-Nello scenario i parametri dello strumento sono quelli reali, espressi nel tempo; i metri si ricavano con il tempo di volo:
+Lo strumento si imposta in unità di tempo (durata dell'impulso, frequenza di campionamento). Le distanze lungo la fibra
+si ricavano dal tempo di volo della luce, che percorre ogni tratto due volte, all'andata e al ritorno:
 
-$$\Delta z_s = \frac{c}{2\,n\,f_{ADC}} \qquad \Delta z = \frac{c\,\tau}{2\,n}$$
+$$\Delta z_s = \frac{c}{2 \cdot n \cdot f_{ADC}} \qquad \Delta z = \frac{c \cdot \tau}{2 \cdot n}$$
 
 dove:
 
@@ -22,19 +23,14 @@ dove:
 | $f_{ADC}$ | frequenza di campionamento dell'ADC | campioni/s | 125·10⁶ |
 | $\tau$ | durata dell'impulso | s | 20·10⁻⁹ |
 
-Il **2 al denominatore** nasce dal percorso della luce. L'impulso parte dalla porta A e arriva al punto z; il segnale
-che nasce lì torna indietro fino alla porta A, dove viene letto. Un punto più lontano di $\Delta z$ costa quindi $\Delta z$ in più
-all'andata **e** $\Delta z$ in più al ritorno: il suo segnale arriva dopo un tempo 2·$\Delta z$·n/c in più. Per questo 10 ns di tempo
-corrispondono a circa 1 m di fibra, e non a 2 m.
-
 [\[B23\]](A-fonti.md#b23) dichiara 0,8 m e 2 m; la definizione di risoluzione è quella di [\[ST13\]](A-fonti.md#st13) §2.
-L'indice di gruppo n = 1,468 è (da verificare) (scheda della fibra da leggere).
+Il valore n = 1,468 dell'indice di gruppo va confermato sulla scheda della fibra (da verificare).
 
 ## 6.2 Incertezza sulla frequenza Brillouin
 
 Modello di Soto & Thévenaz [\[ST13\]](A-fonti.md#st13) Eq. 7–9, validato sui loro dati (cap. 11):
 
-$$\sigma_\nu = \frac{1}{\mathrm{SNR}}\sqrt{\tfrac{3}{4}\,\delta\,\Delta\nu_B} \qquad \mathrm{SNR}(z) = \mathrm{SNR}_0\,\frac{\Delta z}{\Delta z_0}\,\sqrt{N_{AV}}\;e^{-\alpha z}$$
+$$\sigma_\nu = \frac{1}{\mathrm{SNR}}\sqrt{\tfrac{3}{4} \cdot \delta \cdot \Delta\nu_B} \qquad \mathrm{SNR}(z) = \mathrm{SNR}_0 \cdot \frac{\Delta z}{\Delta z_0} \cdot \sqrt{N_{AV}} \cdot e^{-\alpha z}$$
 
 dove:
 

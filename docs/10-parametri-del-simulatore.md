@@ -20,12 +20,12 @@ l'asse di destra dà l'equivalente in bar sull'elica in PE (1 bar ≈ 14,5 MHz).
 
 Tutte entrano nell'incertezza di una misura attraverso il modello di Soto & Thévenaz [\[ST13\]](A-fonti.md#st13) Eq. 7–9 (cap. 6):
 
-$$\sigma_\nu = \frac{1}{\mathrm{SNR}}\sqrt{\frac{3\,\delta\,\Delta\nu_B}{8\sqrt{2}\,(1-\eta)^{3/2}}} \qquad \mathrm{SNR} = \mathrm{SNR}_0\,\frac{\Delta z}{\Delta z_0}\,\sqrt{N_{AV}}\;e^{-\alpha z}$$
+$$\sigma_\nu = \frac{1}{\mathrm{SNR}}\sqrt{\frac{3 \cdot \delta \cdot \Delta\nu_B}{8 \cdot \sqrt{2} \cdot (1-\eta)^{3/2}}} \qquad \mathrm{SNR} = \mathrm{SNR}_0 \cdot \frac{\Delta z}{\Delta z_0} \cdot \sqrt{N_{AV}} \cdot e^{-\alpha z}$$
 
 ### 10.1.1 Durata dell'impulso `pulse_width_ns`
 
 - **Cos'è.** Quanto dura ogni impulso di interrogazione (pompa). Lo strumento fa la media su tutta la fibra che
-  l'impulso occupa: è la **risoluzione spaziale**, $\Delta z = c\,\tau/(2n)$ [\[ST13\]](A-fonti.md#st13) §2.
+  l'impulso occupa: è la **risoluzione spaziale**, $\Delta z = c \cdot \tau/(2 \cdot n)$ [\[ST13\]](A-fonti.md#st13) §2.
 - **Valore.** 20 ns → 2,04 m [\[B23\]](A-fonti.md#b23). Gli strumenti commerciali vanno da 0,2 ns (2 cm, Neubrex) a centinaia di ns .
 - **Se lo cambi (grafico 2).** L'SNR è proporzionale a $\Delta z$: impulso di 10 ns → σ = 0,81 MHz (doppia); 50 ns → 0,16 MHz.
   Lungo il tubo, con l'elica a 70°, 2 m di fibra coprono circa 0,7 m di tubo [\[B23\]](A-fonti.md#b23) Eq. 2.
@@ -37,7 +37,7 @@ $$\sigma_\nu = \frac{1}{\mathrm{SNR}}\sqrt{\frac{3\,\delta\,\Delta\nu_B}{8\sqrt{
 ### 10.1.2 Frequenza dell'ADC `adc_sample_rate_msps`
 
 - **Cos'è.** Quante volte al secondo lo strumento legge il fotodiodo. Fissa il **passo dei punti**:
-  $\Delta z = c/(2\,n\,f_{ADC})$ (calcolo nostro) (tempo di volo).
+  $\Delta z = c/(2 \cdot n \cdot f_{ADC})$ (calcolo nostro) (tempo di volo).
 - **Valore.** 125 MS/s → 0,82 m [\[B23\]](A-fonti.md#b23); commerciali 0,01–10 m [\[DIT\]](A-fonti.md#dit), [\[OZ\]](A-fonti.md#oz), Neubrex.
 - **Se lo cambi.** Più punti, non più informazione: due punti più vicini della risoluzione condividono gran parte della
   stessa fibra, quindi il loro rumore è **correlato** (calcolo nostro). Non cambia σ.

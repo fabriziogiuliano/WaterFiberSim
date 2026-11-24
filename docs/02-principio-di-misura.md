@@ -15,7 +15,7 @@ La luce che attraversa la fibra interagisce con le onde acustiche del vetro e un
 spostata di circa 10,8 GHz [\[B23\]](A-fonti.md#b23). Lo spostamento, la **frequenza Brillouin** $\nu_B$, varia linearmente con temperatura e
 deformazione [\[B23\]](A-fonti.md#b23) Eq. 1, [\[OZ\]](A-fonti.md#oz):
 
-$$\Delta\nu_B = C_T\,\Delta T + C_\varepsilon\,\varepsilon$$
+$$\Delta\nu_B = C_T \cdot \Delta T + C_\varepsilon \cdot \varepsilon$$
 
 dove:
 

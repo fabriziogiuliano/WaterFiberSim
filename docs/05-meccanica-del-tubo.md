@@ -9,7 +9,7 @@
 
 La pressione p allarga il tubo. Sulla superficie esterna (dove sta la fibra nella rete di prova) [\[B23\]](A-fonti.md#b23) Eq. 4–6:
 
-$$\varepsilon_\theta = \frac{(2-\nu)\,\beta^2}{1-\beta^2}\,\frac{p}{E} \qquad \varepsilon_z = \frac{(1-2\nu)\,\beta^2}{1-\beta^2}\,\frac{p}{E} \qquad \beta = \frac{r_{int}}{r_{est}}$$
+$$\varepsilon_\theta = \frac{(2-\nu) \cdot \beta^2}{1-\beta^2} \cdot \frac{p}{E} \qquad \varepsilon_z = \frac{(1-2\nu) \cdot \beta^2}{1-\beta^2} \cdot \frac{p}{E} \qquad \beta = \frac{r_{int}}{r_{est}}$$
 
 dove:
 
@@ -28,7 +28,7 @@ Con tubi SDR11 la sensibilità non dipende dal diametro (calcolo nostro).
 
 ## 5.2 Deformazione della fibra a elica
 
-$$\varepsilon_{fibra} = \varepsilon_\theta \sin^2\alpha + \varepsilon_z \cos^2\alpha$$
+$$\varepsilon_{fibra} = \varepsilon_\theta \cdot \sin^2\alpha + \varepsilon_z \cdot \cos^2\alpha$$
 
 (trasformazione della deformazione)
 
