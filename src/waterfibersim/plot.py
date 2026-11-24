@@ -103,10 +103,10 @@ def plot_true_signal(sig, path: str | Path, fiber_id: str | None = None) -> Path
         sec.tick_params(colors="#2b8a3e")
         return sec
 
-    # 1. frequenza assoluta lungo la fibra: a vuoto (misura di base) e con il carico in due orari
+    # grafico 1: frequenza assoluta lungo la fibra: a vuoto (misura di base) e con il carico in due orari
     ax = fig.add_subplot(gs[0])
     nu_vuoto = sig.baseline_mhz[sel]
-    ax.plot(z, nu_vuoto, color="#495057", lw=2, ls="--", label="a vuoto, 0 bar (misura di base): ogni metro ha la sua")
+    ax.plot(z, nu_vuoto, color="#495057", lw=2, ls="--", label="A vuoto (0 bar)")
     for hh, c in ore:
         i = int(np.argmin(abs(h - hh)))
         ax.plot(z, sig.nu_b_mhz[i, sel], color=c, lw=1.6, label=f"con l'acqua in pressione, ore {hh:02d}:00")
@@ -129,11 +129,11 @@ def plot_true_signal(sig, path: str | Path, fiber_id: str | None = None) -> Path
     ax.set_ylim(lo, hi + 30)
     ax.set_xlabel("z = distanza lungo la fibra dalla porta A [m]")
     ax.legend(loc="center right", fontsize=9)
-    ax.set_title("1. frequenza Brillouin lungo la fibra: a vuoto e con il carico (valori assoluti, come in Bertulessi "
+    ax.set_title("Grafico 1 \u2014 frequenza Brillouin lungo la fibra: a vuoto e con il carico (valori assoluti, come in Bertulessi "
                  "2023 Fig. 7a). La misura di base NON è piatta: la posa ha tirato la fibra", fontsize=11, loc="left",
                  pad=16)
 
-    # 2. differenza rispetto alla misura di base
+    # grafico 2: differenza rispetto alla misura di base
     ax = fig.add_subplot(gs[1])
     for hh, c in ore:
         i = int(np.argmin(abs(h - hh)))
@@ -144,10 +144,10 @@ def plot_true_signal(sig, path: str | Path, fiber_id: str | None = None) -> Path
     ax.set_xlabel("z [m]")
     ax.legend(loc="center right")
     medio = f"circa +{dnu[:, sens].mean():.0f} MHz (circa {np.nanmean(press[:, sens]):.1f} bar)".replace(".", ",")
-    ax.set_title(f"2. differenza rispetto alla misura di base: \u0394\u03bd_B = \u03bd_B \u2212 \u03bd_B a vuoto. "
+    ax.set_title(f"Grafico 2 \u2014 differenza rispetto alla misura di base: \u0394\u03bd_B = \u03bd_B \u2212 \u03bd_B a vuoto. "
                  f"Fibra a elica sui tubi in PE {medio} in media; riferimento e cavi 0", fontsize=11, loc="left", pad=16)
 
-    # 3. variazione rispetto alla media del giorno
+    # grafico 3: variazione rispetto alla media del giorno
     ax = fig.add_subplot(gs[2])
     var = dnu - dnu.mean(axis=0)
     v = np.abs(var).max()
@@ -161,7 +161,7 @@ def plot_true_signal(sig, path: str | Path, fiber_id: str | None = None) -> Path
     bande(ax)
     ax.set_ylabel("ora del giorno [h]")
     ax.set_xlabel("z = distanza lungo la fibra dalla porta A [m]")
-    ax.set_title("3. tempo \u00d7 posizione: VARIAZIONE nella giornata (rosso = pressione più alta della media); "
+    ax.set_title("Grafico 3 \u2014 tempo \u00d7 posizione: VARIAZIONE nella giornata (rosso = pressione più alta della media); "
                  "sigle arancioni = elica, blu = riferimento", fontsize=11, loc="left", pad=16)
 
     def punto(pid, leg):
@@ -173,7 +173,7 @@ def plot_true_signal(sig, path: str | Path, fiber_id: str | None = None) -> Path
     colori = plt.get_cmap("Oranges")(np.linspace(0.45, 0.95, len(tubi)))
     punti = {pid: punto(pid, "sensing") for pid in tubi}
 
-    # 4. tutti i tubi nel tempo: Δν_B a metà di ciascun tubo (a destra la pressione in bar)
+    # grafico 4: tutti i tubi nel tempo: Δν_B a metà di ciascun tubo (a destra la pressione in bar)
     ax = fig.add_subplot(gs[3])
     for pid, c in zip(tubi, colori):
         j = punti[pid]
@@ -185,7 +185,7 @@ def plot_true_signal(sig, path: str | Path, fiber_id: str | None = None) -> Path
     asse_bar(ax, nome="pressione")
     ax.set_xlabel("ora del giorno [h]")
     ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.2), fontsize=9, ncol=2, frameon=False)
-    ax.set_title("4. nel tempo, fibra a elica a metà di OGNI tubo: segue la pressione; più lontano dal serbatoio, "
+    ax.set_title("Grafico 4 \u2014 nel tempo, fibra a elica a metà di OGNI tubo: segue la pressione; più lontano dal serbatoio, "
                  "pressione più bassa e cali più forti", fontsize=11, loc="left")
 
     path = Path(path)

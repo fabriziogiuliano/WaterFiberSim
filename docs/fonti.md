@@ -20,6 +20,10 @@ Ultimo aggiornamento: 2026-11-23.
 | **[B23]** | M. Bertulessi, D. F. Bignami, I. Boschini, M. Longoni, G. Menduni, J. Morosi, "Experimental Investigations of Distributed Fiber Optic Sensors for Water Pipeline Monitoring", *Sensors* 23(13), 6205, 2023. DOI [10.3390/s23136205](https://doi.org/10.3390/s23136205). Politecnico di Milano + Cohaerentia S.r.l. Licenza CC BY | [docs/papers/sensors-23-06205-v2.pdf](papers/sensors-23-06205-v2.pdf) |
 | **[OZ]** | OZ Optics, *Fiber Optic Distributed Strain and Temperature Sensors (DSTS) – BOTDA Module*, scheda tecnica DTS0115, 1 marzo 2025 | <https://www.ozoptics.com/ALLNEW_PDF/DTS0115.pdf> |
 | **[DIT]** | Prysmian, *DITEST – Distributed Temperature and Strain Interrogator*, scheda tecnica | <https://asean.prysmian.com/sites/asean.prysmian.com/files/media/documents/Prysmian_DITEST.pdf> |
+| **[EPA]** | US EPA, *EPANET 2.2 User Manual* (autori e numero di rapporto da riportare dal frontespizio del PDF). Cap. 3 "The Network Model" | <https://epanet-manual.readthedocs.io/en/latest/3_network_model.html> · [PDF EPA](https://www.epa.gov/system/files/documents/2021-07/epanet_users_manual_2.2.0-1.pdf) |
+| **[UPO]** | Uponor Infra Oy, *PE100 pressure pipes – Technical factsheet*, 09/2020 (cita EN 12201, EN 1555) | <https://brandportal.uponor.com/m/20832399649c7390/original/PE100-2-page-factsheet_EN.pdf> |
+| **[ALX]** | Aliaxis UK, *GPS PE Blue pipe (PE100) – Product data sheet* (tabella "Pipe dimensions – water applications (BS EN 12201-2)") | <https://www.aliaxis.co.uk/en/downloads/getfile/399950> |
+| **[ECL]** | Electrosteel Castings Ltd., pagina prodotto *Ductile Iron Pipes*, tabella "Basic dimension of pipes – Pressure class (as per ISO 2531 and EN 545) and thickness class (as per IS 8329)" (pagina web, non catalogo PDF) | <https://www.electrosteel.com/products/ductile-iron-pipes> |
 
 [B23] è il riferimento più vicino a questo progetto. È un sistema BOTDA su tubi in HDPE con la fibra **avvolta a elica** e un tratto di **ritorno libero per compensare la temperatura**: la stessa architettura disegnata nella figura.
 
@@ -97,6 +101,22 @@ Differenza da tenere a mente: in [B23] la fibra è fissata **all'esterno** del t
 | ν_B0 = 10 880 MHz | ✅ forma, ⚠️ valore | [B23] Fig. 7a, fibra non tirata, letto a occhio; non cambia i Δν |
 | Profilo a riposo nel simulatore: elica con inizio e fine di ogni tubo estratti in [105, 180] MHz (pendenza casuale), tratto libero +65 MHz, cavi 0, ondulazioni di circa 1 MHz su circa 8 m | ✅ valori di partenza, ⚠️ forma | Valori da [B23] Fig. 7a, letti a occhio (fibra fissata con nastro, tubo PN16). Pendenza casuale per tubo e ondulazioni: **ipotesi**. Per la fibra annegata (MATRIS) i valori sono solo un segnaposto |
 
+
+### Rete di prova: criteri di dimensionamento
+
+| Affermazione | Stato | Fonte |
+|---|---|---|
+| Velocità di progetto nelle reti di distribuzione: tipica 1–1,5 m/s, minimo circa 0,4–0,6 m/s, massimo 1,5–3 m/s | ⚠️ | Corsi e manuali, non norme; trovati ma non letti per intero: [TU Delft, Distribution networks](https://ocw.tudelft.nl/wp-content/uploads/Distribution_networks.pdf), [TU Delft, Practical applications](https://ocw.tudelft.nl/wp-content/uploads/Practical_applications.pdf), [MoHUA (India), Manual Part A Ch. 12](https://mohua.gov.in/upload/uploadfiles/files/Part_A-Chapter-12-Service-Reservoir-and-Distribution-System.pdf), [Univ. Trieste, Pozzetto](https://moodle2.units.it/pluginfile.php/180266/mod_resource/content/1/28%20-%20Piping-Fluid%20distribution%20plants-Design%20of%20distribution%20networks.pdf) |
+| Perdita di carico di progetto: ottimale 1–4 m/km, massimo 10 m/km; TU Delft: 1–2 m/km come valore comune, 2–5 per tubi piccoli e brevi | ⚠️ | Stesse fonti |
+| Dimensioni PE100 SDR11 (PN16): DN110 × 10,0; DN125 × 11,4; DN160 × 14,6 mm | ✅ | [UPO], "Table: Wall thickness PE100", colonna *"SDR11 PN16 Wall thickness mm"*: righe *"110 … 10,0"*, *"125 … 11,4"*, *"160 … 14,6"*. Confermato da [ALX] (*"BS EN 12201-2"*), SDR 11: *"Min t"* 10 / 11,4 / 14,6 mm. Sono spessori **minimi** nominali |
+| Diametro interno usato in EPANET = esterno − 2 × spessore minimo (90; 102,2; 130,8 mm) | 🧮 | Approssimazione. Il foro medio reale è circa 1 mm più piccolo, perché lo spessore effettivo sta tra minimo e massimo: [ALX] *"Mean Bore"* 89,3 (DN110), 101,3 (DN125), 129,7 (DN160). Effetto trascurabile sull'idraulica |
+| Adduttrice in ghisa sferoidale DN200: diametro esterno 222 mm; spessore classe K9 6,3 mm (classe di pressione C40: 4,7 mm) | ✅ produttore, ⚠️ norma | [ECL], riga DN200: *"200 mm \| 222 mm \| +1/-3.0 mm \| C40 \| 4.7 mm \| 6.3 mm \| 5 mm"* (colonne: DE, tolleranza, classe C preferita, spessore classe C, spessore K9, spessore K7). Tabella *"as per ISO:2531 and EN:545"*, ma il testo della EN 545 non è stato letto. Spessore del rivestimento interno in malta cementizia non dichiarato: **ignorato** (diametro interno 209,4 mm). P0 non ha la fibra, conta solo per l'idraulica |
+| Modulo elastico della ghisa sferoidale ≈ 170 GPa | ⚠️ | [ECL] riporta *"Modulus of Elasticity 1.7 x 10¹⁰ Kg/m²"*: unità scritta male (se kgf/m², ≈ 167 GPa). Coefficiente di Poisson 0,26 non trovato. Non usati nel calcolo (P0 senza fibra) |
+| EPANET non contiene un catalogo di tubi né limiti di progetto: i dati di un tubo sono solo nodi, diametro, lunghezza, scabrezza, stato | ✅ | [EPA] §3.1: *"The principal hydraulic input parameters for pipes are:"* nodi di inizio e fine; diametro; lunghezza; coefficiente di scabrezza; stato |
+| Coefficiente di Hazen-Williams per tubi nuovi: ghisa 130–140, plastica 140–150 (usati: PE 140, ghisa P0 130) | ✅ | [EPA], *"Table 3.2 Roughness Coefficients for New Pipe"*: *"Cast Iron \| 130 – 140"*, *"Plastic \| 140 – 150"* (anche *"Concrete or Concrete Lined \| 120 – 140"*). Avvertenza: *"Be aware that a pipe's roughness coefficient can change considerably with age."* |
+| Norme di riferimento non lette (a pagamento, CEN/UNI): EN 12201-2 (tubi PE per acqua), EN 545 (ghisa sferoidale), EN 805 (requisiti dei sistemi di acquedotto) | ⚠️ | Da consultare in biblioteca (abbonamento UNI d'ateneo) se servono in tesi |
+| Con tubi SDR11 la deformazione per bar non dipende dal diametro | 🧮 | β = r_int/r_est costante per SDR costante, quindi ε_θ (Lamé) uguale |
+| Escursione giornaliera di pressione in reti reali | ❌ non trovata | Studi su distretti reali ([Starczewska et al., White Rose](https://eprints.whiterose.ac.uk/96459/1/1-s2.0-S1877705816000023-main.pdf); [US EPA, pressure management](https://www.epa.gov/system/files/documents/2021-12/ds-toolbox-fact-sheets_pressure-management.pdf)) senza un valore in bar nei riassunti |
 
 ### Misura di base e minimo misurabile
 

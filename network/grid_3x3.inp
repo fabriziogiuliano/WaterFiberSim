@@ -1,18 +1,19 @@
 [TITLE]
 WaterFiberSim - test network: reservoir R1, supply main P0, 3x3 grid (100 m pipes)
-Demands at J13, J31, J33. Coordinates in metres.
+Demands at J13, J31, J33 (4 L/s each). Pipes sized so that at peak demand velocity is ~0.5-0.9 m/s in the
+main pipes and head loss <= 10 m/km everywhere (design criteria: see docs/fonti.md). Coordinates in metres.
 
 [JUNCTIONS]
 ;ID   Elev_m   Demand_LPS   Pattern
  J11  10       0
  J12  10       0
- J13  10       2.0          DAILY
+ J13  10       4.0          DAILY
  J21  10       0
  J22  10       0
  J23  10       0
- J31  10       2.0          DAILY
+ J31  10       4.0          DAILY
  J32  10       0
- J33  10       2.0          DAILY
+ J33  10       4.0          DAILY
 
 [RESERVOIRS]
 ;ID   Head_m
@@ -22,11 +23,11 @@ Demands at J13, J31, J33. Coordinates in metres.
 
 [PIPES]
 ;ID   Node1  Node2  Length_m     Diameter_mm  Roughness_HW  MinorLoss      Status
-; supply main, cast iron (OD 160, wall 8 -> ID 144)
- P0   R1     J11    200          144          100           0              Open
-; horizontal, row by row (PE100 OD 110, wall 10 -> ID 90)
- P1   J11    J12    100          90           140           0              Open
- P2   J12    J13    100          90           140           0              Open
+; supply main, ductile iron EN 545 DN200 K9 (OD 222, wall 6.3 -> ID 209.4; cement lining ignored), C new cast iron (EPANET Table 3.2)
+ P0   R1     J11    200          209.4         130           0              Open
+; horizontal, row by row (PE100 SDR11: OD 110 -> ID 90; OD 125 -> ID 102.2; OD 160 -> ID 130.8)
+ P1   J11    J12    100          130.8         140           0              Open
+ P2   J12    J13    100          102.2         140           0              Open
  P3   J21    J22    100          90           140           0              Open
  P4   J22    J23    100          90           140           0              Open
  P5   J31    J32    100          90           140           0              Open
@@ -36,9 +37,9 @@ Demands at J13, J31, J33. Coordinates in metres.
  P8   J23    J33    100          90           140           0              Open
  P9   J12    J22    100          90           140           0              Open
  P10  J22    J32    100          90           140           0              Open
- P11  J11    J21    100          90           140           0              Open
-; P12 rehabilitated: 6 mm liner inside -> ID 90 - 2*6 = 78
- P12  J21    J31    100          78           140           0              Open
+ P11  J11    J21    100          130.8         140           0              Open
+; P12 rehabilitated: OD 125 host, 6 mm liner inside -> ID 102.2 - 2*6 = 90.2
+ P12  J21    J31    100          90.2         140           0              Open
 
 [PUMPS]
 

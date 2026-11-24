@@ -65,7 +65,7 @@ Una rete piccola, che si capisce a colpo d'occhio:
 
 - **R1**: sorgente a carico fisso (serbatoio).
 - **J11…J33**: griglia 3×3 di nodi, tubi da 100 m.
-- **Utenze**: una domanda (con il suo andamento giornaliero) sui nodi del bordo, per esempio J13, J31, J33.
+- **Utenze**: J13, J31, J33, 4 L/s ciascuna, con un andamento giornaliero (picchi alle 8 e alle 19).
 
 Il file è `network/grid_3x3.inp`, in formato EPANET standard: si apre anche con EPANET o QGIS.
 
@@ -85,8 +85,11 @@ default:
   nu: 0.40            # Poisson's ratio
   depth_m: 1.0        # burial depth (used for temperature, step 5)
 pipes:
-  P0:  {material: cast_iron, outer_diameter_mm: 160, wall_thickness_mm: 8, E_GPa: 170, nu: 0.26}
-  P12: {liner: {thickness_mm: 6, E_GPa: 8}}   # rehabilitated pipe (relining)
+  P0:  {material: cast_iron, outer_diameter_mm: 222, wall_thickness_mm: 6.4, E_GPa: 170, nu: 0.26}   # supply main (no helix)
+  P1:  {outer_diameter_mm: 160, wall_thickness_mm: 14.6}   # PE100 SDR11 DN160: carries the water into the grid
+  P11: {outer_diameter_mm: 160, wall_thickness_mm: 14.6}
+  P2:  {outer_diameter_mm: 125, wall_thickness_mm: 11.4}   # PE100 SDR11 DN125
+  P12: {outer_diameter_mm: 125, wall_thickness_mm: 11.4, liner: {thickness_mm: 6, E_GPa: 8}}   # rehabilitated pipe (relining)
 ```
 
 ### 1.3 La fibra: un anello sull'interrogatore BOTDA
@@ -174,14 +177,9 @@ Scenario A: 2001,5 m di fibra (2 × 215 m di cavo + 400 m di tubo × 2,92 + 2 m 
 python -m waterfibersim run scenario_paths/A_main_line.yaml --out out/A --hours 24 --step-min 15
 ```
 
-Con `--demand-multiplier` si moltiplicano tutti i consumi della rete (opzione EPANET *Demand Multiplier*), per provare reti più cariche senza toccare l'`.inp`. Il valore usato è salvato in `signal_true.npz` e scritto nel titolo della figura. Sulla rete di prova la variazione giornaliera della pressione dipende molto dai consumi, perché le perdite di carico crescono circa come Q^1,852 (Hazen-Williams):
+**La rete di prova è dimensionata con criteri di progetto** (vedi `docs/fonti.md`): al picco dei consumi la velocità nei tubi principali è di 0,5–0,9 m/s e la perdita di carico non supera 10 m/km in nessun tubo. Per questo P1 e P11, che portano l'acqua nella griglia, sono DN160; P2 e P12 (risanato) DN125; gli altri DN110 (PE100 SDR11). Le utenze J13, J31, J33 consumano 4 L/s ciascuna. Con una rete così, **la pressione nella giornata varia di circa 0,2 bar**: in una rete ben progettata le perdite di carico sono tenute basse apposta. Variazioni più grandi, nella realtà, vengono da dislivelli, pompe, valvole e distanze lunghe.
 
-| consumi | pressione sull'elica | variazione giornaliera | in MHz |
-|---|---|---|---|
-| ×1 | 4,70–4,90 bar | 0,09–0,19 bar | 1,3–2,8 |
-| ×3 (`--out out/A_x3 --demand-multiplier 3`) | 3,33–4,86 bar | 0,69–1,48 bar | 10–22 |
-
-La rete di prova con consumi ×1 è poco carica (velocità massima 0,77 m/s): per valutare il sensore serviranno consumi più realistici o una rete reale.
+Con `--demand-multiplier` si moltiplicano tutti i consumi (opzione EPANET *Demand Multiplier*), solo per esperimenti di sensibilità: con ×3 la rete esce dai criteri di progetto (perdite di carico ben oltre 10 m/km).
 
 La catena, un modulo per anello:
 
@@ -200,7 +198,7 @@ In `out/A/`:
 ![Segnale vero, scenario A](docs/img/A_signal_true.png)
 
 Cosa si vede, nello scenario A:
-- Sulla **fibra a elica dei tubi in PE (plastica)** la frequenza sta circa 70 MHz sopra il tubo vuoto (circa 4,8 bar) e varia di 2–3 MHz nella giornata, seguendo i consumi: circa 14,5 MHz per bar sul PE DN110.
+- Sulla **fibra a elica dei tubi in PE (plastica)** la frequenza sta circa 70 MHz sopra il tubo vuoto (circa 4,8 bar) e varia di 2–3 MHz nella giornata, seguendo i consumi: circa 14,5 MHz per bar su tutti i tubi in PE: con tubi SDR11 lo spessore è proporzionale al diametro, quindi la sensibilità non dipende dal diametro.
 - Sul **tratto di riferimento** e su cavi e giunzione resta a 0.
 - **P0, l'adduttrice in ghisa, non ha l'elica**: la fibra ci passa solo come cavo. Su un tubo così rigido la fibra a elica sentirebbe circa 0,2 MHz per bar, sotto un errore indicativo dello strumento (circa 0,5 MHz, vedi sotto): non avrebbe senso. È lo stesso problema di una guaina appoggiata a un tubo ospite rigido.
 - La variazione nella giornata (circa ±0,9 MHz) è **al limite** di un errore indicativo di ±0,5 MHz per una singola misura in un singolo punto: per vederla bene servirà la media nello spazio e nel tempo.
@@ -278,7 +276,7 @@ Si genera in due passi:
 | Script | Cosa fa | Serve |
 |---|---|---|
 | [blender/tubo_fibra.py](blender/tubo_fibra.py) | spaccato 3D → `tubo_fibra_3d.png` + `tubo_fibra_3d.json` (posizione in pixel dei punti notevoli) e, a richiesta, il `.blend` | Blender (o il modulo `bpy`) |
-| [blender/schema_sensore.py](blender/schema_sensore.py) | render + didascalie + pannelli → `tubo_fibra.png` | solo matplotlib |
+| [blender/schema_sensore.py](blender/schema_sensore.py) | render + didascalie + grafici → `tubo_fibra.png` | solo matplotlib |
 
 ```bash
 # apre Blender con la scena pronta (le etichette 3D sono visibili nella vista, non nel render)
@@ -291,5 +289,5 @@ python blender/schema_sensore.py
 
 - Il `.blend` va generato con la **stessa versione di Blender** con cui lo si apre: un file salvato con Blender 5.0 non si apre con la 4.2. Per questo non è in git.
 - Spessori e fibra sono **esagerati** per renderli visibili.
-- I numeri dei pannelli (PE DN110, elica a 70°, coefficienti Brillouin) sono **indicativi**.
+- I numeri dei grafici (PE DN110, elica a 70°, coefficienti Brillouin) sono **indicativi**.
 - I parametri della scena (angolo `ALFA_DEG`, raggi, lunghezza) sono in cima a `tubo_fibra.py`.

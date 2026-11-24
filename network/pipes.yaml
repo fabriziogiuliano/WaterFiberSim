@@ -13,5 +13,8 @@ default:
   depth_m: 1.0        # burial depth (used for temperature, step 5)
 
 pipes:
-  P0:  {material: cast_iron, outer_diameter_mm: 160, wall_thickness_mm: 8, E_GPa: 170, nu: 0.26}
-  P12: {liner: {thickness_mm: 6, E_GPa: 8}}   # rehabilitated pipe (relining)
+  P0:  {material: cast_iron, outer_diameter_mm: 222, wall_thickness_mm: 6.3, E_GPa: 170, nu: 0.26}   # supply main (no helix)
+  P1:  {outer_diameter_mm: 160, wall_thickness_mm: 14.6}   # PE100 SDR11 DN160: carries the water into the grid
+  P11: {outer_diameter_mm: 160, wall_thickness_mm: 14.6}
+  P2:  {outer_diameter_mm: 125, wall_thickness_mm: 11.4}   # PE100 SDR11 DN125
+  P12: {outer_diameter_mm: 125, wall_thickness_mm: 11.4, liner: {thickness_mm: 6, E_GPa: 8}}   # rehabilitated pipe (relining)
