@@ -35,6 +35,8 @@ come sopra. A 70° la fibra raccoglie l'88 % della deformazione del giro.
 
 ## 5.3 Tubo multistrato: tubo ospite e guaina
 
+![Sezione del tubo risanato con il sensore in fibra ottica](img/sezione_tubo.png)
+
 Con la guaina la fibra sta **dentro** la guaina, e la guaina sta dentro il tubo ospite. Il simulatore risolve Lamé a
 N strati incollati (spostamento e pressione continui alle interfacce, fondi chiusi) 🧮; con uno strato coincide con
 la formula sopra (verificato nei test).

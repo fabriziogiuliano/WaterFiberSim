@@ -215,13 +215,13 @@ in tubo in PE 3–10 MHz/bar; **guaina in ghisa integra circa 0,4–0,5 MHz/bar*
 | parametro | default | fonte | note |
 |---|---|---|---|
 | tratto di misura | elica, `bonded` (rete di prova) o `embedded` (guaina di risanamento) | ✅ [\[B23\]](A-fonti.md#b23); decisione utente | sente pressione + temperatura |
-| tratto di riferimento | dritto, libero in un tubetto | ✅ [\[B23\]](A-fonti.md#b23) Fig. 7c; scelta di progetto | sente solo temperatura |
+| tratto di riferimento | dritto, libero in un tubicino | ✅ [\[B23\]](A-fonti.md#b23) Fig. 7c; scelta di progetto | sente solo temperatura |
 | cavi (`lead`) e giunzione | lunghezze nello scenario | — | sentono la temperatura del terreno |
 | indice di gruppo n | 1,468 | ⚠️ a memoria (scheda Corning da scaricare) | sposta i metri del 2 % |
 | attenuazione | 0,2 dB/km | ✅ [\[ST13\]](A-fonti.md#st13) | sotto i 4 km pesa poco |
 | C_ε, C_T | 0,05 MHz/µε, 1 MHz/°C | ✅ [\[B23\]](A-fonti.md#b23) Eq. 1 (dipendono dal cavo) | errore di calibrazione = errore sistematico |
 | ν_B0 | 10 880 MHz | ⚠️ da [\[B23\]](A-fonti.md#b23) Fig. 7a a occhio | non cambia le differenze |
-| profilo a riposo | elica 105–180 MHz continuo, tubetto +65 MHz, ondulazioni 1 MHz | ✅ valori [\[B23\]](A-fonti.md#b23), ⚠️ forma | si cancella con la misura di base |
+| profilo a riposo | elica 105–180 MHz continuo, tubicino +65 MHz, ondulazioni 1 MHz | ✅ valori [\[B23\]](A-fonti.md#b23), ⚠️ forma | si cancella con la misura di base |
 | passo di calcolo `calc_step_m` | 0,1 m | scelta | ≤ 1/10 della risoluzione, non è lo strumento |
 
 ### Interrogatore (sezione `interrogator`)

@@ -144,7 +144,7 @@ def main():
                                                    "polimerizza in opera e ancora la fibra: quando la pressione "
                                                    "dilata il tubo, la fibra viene tirata.\n"
                                                     "Sente: PRESSIONE + TEMPERATURA."),
-        (5, "Tratto DRITTO, libero in un tubetto", "Il tubetto è annegato nella guaina, ma la fibra dentro scorre libera, come un filo in una "
+        (5, "Tratto DRITTO, libero in un tubicino", "Il tubicino è annegato nella guaina, ma la fibra dentro scorre libera, come un filo in una "
                                                  "cannuccia: il tubo si dilata ma lei non viene tirata.\nSente: SOLO TEMPERATURA."),
         (6, "Giunzione", "Qui il tratto a elica e il tratto dritto sono saldati: è la STESSA fibra che torna "
                          "indietro."),
@@ -243,7 +243,7 @@ def main():
         (0, CAVO, "#b9bec6", "cavo", ""),
         (Z_ELICA0, Z_ELICA1, ARANCIO, "tratto a ELICA sul tubo", "sente PRESSIONE + TEMPERATURA\n(100 m di tubo = 292 m di fibra)"),
         (Z_ELICA1, Z_RIT0, "#444", "", ""),
-        (Z_RIT0, Z_RIT1, "#ffb37a", "tratto DRITTO nel tubetto", "sente SOLO TEMPERATURA\n(percorre il tubo al contrario)"),
+        (Z_RIT0, Z_RIT1, "#ffb37a", "tratto DRITTO nel tubicino", "sente SOLO TEMPERATURA\n(percorre il tubo al contrario)"),
         (Z_RIT1, Z_FINE, "#b9bec6", "cavo", ""),
     ]
     for a, b, c, nome, nota in tratti:

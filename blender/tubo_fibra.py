@@ -5,7 +5,7 @@ Cosa si vede:
   - tubo ospite tagliato per un quarto (spaccato), guaina in composito, acqua in pressione;
   - UNA SOLA fibra ad anello:
       porta A dell'interrogatore -> ANDATA a elica nella guaina (sente pressione + temperatura)
-      -> giunzione in fondo al tratto -> RITORNO dritto in un tubetto libero (sente solo temperatura)
+      -> giunzione in fondo al tratto -> RITORNO dritto in un tubicino libero (sente solo temperatura)
       -> porta B dello stesso interrogatore;
   - frecce lungo la fibra: verso in cui cresce la distanza z (z = 0 alla porta A); frecce rosse della pressione.
   La fibra ha un solo colore perché è una sola: andata e ritorno indicano solo dove passa.
@@ -43,9 +43,9 @@ PUNTI_PER_GIRO = 96
 R_GUAINA = R_OSPITE - T_OSPITE              # raggio esterno guaina = interno ospite
 R_ACQUA = R_GUAINA - T_GUAINA               # raggio interno guaina
 R_ELICA = R_ACQUA + 0.025                   # elica nella parte interna della guaina
-R_TUBETTO, T_TUBETTO = 0.03, 0.006          # tubetto libero della fibra di riferimento
-R_RIF = R_GUAINA - R_TUBETTO                # tubetto nella parte esterna della guaina
-TH_RIF = math.radians(135)                  # posizione angolare del tubetto (nel quarto tagliato)
+R_TUBICINO, T_TUBICINO = 0.03, 0.006          # tubicino libero della fibra di riferimento
+R_RIF = R_GUAINA - R_TUBICINO                # tubicino nella parte esterna della guaina
+TH_RIF = math.radians(135)                  # posizione angolare del tubicino (nel quarto tagliato)
 TH_ELICA0 = math.radians(90)                # l'elica parte dall'alto
 PASSO = 2 * math.pi * R_ELICA / math.tan(math.radians(ALFA_DEG))
 
@@ -200,7 +200,7 @@ def costruisci():
     m_ospite = materiale("tubo ospite", (0.42, 0.43, 0.46), rough=0.6, metal=0.3)
     m_guaina = materiale("guaina composito", (0.93, 0.83, 0.55), alpha=0.22, rough=0.3)
     m_acqua = materiale("acqua", (0.35, 0.65, 0.95), alpha=0.10, rough=0.1)
-    m_tubetto = materiale("tubetto libero", (0.95, 0.95, 0.95), alpha=0.22, rough=0.2)
+    m_tubicino = materiale("tubicino libero", (0.95, 0.95, 0.95), alpha=0.22, rough=0.2)
     # UNA sola fibra: stesso materiale dalla porta A alla porta B (andata e ritorno sono solo il percorso)
     m_andata = m_ritorno = materiale("fibra ottica", arancio, rough=0.3, emissione=0.7)
     m_pressione = materiale("pressione", (0.9, 0.0, 0.0), rough=0.4, emissione=1.2)
@@ -220,14 +220,14 @@ def costruisci():
     elica = [tuple(punto_elica(L * i / n)) for i in range(n + 1)]
     curva("fibra ANDATA - elica (pressione + temperatura)", elica, R_FIBRA, m_andata)
 
-    # RITORNO: fibra dritta in tubetto libero, leggermente ondulata (è libera, non tesa)
+    # RITORNO: fibra dritta in tubicino libero, leggermente ondulata (è libera, non tesa)
     y_r, z_r = R_RIF * math.cos(TH_RIF), R_RIF * math.sin(TH_RIF)
-    tubo("tubetto libero", R_TUBETTO, T_TUBETTO, 0.0, L, m_tubetto, centro=(y_r, z_r), vertici=48)
+    tubo("tubicino libero", R_TUBICINO, T_TUBICINO, 0.0, L, m_tubicino, centro=(y_r, z_r), vertici=48)
     rif = [(L - x, y_r, z_r - 0.004 + 0.008 * math.sin(2 * math.pi * x / 0.9))
            for x in [L * i / 300 for i in range(301)]]
-    curva("fibra RITORNO - dritta in tubetto libero (solo temperatura)", rif, R_FIBRA * 0.8, m_ritorno)
+    curva("fibra RITORNO - dritta in tubicino libero (solo temperatura)", rif, R_FIBRA * 0.8, m_ritorno)
 
-    # giunzione in fondo: l'elica esce dalla guaina, entra nella giunzione, torna nel tubetto
+    # giunzione in fondo: l'elica esce dalla guaina, entra nella giunzione, torna nel tubicino
     giunto = Vector((L + 0.8, -0.55, 0.0))
     bpy.ops.mesh.primitive_cylinder_add(vertices=48, radius=0.15, depth=0.5, location=giunto,
                                         rotation=(0, math.pi / 2, 0))
@@ -237,7 +237,7 @@ def costruisci():
     curva("anello: elica -> giunzione",
           liscia([fine_elica, fine_elica + Vector((0.35, 0, 0)), giunto + Vector((-0.25, 0, 0))]),
           R_FIBRA, m_andata)
-    curva("anello: giunzione -> tubetto",
+    curva("anello: giunzione -> tubicino",
           liscia([giunto + Vector((-0.25, 0, -0.06)), Vector((L + 0.3, y_r, z_r)), Vector((L, y_r, z_r))]),
           R_FIBRA * 0.8, m_ritorno)
 
@@ -260,7 +260,7 @@ def costruisci():
     cavo_a = liscia([PORTA_A, PORTA_A + Vector((0.5, 0, 0)), ini_elica + Vector((-0.6, 0, 0)), ini_elica])
     cavo_b = liscia([Vector((0, y_r, z_r)), Vector((-0.6, y_r, z_r)), PORTA_B + Vector((0.5, 0, 0)), PORTA_B])
     curva("cavo porta A -> inizio elica", cavo_a, R_FIBRA, m_andata)
-    curva("cavo fine tubetto -> porta B", cavo_b, R_FIBRA * 0.8, m_ritorno)
+    curva("cavo fine tubicino -> porta B", cavo_b, R_FIBRA * 0.8, m_ritorno)
 
     # frecce di verso
     for i, x in enumerate((0.9, 2.4, 3.9, 5.4)):
@@ -321,7 +321,7 @@ def costruisci():
     nomi = {
         "interrogatore": "interrogatore BOTDA", "porta_A": "porta A", "porta_B": "porta B",
         "cavo": "cavo di collegamento",
-        "elica": "ANDATA: fibra a elica", "riferimento": "RITORNO: fibra dritta in tubetto libero",
+        "elica": "ANDATA: fibra a elica", "riferimento": "RITORNO: fibra dritta in tubicino libero",
         "giunzione": "giunzione", "ospite": "tubo ospite", "guaina": "guaina", "acqua": "acqua in pressione",
     }
     col = bpy.data.collections.new("etichette (solo vista, non nel render)")

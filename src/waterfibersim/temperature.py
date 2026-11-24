@@ -24,7 +24,7 @@ Acqua (sezione facoltativa `water`, [BL24] Blokker et al., Water 16, 2796, 2024,
   - nei nodi le acque in arrivo si mescolano pesate con la portata;
   - quasi stazionario: in ogni istante si usano le portate di quell'istante (⚠️ semplificazione);
   - acqua ferma: temperatura del terreno;
-  - elica e ritorno (libero nel tubetto, nella stessa guaina) vedono la temperatura dell'acqua nello stesso istante
+  - elica e ritorno (libero nel tubicino, nella stessa guaina) vedono la temperatura dell'acqua nello stesso istante
     (decisione di posa MATRIS, dump §13.4n); cavi e giunzione vedono il terreno.
 """
 

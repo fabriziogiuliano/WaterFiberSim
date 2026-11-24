@@ -15,7 +15,7 @@ Tubi con più strati (tubo ospite + guaina, ed eventuali strati in più): Lamé 
 Con un solo strato coincide con le formule sopra (verificato nei test).
 
 Ipotesi dichiarate: comportamento elastico (niente creep del PE: modello di Burgers in [B23], più avanti);
-trasferimento della deformazione alla fibra al 100 %; la fibra di riferimento libera nel tubetto non si deforma.
+trasferimento della deformazione alla fibra al 100 %; la fibra di riferimento libera nel tubicino non si deforma.
 """
 
 from __future__ import annotations

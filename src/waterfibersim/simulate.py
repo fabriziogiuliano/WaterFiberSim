@@ -89,7 +89,7 @@ def simulate_true(scenario: Scenario, duration_s: int = 86_400, step_s: int = 90
             for f in np.unique(fid):
                 m = fid == f
                 strain[:, rows[sens][m]] = helix_strain_ue(eps_t[:, m], eps_z[:, m], angle[f])
-        # tratto di riferimento: fibra libera nel tubetto, deformazione 0 (resta 0)
+        # tratto di riferimento: fibra libera nel tubicino, deformazione 0 (resta 0)
 
     rest = rest_offset_mhz(fmap, scenario, seed) if rest_profile else np.zeros(Z)
     if scenario.temperature is not None and scenario.temperature.water is not None:

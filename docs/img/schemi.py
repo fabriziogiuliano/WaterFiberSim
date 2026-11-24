@@ -44,10 +44,10 @@ def posa_fibra():
     d.line([(x1 - 40, 200), (x1 - 15, 200), (x1 - 15, 290), (x1 - 40, 290)], color=NERO, sw=3)
     d.circle(x1 - 15, 245, 9, NERO)
     d.label(x1 + 5, 250, "giunzione", size=13, w=120)
-    # ritorno dritto nel tubetto
+    # ritorno dritto nel tubicino
     d.box(x0 + 20, 280, x1 - x0 - 60, 20, [], fill="#dbe4ff", stroke=BLU, radius=10, sw=1.2)
     d.line([(x1 - 40, 290), (x0 + 20, 290)], color=BLU, sw=3.5)
-    d.label(x0 + 40, 330, "RITORNO: fibra DRITTA, libera in un tubetto nella stessa guaina → sente solo TEMPERATURA",
+    d.label(x0 + 40, 330, "RITORNO: fibra DRITTA, libera in un tubicino nella stessa guaina → sente solo TEMPERATURA",
             size=13, color=BLU, weight="bold", w=720)
     # verso della luce
     d.line([(x0 + 150, 455), (x0 + 330, 455)], color=ARANCIO, sw=2.5, arrow=True)

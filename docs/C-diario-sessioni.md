@@ -89,7 +89,7 @@ Il repo `edge-slm-emulator` è privato su GitHub; il branch `dt_matris` non esis
 - **OFDR Rayleigh**: risoluzione al mm e < 1 µε, ma solo su tratti corti;
 - **FBG**: punti molto precisi, quasi-distribuito.
 
-**Condizione chiave:** la fibra misura lo strain della struttura solo se è **solidale** (incollata o annegata). Una fibra in tubetto libero sente solo la temperatura e fa da **riferimento**. Nel caso MATRIS la fibra annegata nel composito della guaina è solidale per costruzione.
+**Condizione chiave:** la fibra misura lo strain della struttura solo se è **solidale** (incollata o annegata). Una fibra in tubicino libero sente solo la temperatura e fa da **riferimento**. Nel caso MATRIS la fibra annegata nel composito della guaina è solidale per costruzione.
 
 **Combinazione scelta:** DSS (pressione + temperatura) + DTS o fibra libera (solo temperatura) → per differenza la pressione. Eventualmente DAS per i transitori.
 
@@ -128,7 +128,7 @@ Sull'acciaio 1 °C (≈ 20 µε) vale come ~5 bar: la compensazione termica è c
 
 | Posa | Cosa sente | Uso |
 |---|---|---|
-| dritta (α = 0°) | assiale | flessione, cedimenti; in tubetto libero, temperatura |
+| dritta (α = 0°) | assiale | flessione, cedimenti; in tubicino libero, temperatura |
 | ad anelli (α ≈ 90°) | circonferenziale pura | massima sensibilità, ma servono raccordi |
 | **a elica** | miscela | il compromesso usato in pratica |
 
@@ -141,7 +141,7 @@ Sull'acciaio 1 °C (≈ 20 µε) vale come ~5 bar: la compensazione termica è c
 
 - Passo dell'elica: p = 2πR / tan α.
 - Raggio di curvatura dell'elica: R / sin²α ≥ R; per DN110 (R = 55 mm) va bene; le fibre G.657 reggono fino a 7,5–10 mm.
-- Accanto all'elica si posa di solito una fibra dritta in tubetto libero (riferimento di temperatura).
+- Accanto all'elica si posa di solito una fibra dritta in tubicino libero (riferimento di temperatura).
 - Se la guaina MATRIS è fatta per avvolgimento di filamenti, l'elica viene naturale.
 
 ---
@@ -360,7 +360,7 @@ Fatto: `rete/griglia_3x3.inp` (P12 ha diametro 78 mm per via della guaina), `ret
 
 ### 13.2 Architettura del sensore (decisa)
 
-- **Una sola fibra ad anello** sull'interrogatore BOTDA: porta A → **tratto a elica incollato** (sente ε + T) → giunzione → **tratto dritto libero in un tubetto** (sente solo T) → porta B. È la stessa architettura di Bertulessi et al. 2023 (fonte [\[B23\]](A-fonti.md#b23) in [A-fonti.md](A-fonti.md)).
+- **Una sola fibra ad anello** sull'interrogatore BOTDA: porta A → **tratto a elica incollato** (sente ε + T) → giunzione → **tratto dritto libero in un tubicino** (sente solo T) → porta B. È la stessa architettura di Bertulessi et al. 2023 (fonte [\[B23\]](A-fonti.md#b23) in [A-fonti.md](A-fonti.md)).
 - **Impulsi di interrogazione (pompa)** escono da A. **Luce di lettura (sonda)**, un tono ottico continuo a frequenza laser − Δν (Δν ≈ 10,8 GHz, scelta dal generatore RF), esce da B. **Si legge in A**, tramite il circolatore C2 e il fotodiodo.
 - L'impulso **modula in ampiezza** la luce di lettura, punto per punto: il tempo dà la posizione, l'altezza del gradino in funzione di Δν dà lo spettro. Spiegazione completa in [B-fibra-ottica-dfos.md §2.1](02-principio-di-misura.md#22-il-principio-botda-panoramica).
 - **L0 = P(z, Δν)**: lo spettro di guadagno Brillouin per ogni metro e ogni misura, con rumore. **L1 = picco ν_B(z, t)**.
@@ -487,9 +487,9 @@ Figure: nuova mappa per le reti in linea (profilo con quote, pelo dell'acqua, ru
 
 ### 13.4n Posa MATRIS della fibra: decisione (2026-11-24)
 
-Informazione e decisione dell'utente: nella realizzazione MATRIS **l'elica è annegata nella guaina polimerizzata** e **la fibra di ritorno è annegata nello stesso modo, ma dentro un tubetto in cui è libera di muoversi** (loose tube). Conseguenze:
+Informazione e decisione dell'utente: nella realizzazione MATRIS **l'elica è annegata nella guaina polimerizzata** e **la fibra di ritorno è annegata nello stesso modo, ma dentro un tubicino in cui è libera di muoversi** (loose tube). Conseguenze:
 - elica e ritorno stanno nello stesso materiale alla stessa distanza dall'acqua: vedono la stessa temperatura nello stesso istante (niente ritardi diversi);
-- il ritorno, libero nel tubetto, non si deforma con la pressione e sente solo la temperatura (principio verificato in [\[B23\]](A-fonti.md#b23) Fig. 7c sul tratto libero); limiti da verificare su una scheda di cavo: lasco della fibra nel tubetto, attrito;
+- il ritorno, libero nel tubicino, non si deforma con la pressione e sente solo la temperatura (principio verificato in [\[B23\]](A-fonti.md#b23) Fig. 7c sul tratto libero); limiti da verificare su una scheda di cavo: lasco della fibra nel tubicino, attrito;
 - la compensazione resta quella già simulata (S1t, S1th).
 Opzione scartata: ritorno dritto e ancorato (sentirebbe anche la deformazione assiale, sistema 2×2).
 

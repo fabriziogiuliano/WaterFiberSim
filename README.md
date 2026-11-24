@@ -117,7 +117,7 @@ pipes:
 Una fibra **non si dirama**: è un percorso lineare. Con la BOTDA i due capi tornano allo stesso strumento (porta A e porta B), quindi la fibra è un **anello** con due tratti (vedi la figura del sensore più sotto e [docs/B-fibra-ottica-dfos.md §2.1](docs/02-principio-di-misura.md#22-il-principio-botda-panoramica)):
 
 - **tratto di misura** (*sensing leg*): dalla porta A, a **elica solidale** al tubo; nella guaina di risanamento è **annegata**, che polimerizza in opera e la ancora; sente pressione + temperatura;
-- **tratto di riferimento** (*reference leg*): ritorna alla porta B ripercorrendo **gli stessi tubi** al contrario, **dritto e libero in un tubetto**; sente solo la temperatura.
+- **tratto di riferimento** (*reference leg*): ritorna alla porta B ripercorrendo **gli stessi tubi** al contrario, **dritto e libero in un tubicino**; sente solo la temperatura.
 
 Nel file si scrive solo il percorso di andata. Il ritorno è sempre lo stesso percorso al contrario, perché il riferimento deve misurare la temperatura negli stessi punti.
 
@@ -376,9 +376,9 @@ temperature:
 
 L'acqua esce dal serbatoio a una temperatura diversa dal terreno e lungo i tubi vi si avvicina (Blokker et al. 2024, *Water* 16, 2796, Eq. 1–3): T = T_terreno + (T_ingresso − T_terreno)·e^(−k·τ), con k da diametro, PE (0,38 W/m·K), terreno e velocità, ora per ora; nei nodi le acque si mescolano. Di giorno l'acqua arriva veloce e calda in fondo alla strada, di notte si porta al terreno: la temperatura cambia **con il ritmo dei consumi**.
 
-S1w (acqua +2 °C sul terreno): in fondo alla strada la pressione vera scende di 0,27 bar al picco, quella letta senza compensare **sale** di 0,09 bar (segno invertito). Con il riferimento (libero nel tubetto, stessa temperatura dell'elica) l'errore torna quello del rumore (circa 0,06 bar per misura).
+S1w (acqua +2 °C sul terreno): in fondo alla strada la pressione vera scende di 0,27 bar al picco, quella letta senza compensare **sale** di 0,09 bar (segno invertito). Con il riferimento (libero nel tubicino, stessa temperatura dell'elica) l'errore torna quello del rumore (circa 0,06 bar per misura).
 
-Posa decisa: elica annegata nella guaina, ritorno annegato nella stessa guaina ma libero in un tubetto. I cavi di collegamento (`lead`) stanno nel terreno e misurano la temperatura del terreno.
+Posa decisa: elica annegata nella guaina, ritorno annegato nella stessa guaina ma libero in un tubicino. I cavi di collegamento (`lead`) stanno nel terreno e misurano la temperatura del terreno.
 
 ### Cosa il simulatore non fa ancora
 
@@ -428,7 +428,7 @@ Più fibra per metro significa risoluzione migliore sul tubo, ma anche più atte
 
 Altri due vincoli:
 - **Curvatura:** l'elica ha raggio di curvatura R / sin²α, quindi non scende mai sotto il raggio del tubo. Per un DN110 (R = 55 mm) va bene anche una fibra standard; le fibre "insensibili alla curvatura" (ITU-T G.657) reggono fino a 7,5–10 mm.
-- **Fibra di riferimento:** di solito accanto all'elica si posa una **fibra dritta in tubetto libero**, che non sente lo strain e misura solo la temperatura. Serve a compensare (vedi passo 5).
+- **Fibra di riferimento:** di solito accanto all'elica si posa una **fibra dritta in tubicino libero**, che non sente lo strain e misura solo la temperatura. Serve a compensare (vedi passo 5).
 
 Nella guaina di risanamento la fibra si annega nel composito della guaina durante la produzione. Se la guaina è fatta per avvolgimento di filamenti, l'elica viene naturale.
 
@@ -443,7 +443,7 @@ La figura spiega il sistema a chi non conosce la fibra: **una sola fibra ad anel
 - **Porta A** (z = 0): esce l'impulso laser ed entra la luce che lo strumento legge.
 - **Andata a elica**, annegata nella guaina e ancorata dalla polimerizzazione: sente pressione + temperatura.
 - **Giunzione** in fondo al tratto.
-- **Ritorno dritto** in un tubetto libero: sente solo temperatura.
+- **Ritorno dritto** in un tubicino libero: sente solo temperatura.
 - **Porta B**: entra il laser continuo, che percorre l'anello al contrario.
 
 La figura spiega anche l'effetto Brillouin e la fibra "srotolata", in cui ogni punto del tubo compare due volte (z₁ sull'elica, z₂ sul ritorno). Per differenza tra i due punti si separano temperatura e pressione.

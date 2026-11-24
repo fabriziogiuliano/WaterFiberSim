@@ -17,10 +17,10 @@ Figura completa con didascalie: [blender/tubo_fibra.png](../blender/tubo_fibra.p
 |---|---|---|---|
 | andata | **elica** a 70°, annegata nella guaina di risanamento o incollata fuori dal tubo (rete di prova, come [\[B23\]](A-fonti.md#b23)) | pressione + temperatura | `sensing` |
 | giunzione | saldatura in fondo | temperatura del terreno | `junction` |
-| ritorno | **dritto, libero in un tubetto** annegato nella stessa guaina | solo temperatura (✅ [\[B23\]](A-fonti.md#b23) Fig. 7c: non si sposta con la pressione) | `reference` |
+| ritorno | **dritto, libero in un tubicino** annegato nella stessa guaina | solo temperatura (✅ [\[B23\]](A-fonti.md#b23) Fig. 7c: non si sposta con la pressione) | `reference` |
 | cavi | dalla cabina al tubo, nel terreno | temperatura del terreno | `lead` |
 
-Scelta di posa (appendice C, §13.4n): elica e ritorno nella stessa guaina, ritorno libero nel tubetto;
+Scelta di posa (appendice C, §13.4n): elica e ritorno nella stessa guaina, ritorno libero nel tubicino;
 quindi vedono **la stessa temperatura nello stesso istante** (cap. 7).
 
 ## 3.3 Posa a elica
