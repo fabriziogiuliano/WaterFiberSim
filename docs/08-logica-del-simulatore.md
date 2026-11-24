@@ -64,8 +64,8 @@ La catena è coerente con le fonti nelle condizioni di [B23] (tubo in PE, pressi
    nel tempo: con 10 misure di base l'errore congelato scende di circa 3 volte.
 5. **La guaina dentro un tubo rigido integro sente poco** (circa 0,4–0,5 MHz/bar, pari al rumore di una misura):
    la pressione si vedrebbe solo mediando molto, e allora domina l'errore della temperatura. Su ospite in PE o
-   **degradato** la guaina lavora e la fibra sente 2,5–10 MHz/bar: la fibra che "si sveglia" segnala che il tubo
-   dietro sta cedendo.
+   **degradato** la guaina lavora e la fibra sente 2,5–10 MHz/bar. Sul tubo rigido serve quindi una soluzione
+   costruttiva diversa (punto 6).
 6. **L'idea dello strato comprimibile funziona sulla carta.** Uno strato di 10 mm con rigidezza confinata circa
    70 MPa tra guaina sottile e ghisa dà circa 7 MHz/bar (metà del PE nudo); con una guaina rigida in vetro, circa
    3 MHz/bar. Restano da verificare materiali reali, creep, durata, idoneità all'acqua potabile.

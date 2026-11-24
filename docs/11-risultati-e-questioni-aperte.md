@@ -25,8 +25,6 @@
 ## 11.3 Idee da verificare
 
 - **Strato comprimibile** tra guaina e ospite rigido: circa 7 MHz/bar sulla carta (cap. 5). Servono materiali reali.
-- **La fibra che "si sveglia"**: su ospite rigido la fibra sente la pressione solo dove il tubo dietro cede → un
-  indicatore di degrado del tubo, forse più utile della pressione stessa.
 - Usare i **cavi** (terreno) e il **ritorno** (acqua) insieme per separare stagione e consumi (cap. 7).
 
 ## 11.4 Prossimi passi proposti
