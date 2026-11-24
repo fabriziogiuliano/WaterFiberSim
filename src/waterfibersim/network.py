@@ -9,7 +9,7 @@ from __future__ import annotations
 import os
 import tempfile
 import warnings
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 
 import yaml
@@ -62,6 +62,9 @@ class Network:
     inp_path: Path
     pipes: dict[str, PipeSpec]
     node_xy: dict[str, tuple[float, float]]
+    node_elev_m: dict[str, float] = field(default_factory=dict)      # quota; per i serbatoi: quota del pelo dell'acqua
+    node_kind: dict[str, str] = field(default_factory=dict)          # "junction" | "reservoir" | "tank"
+    base_demand_lps: dict[str, float] = field(default_factory=dict)  # prelievo di base dei nodi (L/s)
 
 
 def _check_keys(raw: dict, keys: set, where: str) -> dict:
@@ -71,8 +74,11 @@ def _check_keys(raw: dict, keys: set, where: str) -> dict:
     return dict(raw)
 
 
-def _read_inp(inp_path: Path) -> tuple[dict[str, dict], dict[str, tuple[float, float]]]:
-    """Tubi (nodi, lunghezza, diametro) e coordinate dei nodi dall'.inp."""
+_NODE_KINDS = {en.JUNCTION: "junction", en.RESERVOIR: "reservoir", en.TANK: "tank"}
+
+
+def _read_inp(inp_path: Path) -> tuple[dict[str, dict], dict[str, tuple[float, float]], dict[str, dict]]:
+    """Tubi (nodi, lunghezza, diametro), coordinate dei nodi e dati dei nodi (quota, tipo, prelievo) dall'.inp."""
     rpt = os.path.join(tempfile.gettempdir(), f"waterfibersim-{os.getpid()}.rpt")
     ph = en.createproject()
     try:
@@ -81,6 +87,14 @@ def _read_inp(inp_path: Path) -> tuple[dict[str, dict], dict[str, tuple[float, f
             raise ValueError(f"{inp_path}: SI flow units required (LPS, CMH, ...), not US units")
         node_xy = {
             en.getnodeid(ph, i): tuple(en.getcoord(ph, i))
+            for i in range(1, en.getcount(ph, en.NODECOUNT) + 1)
+        }
+        nodes = {
+            en.getnodeid(ph, i): {
+                "elev_m": en.getnodevalue(ph, i, en.ELEVATION),
+                "kind": _NODE_KINDS.get(en.getnodetype(ph, i), "other"),
+                "demand_lps": en.getnodevalue(ph, i, en.BASEDEMAND),
+            }
             for i in range(1, en.getcount(ph, en.NODECOUNT) + 1)
         }
         pipes = {}
@@ -97,7 +111,7 @@ def _read_inp(inp_path: Path) -> tuple[dict[str, dict], dict[str, tuple[float, f
         en.close(ph)
     finally:
         en.deleteproject(ph)
-    return pipes, node_xy
+    return pipes, node_xy, nodes
 
 
 def load_network(inp_path: str | Path, pipes_yaml: str | Path) -> Network:
@@ -107,7 +121,7 @@ def load_network(inp_path: str | Path, pipes_yaml: str | Path) -> Network:
     diametro interno ricavato dal YAML non coincide con quello dell'.inp.
     """
     inp_path = Path(inp_path)
-    inp_pipes, node_xy = _read_inp(inp_path)
+    inp_pipes, node_xy, nodes = _read_inp(inp_path)
     cfg = yaml.safe_load(Path(pipes_yaml).read_text())
 
     default = _check_keys(cfg.get("default", {}), _PIPE_KEYS, "default")
@@ -134,4 +148,7 @@ def load_network(inp_path: str | Path, pipes_yaml: str | Path) -> Network:
             )
         pipes[name] = spec
 
-    return Network(inp_path=inp_path, pipes=pipes, node_xy=node_xy)
+    return Network(inp_path=inp_path, pipes=pipes, node_xy=node_xy,
+                   node_elev_m={n: d["elev_m"] for n, d in nodes.items()},
+                   node_kind={n: d["kind"] for n, d in nodes.items()},
+                   base_demand_lps={n: d["demand_lps"] for n, d in nodes.items()})

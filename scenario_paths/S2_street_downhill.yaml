@@ -1,0 +1,27 @@
+# Scenario S2 - downhill street, reservoir at the top: elevation and head loss act in opposite directions.
+# Same fibre in S1 and S2 (interrogator at the start of the street, N0): only the water changes,
+# so the figures can be compared directly (z is about the distance along the street).
+title: "S2. Strada in discesa, serbatoio a monte"
+description: "Strada di 1 km in discesa (2 %), serbatoio in cima (N0).\nScendendo la quota fa salire la pressione,\nla perdita di carico la fa scendere."
+network: network/street_downhill.inp
+pipes: network/street_pipes.yaml
+
+fibers:
+  - id: S2
+    interrogator: {node: N0, technique: BOTDA, channel: 1}   # loop: both fiber ends on the instrument
+    sampling_step_m: 0.5
+    sensing_leg:   {layout: helix, angle_deg: 70, bonding: bonded}
+    reference_leg: {layout: straight, bonding: loose_tube}
+    route:                     # ordered from port A; the reference leg retraces it backwards to port B
+      - {lead: 10, to: N0}     # cable from the cabinet to the pipe
+      - {pipe: P1, from: N0}
+      - {pipe: P2, from: N1}
+      - {pipe: P3, from: N2}
+      - {pipe: P4, from: N3}
+      - {pipe: P5, from: N4}
+      - {pipe: P6, from: N5}
+      - {pipe: P7, from: N6}
+      - {pipe: P8, from: N7}
+      - {pipe: P9, from: N8}
+      - {pipe: P10, from: N9}
+    junction_m: 2              # splice at the far end (N10): sensing leg -> reference leg

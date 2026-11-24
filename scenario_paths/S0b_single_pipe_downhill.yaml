@@ -1,0 +1,18 @@
+# Scenario S0b - one 1 km pipe, downhill 2 % with the reservoir at the top (as S2), all the demand at the far end.
+# Same fibre layout as S1 and S2 (interrogator at the start, N0). Compare with S2: same total demand,
+# but here the whole flow runs along the whole pipe, so the pressure falls in a straight line.
+title: "S0b. Un solo tubo, in discesa"
+description: "Un tubo di 1 km in discesa (2 %), serbatoio in cima,\nun solo prelievo in fondo (N1). La quota fa salire\nla pressione, la perdita di carico la fa scendere."
+network: network/single_pipe_downhill.inp
+pipes: network/street_pipes.yaml
+
+fibers:
+  - id: S0b
+    interrogator: {node: N0, technique: BOTDA, channel: 1}   # loop: both fiber ends on the instrument
+    sampling_step_m: 0.5
+    sensing_leg:   {layout: helix, angle_deg: 70, bonding: bonded}
+    reference_leg: {layout: straight, bonding: loose_tube}
+    route:                     # ordered from port A; the reference leg retraces it backwards to port B
+      - {lead: 10, to: N0}     # cable from the cabinet to the pipe
+      - {pipe: P1, from: N0}
+    junction_m: 2              # splice at the far end (N1): sensing leg -> reference leg

@@ -15,9 +15,18 @@ from .fiber import Scenario
 LEG_COLORS = {"lead": "#adb5bd", "sensing": "#ff6a00", "junction": "#343a40", "reference": "#1f5fbf"}
 
 
+M_WATER_TO_BAR = 0.0980665   # 1 m di colonna d'acqua in bar
+
+
 def plot_map(scenario: Scenario, fmap: pd.DataFrame, path: str | Path) -> Path:
-    """Rete con la fibra colorata secondo z (tratto di misura) + la fibra "srotolata" per tratti."""
+    """Rete con la fibra colorata secondo z (tratto di misura) + la fibra "srotolata" per tratti.
+
+    Rete tutta su una riga (una strada): al posto della pianta, il profilo della strada (quote, serbatoio,
+    rubinetti, interrogatore).
+    """
     net = scenario.network
+    if len({y for _, y in net.node_xy.values()}) == 1:
+        return _plot_map_line(scenario, fmap, path)
     fibers = list(fmap["fiber"].unique())
     fig = plt.figure(figsize=(15, 4.2 + 1.6 * len(fibers)), dpi=100)
     gs = fig.add_gridspec(len(fibers), 2, width_ratios=[1, 2.2], wspace=0.15, hspace=0.9)
@@ -39,23 +48,112 @@ def plot_map(scenario: Scenario, fmap: pd.DataFrame, path: str | Path) -> Path:
     ax.axis("off")
 
     for i, fid in enumerate(fibers):
-        ax = fig.add_subplot(gs[i, 1])
-        f = fmap[fmap["fiber"] == fid]
-        step = f["z_m"].diff().median()
-        blocks = (f["leg"] + "|" + f["pipe"].fillna("")).ne((f["leg"] + "|" + f["pipe"].fillna("")).shift()).cumsum()
-        for _, b in f.groupby(blocks):
-            z0, z1 = b["z_m"].iloc[0], b["z_m"].iloc[-1] + step
-            leg, pid = b["leg"].iloc[0], b["pipe"].iloc[0]
-            ax.barh(0, z1 - z0, left=z0, height=0.8, color=LEG_COLORS[leg], edgecolor="white", lw=0.8)
-            if pid and z1 - z0 > 40:
-                ax.text((z0 + z1) / 2, 0, pid, ha="center", va="center", fontsize=8.5, color="white", fontweight="bold")
-        ax.set_yticks([])
-        ax.set_xlim(0, f["z_m"].max() + step)
-        ax.set_xlabel("z = distanza lungo la fibra dalla porta A [m]")
-        ax.set_title(f"fibra {fid}: arancione = elica (misura), blu = dritto (riferimento), grigio = cavi, "
-                     f"nero = giunzione", fontsize=10, loc="left")
-        for s in ("top", "right", "left"):
-            ax.spines[s].set_visible(False)
+        _fiber_bar(fig.add_subplot(gs[i, 1]), fmap[fmap["fiber"] == fid], fid, height=0.8)
+    return _save(fig, path)
+
+
+def _plot_map_line(scenario: Scenario, fmap: pd.DataFrame, path: str | Path) -> Path:
+    """Strada: grafico 1 = profilo (quote, pelo dell'acqua, rubinetti, interrogatore); poi la fibra srotolata."""
+    net = scenario.network
+    fibers = list(fmap["fiber"].unique())
+    fig = plt.figure(figsize=(15, 4.6 + 1.5 * len(fibers)), dpi=100)
+    gs = fig.add_gridspec(1 + len(fibers), 1, height_ratios=[3.2] + [1.0] * len(fibers), hspace=0.75)
+    fig.suptitle(f"Mappa fibra → tubo: {scenario.title}", fontsize=15, fontweight="bold", x=0.02, ha="left")
+
+    ax = fig.add_subplot(gs[0])
+    jn = sorted((n for n, k in net.node_kind.items() if k == "junction"), key=lambda n: net.node_xy[n][0])
+    xs = [net.node_xy[n][0] for n in jn]
+    el = [net.node_elev_m[n] for n in jn]
+    span = max(xs) - min(xs)
+    ax.fill_between(xs, el, min(el) - 8, color="#e9dcc9", zorder=0)                  # terreno
+    ax.plot(xs, el, color="#1f5fbf", lw=4, solid_capstyle="round", zorder=2, label="tubo con la fibra a elica")
+    for pid, p in net.pipes.items():
+        if net.node_kind[p.start_node] == "junction" and net.node_kind[p.end_node] == "junction":
+            xm = (net.node_xy[p.start_node][0] + net.node_xy[p.end_node][0]) / 2
+            ym = (net.node_elev_m[p.start_node] + net.node_elev_m[p.end_node]) / 2
+            ax.text(xm, ym - 1.2, pid, ha="center", va="top", fontsize=8.5, color="#1f5fbf", fontweight="bold")
+    taps = [n for n in jn if net.base_demand_lps.get(n, 0) > 0]
+    for n in jn:
+        x, e = net.node_xy[n][0], net.node_elev_m[n]
+        ax.plot(x, e, "o", ms=5, color="#212529", zorder=3)
+        ax.text(x, e + 1.0, n, ha="center", va="bottom", fontsize=8)
+    for n in taps:
+        x, e = net.node_xy[n][0], net.node_elev_m[n]
+        ax.annotate("", (x, e - 4.5), (x, e - 0.6), arrowprops=dict(arrowstyle="-|>", color="#2b8a3e", lw=1.4))
+    if taps:
+        q = net.base_demand_lps[taps[0]]
+        ax.plot([], [], color="#2b8a3e", marker="v", ls="", label=f"rubinetto (prelievo di base {q:g} L/s,\nvaria nel giorno)".replace(".", ","))
+
+    for r in (n for n, k in net.node_kind.items() if k == "reservoir"):
+        head = net.node_elev_m[r]
+        # il serbatoio è collegato al nodo più vicino della strada
+        xr = net.node_xy[r][0]
+        near = min(jn, key=lambda n: abs(net.node_xy[n][0] - xr))
+        xn, en_ = net.node_xy[near][0], net.node_elev_m[near]
+        side = -1 if xr <= xn else 1
+        w = 0.05 * span
+        x0 = xn + side * 0.03 * span
+        x1 = x0 + side * w
+        ax.fill_between(sorted([x0, x1]), en_, head, color="#a5d8ff", zorder=1)
+        ax.plot(sorted([x0, x1]), [head, head], color="#1971c2", lw=2)
+        ax.text((x0 + x1) / 2, head + 1.0, f"serbatoio {r}", ha="center", va="bottom", fontsize=9, fontweight="bold")
+        ax.plot([min(xs) - 0.1 * span, max(xs) + 0.1 * span], [head, head], color="#1971c2", ls="--", lw=1,
+                label=f"pelo dell'acqua del serbatoio ({head:g} m)")
+        for n in (jn[0], jn[-1]):
+            x, e = net.node_xy[n][0], net.node_elev_m[n]
+            ax.annotate("", (x, e + 3.2), (x, head), arrowprops=dict(arrowstyle="<->", color="#868e96", lw=1))
+            ax.text(x + 0.01 * span * (1 if n == jn[0] else -1), (e + head) / 2,
+                    f"{head - e:g} m\n≈ {(head - e) * M_WATER_TO_BAR:.1f} bar".replace(".", ","),
+                    ha="left" if n == jn[0] else "right", va="center", fontsize=8.5, color="#495057")
+
+    for f in scenario.fibers:
+        n = f.interrogator.node
+        x, e = net.node_xy[n][0], net.node_elev_m[n]
+        ax.plot(x, e + 6.5, "s", ms=11, color="#7048e8", zorder=4)
+        ax.text(x - 0.012 * span, e + 6.5, f"interrogatore {f.id}", ha="right", va="center", fontsize=8.5, color="#7048e8")
+    ax.plot([], [], "s", color="#7048e8", ls="", label="interrogatore (porte A e B\ndell'anello di fibra)")
+
+    heads = [net.node_elev_m[r] for r, k in net.node_kind.items() if k == "reservoir"] or [max(el)]
+    ax.set_ylim(min(el) - 8, max(heads) + 12)
+    ax.set_xlim(min(xs) - 0.12 * span, max(xs) + 0.12 * span)
+    ax.set_xlabel("distanza lungo la strada [m]")
+    ax.set_ylabel("quota [m]")
+    ax.legend(loc="upper left", bbox_to_anchor=(1.01, 1), fontsize=8.5, frameon=False)
+    ax.set_title("Grafico 1 — profilo della strada: pressione statica (nessun prelievo) = dislivello tra il pelo "
+                 "dell'acqua e il tubo, circa 0,1 bar per metro", fontsize=11, loc="left")
+
+    for i, fid in enumerate(fibers):
+        _fiber_bar(fig.add_subplot(gs[1 + i]), fmap[fmap["fiber"] == fid], fid, height=0.6,
+                   title_prefix=f"Grafico {2 + i} — ")
+    return _save(fig, path)
+
+
+def _fiber_bar(ax, f: pd.DataFrame, fid: str, height: float, title_prefix: str = "") -> None:
+    """La fibra srotolata lungo z, a blocchi colorati per tratto; i tratti corti (cavi, giunzione) con un'etichetta."""
+    step = f["z_m"].diff().median()
+    key = f["leg"] + "|" + f["pipe"].fillna("")
+    zmax = f["z_m"].max() + step
+    nomi = {"lead": "cavo", "junction": "giunzione"}
+    for _, b in f.groupby(key.ne(key.shift()).cumsum()):
+        z0, z1 = b["z_m"].iloc[0], b["z_m"].iloc[-1] + step
+        leg, pid = b["leg"].iloc[0], b["pipe"].iloc[0]
+        ax.barh(0, z1 - z0, left=z0, height=height, color=LEG_COLORS[leg], edgecolor="white", lw=0.8)
+        if pid and z1 - z0 > 0.025 * zmax:
+            ax.text((z0 + z1) / 2, 0, pid, ha="center", va="center", fontsize=8.5, color="white", fontweight="bold")
+        elif leg in nomi and z1 - z0 < 0.03 * zmax:
+            ax.annotate(f"{nomi[leg]} {z1 - z0:.0f} m", ((z0 + z1) / 2, height / 2), ((z0 + z1) / 2, height / 2 + 0.45),
+                        ha="center", fontsize=8, color="#495057", arrowprops=dict(arrowstyle="-", color="#868e96"))
+    ax.set_yticks([])
+    ax.set_ylim(-0.6, 1.2)
+    ax.set_xlim(0, zmax)
+    ax.set_xlabel("z = distanza lungo la fibra dalla porta A [m]")
+    ax.set_title(f"{title_prefix}fibra {fid} srotolata: arancione = elica (misura, andata), "
+                 f"blu = dritto (riferimento, ritorno), grigio = cavi, nero = giunzione", fontsize=10, loc="left")
+    for s in ("top", "right", "left"):
+        ax.spines[s].set_visible(False)
+
+
+def _save(fig, path: str | Path) -> Path:
     path = Path(path)
     fig.savefig(path, bbox_inches="tight", facecolor="white")
     plt.close(fig)
@@ -115,18 +213,27 @@ def plot_true_signal(sig, path: str | Path, fiber_id: str | None = None) -> Path
     ax.axhline(sig.coef.nu_b0_mhz, color="#adb5bd", lw=0.8, ls=":")
     # in bar: per ogni tubo sull'elica, quanto la curva sta sopra la misura di base (non un asse: la base cambia per metro)
     pipes_s = f.loc[sens, "pipe"]
-    for pid in pd.unique(pipes_s):
+    tubi1 = list(pd.unique(pipes_s))
+    sfalsa = len(tubi1) > 5                 # tanti tubi: etichette su due livelli alternati per non sovrapporle
+    for k, pid in enumerate(tubi1):
         m = np.flatnonzero(sens & (f["pipe"] == pid).to_numpy())
         righe = []
         for hh, c in ore:
             i = int(np.argmin(abs(h - hh)))
             dm = dnu[i, m].mean()
             righe.append((f"{hh:02d}:00  +{dm:.0f} MHz = {dm / mhz_per_bar:.2f} bar".replace(".", ","), c))
-        ytop = sig.nu_b_mhz[:, sel][:, m].max()
+        if sfalsa:   # tanti tubi: solo i bar, a quota comune, su due livelli alternati
+            righe = [(t.split("= ")[1], c) for t, c in righe]
+            ytop = sig.nu_b_mhz[:, sel][:, sens[sel]].max() + (34 if k % 2 else 0)
+        else:
+            ytop = sig.nu_b_mhz[:, sel][:, m].max()
         for r, (txt, c) in enumerate(righe):
             ax.text(z[m].mean(), ytop + 8 + 14 * (len(righe) - 1 - r), txt, ha="center", fontsize=8, color=c)
     lo, hi = ax.get_ylim()
-    ax.set_ylim(lo, hi + 30)
+    ax.set_ylim(lo, hi + (75 if sfalsa else 30))
+    if sfalsa:
+        ax.text(0.005, 0.98, "sopra ogni tubo: pressione media sull'elica alle due ore", transform=ax.transAxes,
+                fontsize=8, va="top", color="#495057")
     ax.set_xlabel("z = distanza lungo la fibra dalla porta A [m]")
     ax.legend(loc="center right", fontsize=9)
     ax.set_title("Grafico 1 \u2014 frequenza Brillouin lungo la fibra: a vuoto e con il carico (valori assoluti, come in Bertulessi "
@@ -185,8 +292,12 @@ def plot_true_signal(sig, path: str | Path, fiber_id: str | None = None) -> Path
     asse_bar(ax, nome="pressione")
     ax.set_xlabel("ora del giorno [h]")
     ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.2), fontsize=9, ncol=2, frameon=False)
-    ax.set_title("Grafico 4 \u2014 nel tempo, fibra a elica a metà di OGNI tubo: segue la pressione; più lontano dal serbatoio, "
-                 "pressione più bassa e cali più forti", fontsize=11, loc="left")
+    if len(tubi) > 1:
+        t4 = ("Grafico 4 \u2014 nel tempo, fibra a elica a metà di OGNI tubo: segue la pressione; i cali più forti "
+              "sono nei tubi più lontani dal serbatoio (si somma la perdita di carico dei tubi a monte)")
+    else:
+        t4 = "Grafico 4 \u2014 nel tempo, fibra a elica a metà del tubo: segue la pressione (cala quando si preleva)"
+    ax.set_title(t4, fontsize=11, loc="left")
 
     path = Path(path)
     fig.savefig(path, bbox_inches="tight", facecolor="white")

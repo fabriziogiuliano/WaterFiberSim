@@ -71,6 +71,21 @@ Il file è `network/grid_3x3.inp`, in formato EPANET standard: si apre anche con
 
 I file di ingresso (`.inp`, YAML) hanno **nomi e chiavi in inglese**, come l'API Python; i commenti e la documentazione restano in italiano.
 
+### 1.1b Scenari semplici: un tubo, una strada
+
+Per capire il segnale prima della griglia ci sono quattro scenari su una linea di 1 km (PE100 SDR11 DN110), con la stessa fibra e l'interrogatore all'inizio:
+
+| Scenario | Rete | Cosa c'è |
+|---|---|---|
+| **S0a** | `network/single_pipe_flat.inp` | un solo tubo di 1 km in piano, un solo prelievo in fondo (3,3 L/s) |
+| **S0b** | `network/single_pipe_downhill.inp` | lo stesso tubo in discesa (2 %), serbatoio in cima |
+| **S1** | `network/street_flat.inp` | una strada in piano: 10 tubi da 100 m, un rubinetto ogni 100 m (11 da 0,3 L/s) |
+| **S2** | `network/street_downhill.inp` | la stessa strada in discesa (2 %), serbatoio in cima |
+
+La strada è un tubo solo: EPANET la spezza in 10 tratti solo perché preleva acqua nei nodi. Lo scenario con il serbatoio in fondo alla discesa non c'è: servirebbe una pompa di risalita.
+
+![Mappa dello scenario S2](docs/img/S2_fiber_map.png)
+
 ### 1.2 I parametri dei tubi
 
 L'`.inp` non si tocca: i parametri meccanici stanno in un file a parte, con valori di default e override per singolo tubo.
@@ -203,9 +218,28 @@ Cosa si vede, nello scenario A:
 - **P0, l'adduttrice in ghisa, non ha l'elica**: la fibra ci passa solo come cavo. Su un tubo così rigido la fibra a elica sentirebbe circa 0,2 MHz per bar, sotto un errore indicativo dello strumento (circa 0,5 MHz, vedi sotto): non avrebbe senso. È lo stesso problema di una guaina appoggiata a un tubo ospite rigido.
 - La variazione nella giornata (circa ±0,9 MHz) è **al limite** di un errore indicativo di ±0,5 MHz per una singola misura in un singolo punto: per vederla bene servirà la media nello spazio e nel tempo.
 
+### Gli scenari semplici: cosa insegnano
+
+```bash
+python -m waterfibersim run scenario_paths/S2_street_downhill.yaml --out out/S2
+```
+
+| | inizio, 03:00 → 08:00 | fine, 03:00 → 08:00 | escursione nel giorno (max) |
+|---|---|---|---|
+| S0a tubo, piano | 4,90 → 4,89 bar | 4,85 → 4,06 bar | 0,8 bar in fondo |
+| S0b tubo, discesa | 4,90 → 4,89 bar | 6,81 → 6,02 bar | 0,8 bar in fondo |
+| S1 strada, piano | 4,90 → 4,89 bar | 4,89 → 4,61 bar | 0,3 bar in fondo |
+| S2 strada, discesa | 4,90 → 4,89 bar | 6,85 → 6,58 bar | 0,3 bar in fondo |
+
+- **La quota dà una pendenza fissa**: lungo una discesa la pressione cresce di circa 1 bar ogni 10 m, anche allontanandosi dal serbatoio, perché sopra il punto c'è più colonna d'acqua. Non cambia nel tempo.
+- **La perdita di carico dà la variazione nel tempo**: cresce nelle ore di punta ed è più forte lontano dal serbatoio, nel verso del flusso.
+- **Tubo singolo contro strada**, con la stessa acqua prelevata: nel tubo singolo tutta la portata percorre tutto il tubo, quindi la pressione cala in linea retta e di più (0,8 contro 0,3 bar); nella strada la portata diminuisce a ogni rubinetto.
+
+![Segnale vero, scenario S2](docs/img/S2_signal_true.png)
+
 ### Cosa il simulatore non fa ancora
 
-Il **profilo a riposo** c'è già: ogni metro ha la sua frequenza a tubo vuoto (elica da +105 a +180 MHz, tratto libero +65 MHz, come in Bertulessi 2023 Fig. 7a; forma per tubo casuale, `--seed`), e la misura di base lo cancella. Per il resto il segnale è **ideale**: la frequenza segue la pressione in modo esatto e proporzionale. È la **verità** (le etichette). Quello che riceverà chi elabora i dati (L0) sarà questa verità con i disturbi reali, aggiunti uno alla volta:
+Il **profilo a riposo** c'è già: ogni metro ha la sua frequenza a tubo vuoto (elica da +105 a +180 MHz, tratto libero +65 MHz, come in Bertulessi 2023 Fig. 7a; forma casuale, `--seed`: continua lungo un'elica avvolta senza interruzioni, con un salto solo dove la posa riparte, cioè dopo un cavo o dove cambia il tubo; ipotesi, vedi `docs/fonti.md`), e la misura di base lo cancella. Per il resto il segnale è **ideale**: la frequenza segue la pressione in modo esatto e proporzionale. È la **verità** (le etichette). Quello che riceverà chi elabora i dati (L0) sarà questa verità con i disturbi reali, aggiunti uno alla volta:
 
 | Cosa manca | Effetto sul segnale | Quando | Fonte |
 |---|---|---|---|

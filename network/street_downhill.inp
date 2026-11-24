@@ -1,0 +1,79 @@
+[TITLE]
+WaterFiberSim - street, downhill street (2 %), reservoir uphill at N0
+1 km street, 10 PE100 SDR11 DN110 pipes of 100 m (P1-P10), a tap every 100 m (N0-N10, 0.3 L/s each, pattern DAILY).
+Feeder P0 (10 m) joins the reservoir to the street. Elevations in metres, coordinates in metres.
+
+[JUNCTIONS]
+;ID   Elev_m   Demand_LPS   Pattern
+ N0   20       0.3          DAILY
+ N1   18       0.3          DAILY
+ N2   16       0.3          DAILY
+ N3   14       0.3          DAILY
+ N4   12       0.3          DAILY
+ N5   10       0.3          DAILY
+ N6   8        0.3          DAILY
+ N7   6        0.3          DAILY
+ N8   4        0.3          DAILY
+ N9   2        0.3          DAILY
+ N10  0        0.3          DAILY
+
+[RESERVOIRS]
+;ID   Head_m
+ R1   70
+
+[TANKS]
+
+[PIPES]
+;ID   Node1  Node2  Length_m     Diameter_mm  Roughness_HW  MinorLoss      Status
+; feeder (no fibre). Street: PE100 SDR11 OD 110 -> ID 90, C 140 (EPANET Table 3.2, plastic)
+ P0   R1     N0     10           90           140           0              Open
+ P1   N0     N1     100          90           140           0              Open
+ P2   N1     N2     100          90           140           0              Open
+ P3   N2     N3     100          90           140           0              Open
+ P4   N3     N4     100          90           140           0              Open
+ P5   N4     N5     100          90           140           0              Open
+ P6   N5     N6     100          90           140           0              Open
+ P7   N6     N7     100          90           140           0              Open
+ P8   N7     N8     100          90           140           0              Open
+ P9   N8     N9     100          90           140           0              Open
+ P10  N9     N10    100          90           140           0              Open
+
+[PUMPS]
+
+[VALVES]
+
+[PATTERNS]
+;ID      Hourly multipliers (00-23), mean 1
+ DAILY  0.50 0.40 0.35 0.35 0.40 0.60
+ DAILY  0.90 1.40 1.60 1.40 1.20 1.20
+ DAILY  1.30 1.20 1.00 0.90 0.90 1.10
+ DAILY  1.40 1.60 1.50 1.20 0.90 0.65
+
+[TIMES]
+ Duration           24:00
+ Hydraulic Timestep 1:00
+ Pattern Timestep   1:00
+ Report Timestep    1:00
+ Start ClockTime    0:00
+
+[OPTIONS]
+ Units              LPS
+ Headloss           H-W
+ Pattern            1
+
+[COORDINATES]
+;Node  X    Y
+ R1    -50   0
+ N0    0    0
+ N1    100  0
+ N2    200  0
+ N3    300  0
+ N4    400  0
+ N5    500  0
+ N6    600  0
+ N7    700  0
+ N8    800  0
+ N9    900  0
+ N10   1000 0
+
+[END]

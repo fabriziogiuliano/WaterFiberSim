@@ -1,0 +1,18 @@
+# Scenario S0a - simplest case: one 1 km pipe, flat, all the demand at the far end.
+# Same fibre layout as S1 and S2 (interrogator at the start, N0). Compare with S1: same total demand,
+# but here the whole flow runs along the whole pipe, so the pressure falls in a straight line.
+title: "S0a. Un solo tubo, in piano"
+description: "Un tubo di 1 km in piano, un solo prelievo in fondo (N1).\nTutta la portata percorre tutto il tubo:\nla pressione cala in linea retta."
+network: network/single_pipe_flat.inp
+pipes: network/street_pipes.yaml
+
+fibers:
+  - id: S0a
+    interrogator: {node: N0, technique: BOTDA, channel: 1}   # loop: both fiber ends on the instrument
+    sampling_step_m: 0.5
+    sensing_leg:   {layout: helix, angle_deg: 70, bonding: bonded}
+    reference_leg: {layout: straight, bonding: loose_tube}
+    route:                     # ordered from port A; the reference leg retraces it backwards to port B
+      - {lead: 10, to: N0}     # cable from the cabinet to the pipe
+      - {pipe: P1, from: N0}
+    junction_m: 2              # splice at the far end (N1): sensing leg -> reference leg

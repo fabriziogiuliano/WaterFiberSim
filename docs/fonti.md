@@ -99,7 +99,9 @@ Differenza da tenere a mente: in [B23] la fibra è fissata **all'esterno** del t
 | La deformazione della parete si trasferisce alla fibra al 100 % | ⚠️ | Ipotesi. Il trasferimento dipende da rivestimento e incollaggio (Ansari & Libo 1998, da verificare) |
 | Comportamento elastico istantaneo del PE | ⚠️ | Semplificazione: [B23] mostra il creep (modello di Burgers, Fig. 8) |
 | ν_B0 = 10 880 MHz | ✅ forma, ⚠️ valore | [B23] Fig. 7a, fibra non tirata, letto a occhio; non cambia i Δν |
-| Profilo a riposo nel simulatore: elica con inizio e fine di ogni tubo estratti in [105, 180] MHz (pendenza casuale), tratto libero +65 MHz, cavi 0, ondulazioni di circa 1 MHz su circa 8 m | ✅ valori di partenza, ⚠️ forma | Valori da [B23] Fig. 7a, letti a occhio (fibra fissata con nastro, tubo PN16). Pendenza casuale per tubo e ondulazioni: **ipotesi**. Per la fibra annegata (MATRIS) i valori sono solo un segnaposto |
+| Profilo a riposo nel simulatore: elica con valori in [105, 180] MHz, tratto libero +65 MHz, cavi 0, ondulazioni di circa 1 MHz su circa 8 m | ✅ valori di partenza, ⚠️ forma | Valori da [B23] Fig. 7a, letti a occhio (fibra fissata con nastro, **un solo tubo corto**, PN16). Per la fibra annegata (MATRIS) i valori sono solo un segnaposto |
+| Lungo un'elica avvolta senza interruzioni il profilo a riposo cambia in modo **continuo** (punti di controllo casuali ogni ~300 m di fibra, uniti da segmenti); i nodi EPANET (rubinetti) non creano salti | ⚠️ ipotesi | Nessun dato su condotte lunghe. Motivo: la fibra è un filo unico tirato con continuità. Scelta del 2026-11-24, dopo che la versione precedente (valori estratti per ogni tubo EPANET) mostrava salti non fisici a ogni rubinetto |
+| Il profilo a riposo **salta** dove la posa riparte da capo: dopo un cavo (per esempio in un pozzetto) o dove cambia il tubo (diametro esterno, materiale, guaina) | ⚠️ ipotesi | Lì la fibra viene riavvolta, quindi la tensione di posa può ripartire diversa. In [B23] Fig. 7a si vedono salti tra tratti con fissaggio diverso (elica, tratto libero, cavi) |
 
 
 ### Rete di prova: criteri di dimensionamento
@@ -117,6 +119,18 @@ Differenza da tenere a mente: in [B23] la fibra è fissata **all'esterno** del t
 | Norme di riferimento non lette (a pagamento, CEN/UNI): EN 12201-2 (tubi PE per acqua), EN 545 (ghisa sferoidale), EN 805 (requisiti dei sistemi di acquedotto) | ⚠️ | Da consultare in biblioteca (abbonamento UNI d'ateneo) se servono in tesi |
 | Con tubi SDR11 la deformazione per bar non dipende dal diametro | 🧮 | β = r_int/r_est costante per SDR costante, quindi ε_θ (Lamé) uguale |
 | Escursione giornaliera di pressione in reti reali | ❌ non trovata | Studi su distretti reali ([Starczewska et al., White Rose](https://eprints.whiterose.ac.uk/96459/1/1-s2.0-S1877705816000023-main.pdf); [US EPA, pressure management](https://www.epa.gov/system/files/documents/2021-12/ds-toolbox-fact-sheets_pressure-management.pdf)) senza un valore in bar nei riassunti |
+
+### Pressione statica, quota e scenari semplici
+
+| Affermazione | Stato | Fonte e citazione |
+|---|---|---|
+| Il carico idraulico (*head*) è quota + altezza di pressione; quindi la pressione (in metri d'acqua) è carico − quota | ✅ | [EPA], Appendice C, [RESERVOIRS]: *"Head is the hydraulic head (elevation + pressure head) of water in the reservoir."* Per i nodi EPANET calcola *"hydraulic head (internal energy per unit weight of fluid)"* e *"pressure"* (§3.1, Junctions). In unità SI la pressione è in metri (Appendice A: *"Pressure \| pounds per square inch \| meter"*) |
+| Il carico di un serbatoio è la quota del pelo dell'acqua, e non dipende da cosa succede nella rete | ✅ | [EPA] §3.1, Reservoirs: *"its hydraulic head (equal to the water surface elevation if the reservoir is not under pressure)"*; *"its head and water quality cannot be affected by what happens within the network"* |
+| Senza prelievi la pressione in un punto è il dislivello tra il pelo dell'acqua del serbatoio e il punto (circa 0,098 bar per metro); conta l'altezza della colonna, non la quantità d'acqua (legge di Stevino) | 🧮 | Idrostatica di base (ρ·g·h). Testo di idraulica da citare in tesi ⚠️ |
+| La pressione di EPANET è relativa (in più rispetto all'atmosfera), ed è quella che deforma la parete | 🧮 | Il manuale non lo dice esplicitamente (non trovato in §3 e Appendici). Ragionamento: l'atmosfera agisce sul pelo libero del serbatoio e all'esterno del tubo, quindi si annulla; la parete sente solo la differenza. Non dipende dalla quota sul livello del mare |
+| Lungo una discesa la pressione cresce (circa +1 bar ogni 10 m) anche allontanandosi dal serbatoio; la perdita di carico la riduce solo nel verso del flusso | 🧮 | Dalle due righe sopra: carico che cala solo per attrito, quota che scende. Verificato negli scenari S0b e S2 con EPANET |
+| Uno scenario con il serbatoio più in basso della strada richiederebbe una pompa di risalita: scartato | — | Decisione dell'utente (2026-11-24) |
+| Scenari semplici: PE100 SDR11 DN110, prelievo totale 3,3 L/s (11 rubinetti da 0,3 L/s in S1/S2, uno solo in fondo in S0a/S0b), pendenza 2 %, pelo dell'acqua 50 m sopra l'inizio della strada | ⚠️ ipotesi | Valori scelti per stare nei criteri di progetto (velocità al picco 0,83 m/s, perdita di carico 8,5 m/km), vedi righe sopra; pendenza e pressione statica (circa 5 bar) scelte, non da norma (EN 805 da leggere) |
 
 ### Misura di base e minimo misurabile
 
