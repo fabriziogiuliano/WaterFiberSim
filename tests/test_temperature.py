@@ -65,3 +65,20 @@ def test_compensation(pair):
     wrong = compensated_pressure_bar(cold, sc, f, 3.5)
     expected = (sc.temperature.helix_mhz_per_c - 3.5) * cold.delta_t_c[:, h] / k
     assert np.allclose(wrong[:, h] - cold.pressure_bar[:, h], expected, atol=1e-6)
+
+
+def test_adaptive_average_keeps_hotspot_and_interpolation_has_no_steps():
+    """S1th: punto per punto (interpolato) senza scalini; media adattiva molto meglio della mobile sul punto caldo."""
+    from waterfibersim.compensation import compensated_pressure_bar
+
+    os.chdir(ROOT)
+    sc = load_scenario(ROOT / "scenario_paths" / "S1th_street_flat_soil_hotspot.yaml")
+    sig = simulate_true(sc, duration_s=3600, step_s=3600, seed=5)
+    f, K = sc.fibers[0], sc.temperature.helix_mhz_per_c
+    h = (sig.fiber_map["leg"] == "sensing").to_numpy()
+
+    def max_err(**kw):
+        return np.nanmax(abs(compensated_pressure_bar(sig, sc, f, K, t_idx=0, **kw)[0, h] - sig.pressure_bar[0, h]))
+
+    assert max_err() < 0.005
+    assert max_err(ref_avg_m=74, mode="adaptive") < 0.5 * max_err(ref_avg_m=74, mode="moving")

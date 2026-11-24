@@ -312,11 +312,13 @@ temperature:
 | senza compensare | −3,3 bar |
 | compensata, K giusto | circa 0 |
 | compensata con K = 3,5 o 8 invece di 6 | −1,4 / +1,1 bar (**sistematico**: non cala con le medie) |
-| K giusto, riferimento mediato su 74 m | fino a 0,58 bar ai bordi del punto caldo |
+| K giusto, riferimento punto per punto (interpolato nel punto del tubo) | 0,001 bar |
+| K giusto, media mobile del riferimento su 20 m / 74 m | fino a 0,47 / 0,58 bar ai bordi del punto caldo |
+| K giusto, media **adattiva** su 74 m (solo i vicini con temperatura entro 0,5 °C) | fino a 0,19 bar, solo nelle rampe ai bordi |
 | errore casuale di una misura, riferimento punto per punto / mediato su 74 m | 0,24 / 0,056 bar |
 
 - Il limite principale è **K**: va calibrato sul posto.
-- Il rumore del riferimento si riduce mediandolo, ma la media sfuma le variazioni locali di temperatura: la lunghezza va scelta secondo quanto è uniforme il terreno.
+- Il rumore del riferimento si riduce mediandolo, ma la media mobile sfuma le variazioni locali di temperatura. La media adattiva si ferma da sola ai bordi; la sua soglia (0,5 °C, ⚠️ scelta) è dell'ordine del rumore del riferimento e andrà verificata con il rumore vero (passo 3b): oggi tutto è senza rumore.
 - Senza compensare, solo le variazioni **nella giornata** restano leggibili (il terreno cambia di circa 0,15 °C al giorno); il valore assoluto no.
 
 ![Compensazione, scenario S1th](docs/img/S1th_compensation.png)

@@ -125,19 +125,21 @@ def report_compensation(sc, out: Path, hour: int) -> None:
         true = sig.pressure_bar[t, h]
 
         def err(est):
-            e = est[t, h] - true
+            e = est[h] - true
             return f"mean {np.nanmean(e):+.3f}, max |{np.nanmax(abs(e)):.3f}| bar"
+
+        def comp(k, L=0.0, mode="moving"):
+            return compensated_pressure_bar(sig, sc, f, k, L, mode, t_idx=t)[0]
 
         L_eq = (K / sig.coef.c_t_mhz_per_c) ** 2 * f.spatial_resolution_m
         print(f"fiber {f.id}, {hour:02d}:00, dT from the baseline {sig.delta_t_c[t, h].min():+.1f} to "
               f"{sig.delta_t_c[t, h].max():+.1f} degC, helix K = {K:g} MHz/degC (true)")
-        print(f"  not compensated:                     {err(apparent_pressure_bar(sig, sc, f))}")
-        print(f"  compensated, true K, point by point: {err(compensated_pressure_bar(sig, sc, f, K))}")
+        print(f"  not compensated:                        {err(apparent_pressure_bar(sig, sc, f)[t])}")
+        print(f"  true K, point by point (interpolated):  {err(comp(K))}")
         for k_ass in (3.5, 8.0):
-            print(f"  compensated, K = {k_ass:g} (systematic):   {err(compensated_pressure_bar(sig, sc, f, k_ass))}")
-        for L in (L_eq, 200.0):
-            print(f"  compensated, true K, reference averaged over {L:.0f} m: "
-                  f"{err(compensated_pressure_bar(sig, sc, f, K, L))}")
+            print(f"  K = {k_ass:g} (systematic):                  {err(comp(k_ass))}")
+        for L, mode in ((20.0, "moving"), (L_eq, "moving"), (L_eq, "adaptive"), (200.0, "adaptive")):
+            print(f"  true K, reference {mode:8s} average over {L:3.0f} m: {err(comp(K, L, mode))}")
         for L in (0.0, 20.0, L_eq, 200.0):
             tot, hel, th = random_error_bar(sc, f, K, L)
             print(f"  random error, one measurement, reference averaged over {L:5.0f} m: {float(tot):.3f} bar "

@@ -138,6 +138,8 @@ Differenza da tenere a mente: in [B23] la fibra è fissata **all'esterno** del t
 | Errore sistematico se K è sbagliato: (K_vero − K_assunto)·ΔT / (MHz per bar); con 8 °C e K tra 3,5 e 8 invece di 6: da −1,4 a +1,1 bar | 🧮 | Calcolato dal simulatore (scenari S1t, S1th) |
 | Errore casuale di una misura compensata: √2·√(σ_elica² + (K/C_T)²·σ_rif²/N_rif) / (MHz per bar), con N_rif = lunghezza della media / risoluzione | 🧮 | Propagazione degli errori; σ da [ST13] Eq. 7–9. Ipotesi: punti del riferimento indipendenti ogni risoluzione (2 m) |
 | La media del riferimento su L metri sfuma le variazioni locali di temperatura: in S1th, con 74 m, errori fino a 0,58 bar ai bordi di un punto caldo di 40 m | 🧮 | Calcolato dal simulatore |
+| Il riferimento va interpolato nel punto del tubo di ogni campione dell'elica: con il punto più vicino la griglia di calcolo dava scalini fino a 0,012 bar ai bordi del punto caldo; interpolando 0,001 bar | 🧮 | Calcolato dal simulatore (S1th) |
+| Media adattiva del riferimento (filtro sigma: si mediano solo i vicini con temperatura entro una soglia da quella del punto): in S1th errore massimo 0,19 bar contro 0,58 della media mobile, sulla stessa lunghezza (74 m) | 🧮, ⚠️ soglia | Calcolato dal simulatore senza rumore. Soglia 0,5 °C scelta, dell'ordine del rumore del riferimento: da verificare con il rumore (passo 3b) e da cercare in letteratura un metodo consolidato |
 | La sensibilità K va calibrata sul posto | ⚠️ da approfondire | Conseguenza delle righe sopra; metodo di calibrazione da cercare in letteratura |
 
 ### Meccanica del tubo in PE
