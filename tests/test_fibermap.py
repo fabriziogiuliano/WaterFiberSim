@@ -63,3 +63,12 @@ def test_bad_route_rejected(tmp_path, scen):
     f.write_text(bad.replace("network/", str(ROOT / "network") + "/"))
     with pytest.raises(ValueError):
         load_scenario(f)
+
+
+def test_instrument_time_to_metres():
+    """Manopole nel tempo, metri ricavati: dz = c t / (2 n). [B23]: 20 ns ~ 2 m, 125 MS/s ~ 0,8 m."""
+    import pytest
+    f = load_scenario(ROOT / "scenario_paths" / "A_main_line.yaml").fibers[0]
+    assert f.sampling_interval_m == pytest.approx(299_792_458 / (2 * f.group_index * 125e6))
+    assert f.spatial_resolution_m == pytest.approx(299_792_458 * 20e-9 / (2 * f.group_index))
+    assert 0.78 < f.sampling_interval_m < 0.84 and 1.95 < f.spatial_resolution_m < 2.1

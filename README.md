@@ -125,8 +125,21 @@ network: network/grid_3x3.inp
 pipes: network/pipes.yaml
 fibers:
   - id: A1
-    interrogator: {node: R1, technique: BOTDA, channel: 1}   # loop: both fiber ends on the instrument
-    sampling_step_m: 0.5
+    interrogator:                # loop: both fiber ends on the instrument (ports A and B)
+      node: R1
+      technique: BOTDA
+      channel: 1
+      pulse_width_ns: 20         # pump pulse duration -> spatial resolution c*tau/(2n) ~ 2 m       [B23]
+      adc_sample_rate_msps: 125  # ADC sampling rate   -> sampling interval c/(2n f_s) ~ 0.8 m     [B23]
+      freq_step_mhz: 1           # frequency scan step (delta)                                     [B23] Tab. 1, phase II
+      n_averages: 256            # traces averaged per frequency step (N_AV)                       [B23] Tab. 1
+      scan_window_ghz: [10.75, 11.3]  # must contain every peak (rest profile + pressure + temperature)  [B23] Tab. 1, phase II
+      linewidth_mhz: 58          # Brillouin gain FWHM with a 2 m resolution                       [ST13] §3
+      snr0_db: 0                 # SNR at the fibre input, one trace, at snr0_resolution_m ("realistic")  [ST13] §3
+      snr0_resolution_m: 2
+    group_index: 1.468         # fibre group index (v = c/n): TO VERIFY on a datasheet
+    attenuation_db_per_km: 0.2 # fibre loss at 1550 nm (measured 0.211-0.22 dB/km)                       [ST13] §2-3
+    calc_step_m: 0.1           # simulator calculation step along the fibre (NOT the instrument sampling)
     sensing_leg:   {layout: helix, angle_deg: 70, bonding: bonded}   # embedded | bonded
     reference_leg: {layout: straight, bonding: loose_tube}
     route:                     # ordered from port A; the reference leg retraces it backwards to port B
@@ -137,6 +150,15 @@ fibers:
       - {pipe: P8, from: J23}
     junction_m: 2              # splice at the far end: sensing leg -> reference leg
 ```
+
+**Le manopole dello strumento sono nel tempo**, come nell'interrogatore vero: la durata dell'impulso (ns) e la frequenza dell'ADC (milioni di campioni al secondo). I metri si **ricavano**, perché la luce va e torna e il punto z arriva al fotodiodo dopo t = 2z/v, con v = c/n:
+
+```
+passo di campionamento   Δz = c / (2 · n · f_ADC)   125 MS/s (un campione ogni 8 ns) → 0,82 m
+risoluzione spaziale     Δz = c · τ / (2 · n)       impulso di 20 ns                  → 2,04 m
+```
+
+Il comando `map` li stampa. `calc_step_m` è un'altra cosa: il passo a cui il simulatore calcola il segnale vero, scelto fine (0,1 m, al massimo 1/10 della risoluzione) per poter poi simulare la media su 2 m. **Oggi il simulatore calcola solo il segnale vero**: la media e il campionamento dello strumento arrivano al passo 3.
 
 Gli scenari si conservano tutti e servono per esperimenti diversi:
 

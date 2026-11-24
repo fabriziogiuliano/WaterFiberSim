@@ -16,8 +16,11 @@ import yaml
 from .network import Network, load_network
 
 _SCENARIO_KEYS = {"title", "description", "network", "pipes", "fibers"}
-_FIBER_KEYS = {"id", "interrogator", "sampling_step_m", "sensing_leg", "reference_leg", "route", "junction_m"}
-_INTERROGATOR_KEYS = {"node", "technique", "channel"}
+_FIBER_KEYS = {"id", "interrogator", "group_index", "attenuation_db_per_km", "calc_step_m", "sensing_leg", "reference_leg", "route", "junction_m"}
+_INTERROGATOR_KEYS = {"node", "technique", "channel", "pulse_width_ns", "adc_sample_rate_msps", "freq_step_mhz",
+                      "n_averages", "scan_window_ghz", "linewidth_mhz", "snr0_db", "snr0_resolution_m"}
+
+C_M_PER_S = 299_792_458.0       # velocità della luce nel vuoto (valore esatto, SI)
 _LEG_KEYS = {"layout", "angle_deg", "bonding"}
 _LAYOUTS = {"helix", "straight"}
 _BONDINGS = {"embedded", "bonded", "loose_tube"}
@@ -26,9 +29,19 @@ _TECHNIQUES = {"BOTDA"}           # per ora solo la BOTDA ad anello
 
 @dataclass(frozen=True)
 class Interrogator:
+    """Lo strumento. Le manopole sono nel TEMPO, come nello strumento vero; i metri si ricavano (vedi Fiber)."""
+
     node: str
     technique: str
     channel: int
+    pulse_width_ns: float          # durata dell'impulso di interrogazione (pompa)
+    adc_sample_rate_msps: float    # frequenza di campionamento dell'ADC, milioni di campioni al secondo
+    freq_step_mhz: float           # passo della scansione in frequenza (delta in Soto & Thévenaz 2013)
+    n_averages: int                # tracce mediate per ogni passo di frequenza (N_AV)
+    scan_window_ghz: tuple[float, float]  # finestra della scansione: deve contenere tutti i picchi
+    linewidth_mhz: float           # larghezza della campana (FWHM) con questa durata dell'impulso
+    snr0_db: float                 # SNR all'inizio della fibra con risoluzione snr0_resolution_m e UNA sola traccia
+    snr0_resolution_m: float       # risoluzione a cui è dato snr0_db
 
 
 @dataclass(frozen=True)
@@ -58,11 +71,31 @@ class Segment:
 class Fiber:
     id: str
     interrogator: Interrogator
-    sampling_step_m: float
+    group_index: float             # indice di gruppo della fibra: v = c / n
+    attenuation_db_per_km: float   # attenuazione della fibra (andata), alpha
+    calc_step_m: float             # passo di CALCOLO del simulatore lungo la fibra: NON è lo strumento
     sensing_leg: Leg
     reference_leg: Leg
     route: tuple[Segment, ...]
     junction_m: float
+
+    @property
+    def light_speed_m_per_s(self) -> float:
+        return C_M_PER_S / self.group_index
+
+    @property
+    def sampling_interval_m(self) -> float:
+        """Passo tra due campioni dello strumento lungo la fibra: dz = v * T_s / 2, con T_s = 1 / f_ADC.
+
+        Il /2 è l'andata e ritorno: il punto z arriva al fotodiodo dopo t = 2 z / v.
+        """
+        t_s = 1.0 / (self.interrogator.adc_sample_rate_msps * 1e6)
+        return self.light_speed_m_per_s * t_s / 2
+
+    @property
+    def spatial_resolution_m(self) -> float:
+        """Tratto di fibra su cui lo strumento fa la media: dz = v * tau / 2, con tau = durata dell'impulso."""
+        return self.light_speed_m_per_s * self.interrogator.pulse_width_ns * 1e-9 / 2
 
 
 @dataclass
@@ -155,18 +188,37 @@ def load_scenario(path: str | Path) -> Scenario:
             raise ValueError(f"{w}: duplicate fiber id {f['id']}")
         ids.add(f["id"])
         _check(f["interrogator"], _INTERROGATOR_KEYS, f"{w}.interrogator")
-        itg = Interrogator(**f["interrogator"])
+        raw_itg = dict(f["interrogator"])
+        missing = _INTERROGATOR_KEYS - set(raw_itg)
+        if missing:
+            raise ValueError(f"{w}.interrogator: missing {sorted(missing)}")
+        raw_itg["scan_window_ghz"] = tuple(float(v) for v in raw_itg["scan_window_ghz"])
+        raw_itg["n_averages"] = int(raw_itg["n_averages"])
+        itg = Interrogator(**raw_itg)
+        lo, hi = itg.scan_window_ghz
+        if not lo < hi:
+            raise ValueError(f"{w}.interrogator.scan_window_ghz: start must be below end")
+        for k in ("pulse_width_ns", "adc_sample_rate_msps", "freq_step_mhz", "n_averages", "linewidth_mhz",
+                  "snr0_resolution_m"):
+            if getattr(itg, k) <= 0:
+                raise ValueError(f"{w}.interrogator.{k} must be positive")
         if itg.technique not in _TECHNIQUES:
             raise ValueError(f"{w}.interrogator.technique: {itg.technique!r} not supported yet")
         fibers.append(Fiber(
             id=f["id"],
             interrogator=itg,
-            sampling_step_m=float(f["sampling_step_m"]),
+            group_index=float(f["group_index"]),
+            attenuation_db_per_km=float(f["attenuation_db_per_km"]),
+            calc_step_m=float(f["calc_step_m"]),
             sensing_leg=_leg(f["sensing_leg"], f"{w}.sensing_leg"),
             reference_leg=_leg(f["reference_leg"], f"{w}.reference_leg"),
             route=_route(f["route"], net, f"{w}.route"),
             junction_m=float(f["junction_m"]),
         ))
+    for f in fibers:
+        if f.calc_step_m > f.spatial_resolution_m / 10:
+            raise ValueError(f"fiber {f.id}: calc_step_m {f.calc_step_m} m too coarse: it must be at most 1/10 of "
+                             f"the spatial resolution ({f.spatial_resolution_m:.2f} m)")
     channels = [(f.interrogator.node, f.interrogator.channel) for f in fibers]
     if len(set(channels)) != len(channels):
         raise ValueError("two fibers on the same interrogator channel")

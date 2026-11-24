@@ -20,6 +20,7 @@ Ultimo aggiornamento: 2026-11-23.
 | **[B23]** | M. Bertulessi, D. F. Bignami, I. Boschini, M. Longoni, G. Menduni, J. Morosi, "Experimental Investigations of Distributed Fiber Optic Sensors for Water Pipeline Monitoring", *Sensors* 23(13), 6205, 2023. DOI [10.3390/s23136205](https://doi.org/10.3390/s23136205). Politecnico di Milano + Cohaerentia S.r.l. Licenza CC BY | [docs/papers/sensors-23-06205-v2.pdf](papers/sensors-23-06205-v2.pdf) |
 | **[OZ]** | OZ Optics, *Fiber Optic Distributed Strain and Temperature Sensors (DSTS) – BOTDA Module*, scheda tecnica DTS0115, 1 marzo 2025 | <https://www.ozoptics.com/ALLNEW_PDF/DTS0115.pdf> |
 | **[DIT]** | Prysmian, *DITEST – Distributed Temperature and Strain Interrogator*, scheda tecnica | <https://asean.prysmian.com/sites/asean.prysmian.com/files/media/documents/Prysmian_DITEST.pdf> |
+| **[ST13]** | M. A. Soto, L. Thévenaz, "Modeling and evaluating the performance of Brillouin distributed optical fiber sensors", *Opt. Express* 21(25), 31347–31366, 2013. DOI [10.1364/OE.21.031347](https://doi.org/10.1364/OE.21.031347). EPFL. Accesso libero | [docs/papers/oe-21-25-31347.pdf](papers/oe-21-25-31347.pdf) |
 | **[EPA]** | US EPA, *EPANET 2.2 User Manual* (autori e numero di rapporto da riportare dal frontespizio del PDF). Cap. 3 "The Network Model" | <https://epanet-manual.readthedocs.io/en/latest/3_network_model.html> · [PDF EPA](https://www.epa.gov/system/files/documents/2021-07/epanet_users_manual_2.2.0-1.pdf) |
 | **[UPO]** | Uponor Infra Oy, *PE100 pressure pipes – Technical factsheet*, 09/2020 (cita EN 12201, EN 1555) | <https://brandportal.uponor.com/m/20832399649c7390/original/PE100-2-page-factsheet_EN.pdf> |
 | **[ALX]** | Aliaxis UK, *GPS PE Blue pipe (PE100) – Product data sheet* (tabella "Pipe dimensions – water applications (BS EN 12201-2)") | <https://www.aliaxis.co.uk/en/downloads/getfile/399950> |
@@ -53,6 +54,19 @@ Differenza da tenere a mente: in [B23] la fibra è fissata **all'esterno** del t
 | Lo scambio di energia avviene solo se Δν = ν_B per conservazione dell'energia (pompa → sonda + onda acustica) | ⚠️ | Fisica dello scattering Brillouin stimolato, da manuale; fonte da trovare (per esempio Hartog 2017 o Bao & Chen 2011) |
 | Esiste anche la configurazione a perdita (sonda più alta della pompa, che cede energia) | ⚠️ | Da trovare una fonte |
 
+### Manopole dello strumento: tempo e metri
+
+| Affermazione | Stato | Fonte e citazione |
+|---|---|---|
+| Lo strumento campiona nel **tempo**: [B23] usa un ADC a 125 MS/s, equivalente a 0,8 m lungo la fibra | ✅ | [B23] §2.1: *"a 125 MS/s Analog-to-Digital Converter (ADC) card (equivalent to an 80 cm spatial sampling)"* |
+| La durata dell'impulso fissa la risoluzione spaziale: 20 ns ≈ 2 m | ✅ | [B23] §2.1: *"20 ns pump pulses (equivalent to a 2 m spatial resolution)"* |
+| Conversione tempo → metri: Δz = c·t / (2n), per l'andata e ritorno della luce; campionamento Δz = c / (2 n f_ADC), risoluzione Δz = c·τ / (2n) | 🧮 | Tempo di volo. Con n = 1,5 riproduce esattamente i numeri di [B23] (0,80 m e 2,00 m); con n = 1,468 dà 0,82 e 2,04 m |
+| Indice di gruppo della fibra monomodale standard a 1550 nm: n ≈ 1,468 | ⚠️ | **Citato a memoria.** Da verificare sulla scheda Corning SMF-28 (*"Effective Group Index of Refraction"*): corning.com blocca il download automatico, da scaricare a mano |
+| Risoluzione lungo il tubo con l'elica: Δs = i·S/Lc (i = risoluzione dello strumento, S = passo dell'elica, Lc = lunghezza di una spira); con l'elica a 70° circa 2 m × cos 70° ≈ 0,7 m di tubo | ✅ formula, 🧮 numero | [B23] Eq. 2 e 3; Tab. 1: Δs = 0,45 e 0,72 m nelle loro prove |
+| Altre manopole in [B23]: finestra di scansione Δν (10,4–11,4 e 10,75–11,3 GHz), passo di frequenza νs (5 e 1 MHz), medie per passo N_avg (256), tempo di misura Δt (7 e 20 s) | ✅ | [B23] Tab. 1 e §2.1: *"The total measurement time ∆t has been tuned according to the experimental needs by properly setting the frequency scanning window ∆ν, the frequency step νs and the number of averages Navg per frequency step"* |
+| Strumenti commerciali: campionamento e risoluzione sono impostazioni separate, date in metri | ✅ | [DIT]: *"Spatial resolution (setting) 1-20 m (0.25 m increments)"*, *"Spatial sampling interval (setting) 0.25-10 m (0.25 m increments)"*. [OZ]: *"Spatial Step as low as 5 cm"*, *"Averaging 1 to 65,000 scans"*. Neubrex NBX-7031 ([pagina prodotto](https://www.neubrex.com/products/NEUBRESCOPE/dtss_2/NBX-7031)): *"Readout Resolution 5 cm (default), 1 cm (minimum)"* |
+| Il passo di calcolo del simulatore (`calc_step_m`, 0,1 m) non è un parametro dello strumento | — | Scelta del simulatore: abbastanza fine (≤ 1/10 della risoluzione) per simulare la media dello strumento al passo 3 |
+
 ### Fenomeno fisico (Brillouin)
 
 | Affermazione | Stato | Fonte e citazione |
@@ -73,7 +87,26 @@ Differenza da tenere a mente: in [B23] la fibra è fissata **all'esterno** del t
 | Su lunghe distanze la ripetibilità peggiora molto | ✅ | [DIT]: *"Temperature and Strain Repeatability, 1σ (typical): < 2 °C or < 40 με for 80 km, G652 fiber, 5 m spatial resolution and 20 minutes measurement time."* |
 | **Errore usato nelle figure: ±0,5 MHz, solo indicativo.** Secondo le fonti varia da circa 0,1 MHz (OZ Optics, ±2 µε 2σ) a circa 2 MHz (DITEST, 40 µε 1σ a 80 km, 5 m, 20 min) | 🧮 | Conversione con C_ε = 0,05 MHz/µε. Al passo 3 diventa un parametro dello scenario, calcolato con il modello di Soto & Thévenaz 2013 (SNR, larghezza di riga, passo di scansione) |
 | SNR dello spettro di guadagno Brillouin > 40 dB nell'esperimento | ✅ | [B23], §3.1: *"the Signal-to-Noise Ratio (SNR) of the BGS measurement is always greater than 40 dB"* |
-| L'incertezza sul picco dipende da SNR, larghezza di riga e passo di scansione | ⚠️ | M. A. Soto, L. Thévenaz, "Modeling and evaluating the performance of Brillouin distributed optical fiber sensors", *Opt. Express* 21(25), 31347–31366, 2013, DOI 10.1364/OE.21.031347. Accesso libero: [EPFL Infoscience](https://infoscience.epfl.ch/record/191250/files/oe-21-25-31347.pdf?version=1). **Da leggere prima del passo 3** (modello del rumore) |
+| L'incertezza sul picco dipende da SNR, larghezza della campana e passo di scansione | ✅ | [ST13], letto per intero: vedi la sezione "Incertezza dello strumento" |
+
+### Incertezza dello strumento ([ST13])
+
+| Affermazione | Stato | Fonte e citazione |
+|---|---|---|
+| Incertezza sul picco (fit parabolico dei punti sopra η × picco): σ_ν = (1/SNR)·√(3·δ·Δν_B / (8√2·(1−η)^{3/2})); con η = 0,5: σ_ν = (1/SNR)·√(¾·δ·Δν_B) | ✅ | [ST13] Eq. 7 e 8. δ = *"frequency sampling step"*, Δν_B = *"Brillouin full-width at half maximum (FWHM)"*, σ = rumore sulla curva normalizzata, *"directly representing the inverse of the local SNR"*. Validità: *"the validity is already good for 3 or more frequency points"* |
+| La formula vale per qualunque sensore Brillouin che stima il picco con un fit (BOTDA, BOTDR, …) | ✅ | [ST13] §3: *"Eqs. (7) and (8) are valid not only for BOTDA systems"* |
+| Validazione: SNR = 9,4 dB, δ = 1 MHz, Δν_B = 58 MHz, 200 medie → circa 0,75 MHz misurati; la formula dà 0,76 MHz (SNR lineare = 10^(dB/10)) | ✅ misura, 🧮 ricalcolo | [ST13] §3, Fig. 6–9: *"the frequency error obtained at 24.5 km distance with 10 time-averaged traces is 3.21 MHz, which is improved down to 0.75 MHz with 200 averages"* |
+| Le medie migliorano l'SNR come √N_AV | ✅ | [ST13] §3: *"increasing the trace averaging in a factor of 20 results in a √20 ≈ 4.47 better SNR"* |
+| L'SNR cresce con la risoluzione Δz (impulso più lungo) e cala con la distanza: SNR(z) = SNR₀·(Δz/Δz₀)·√(N_AV/N_AV₀)·e^(−αz) | ✅ forma, 🧮 riscrittura | [ST13] Eq. 4 e 9 |
+| La risoluzione spaziale è metà durata dell'impulso per la velocità di gruppo (la nostra formula Δz = c·τ/(2n)) | ✅ | [ST13] §2: *"Δz is the interaction length, which is equivalent to the spatial resolution and determined by the pump pulse half duration multiplied by the group velocity of the guided mode"* |
+| Valore realistico di partenza: SNR = 0 dB all'ingresso della fibra con risoluzione 2 m e una sola traccia | ✅ | [ST13] §3: *"assuming that a realistic SNR = 0 dB is measured at the input fiber end with a spatial resolution Δz₀ = 2 m and no averaging"* |
+| Larghezza della campana: 58 MHz con risoluzione 2 m; si allarga con impulsi più corti | ✅ valore, ⚠️ legge | [ST13] §3: *"the FWHM at 58 MHz, which is obtained using a spatial resolution of 2 m"*; la larghezza è stata variata *"using different pump pulse widths (between 10 ns and 60 ns)"*. Nessuna formula tra larghezza e durata dell'impulso nell'articolo. Nell'esempio della figura di merito: *"a standard fiber with ΔνB = 27 MHz"* |
+| Attenuazione della fibra a 1550 nm circa 0,2 dB/km | ✅ | [ST13] §2: *"α = 0.211 dB/km, which is in good agreement with standard values in single-mode fibers at 1550 nm"*; §3: α = 0,22 dB/km |
+| Medie e passo di frequenza hanno effetto simile sull'incertezza; cambiare frequenza è lento | ✅ | [ST13] §3: *"time averaging and frequency scanning step have a similar impact on the accuracy. Since setting a new frequency on a microwave generator takes in general a much longer time than individual time averaging…"* |
+| La potenza di pompa e sonda è limitata da effetti non lineari e svuotamento della pompa; con fibre corte si può usare più potenza | ✅ | [ST13] §2 e §4: regime *"ΔPs(z)/Ps(z) << 0.1"*; *"distributed sensing systems employing short fibers (L< α⁻¹) benefits from higher possible pump and probe signal powers"* |
+| Con le impostazioni di [B23] (2 m, 256 medie, δ = 1 MHz, Δν_B = 58 MHz, SNR₀ = 0 dB) l'incertezza attesa all'inizio della fibra è circa 0,41 MHz (circa 0,03 bar sull'elica); con δ = 5 MHz circa 0,92 MHz | 🧮 | [ST13] Eq. 8 e 9; vicino all'accuratezza dichiarata da [B23] (*"better than … 10 µε"*, cioè 0,5 MHz) |
+| Nelle nostre fibre (2–4 km) la distanza pesa poco: al massimo circa 0,8 dB di SNR in meno | 🧮 | α = 0,2 dB/km × 4 km |
+| [B23] dichiara SNR > 40 dB: con [ST13] darebbe un'incertezza circa 500 volte più piccola dello 0,5 MHz dichiarato. Definizioni di SNR diverse, oppure l'accuratezza di [B23] contiene errori sistematici | ⚠️ da chiarire | [B23] §3.1 e §2.1. Nel simulatore si usa il modello di [ST13], validato |
 
 ### Meccanica del tubo in PE
 

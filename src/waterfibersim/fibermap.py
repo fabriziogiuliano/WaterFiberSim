@@ -42,11 +42,11 @@ def _piece(seg, leg, net, forward):
 
 
 def build_fiber_map(fiber: Fiber, scenario: Scenario) -> pd.DataFrame:
-    """Mappa di una fibra, un campione ogni `sampling_step_m` da z = 0 (porta A) alla porta B."""
+    """Mappa di una fibra, un punto di calcolo ogni `calc_step_m` da z = 0 (porta A) alla porta B."""
     net = scenario.network
     pieces = _pieces(fiber, net)
     total = sum(pc[2] for pc in pieces)
-    z = np.arange(0.0, total + 1e-9, fiber.sampling_step_m)
+    z = np.arange(0.0, total + 1e-9, fiber.calc_step_m)
     starts = np.cumsum([0.0] + [pc[2] for pc in pieces[:-1]])
     idx = np.searchsorted(starts, z, side="right") - 1
 
