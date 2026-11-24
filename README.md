@@ -17,7 +17,7 @@ L'elaborazione dei dati (da L0 alla pressione stimata) è il lavoro di chi usa i
 
 ## Il sistema
 
-![Il sistema: fibra ad anello sul tubo e fibra srotolata](docs/img/sistema.png)
+![Posa della fibra: andata a elica, ritorno dritto, due capi sullo stesso strumento](docs/img/posa_fibra.drawio.svg)
 
 Una sola fibra ottica parte dall'interrogatore, percorre il tubo e torna indietro allo stesso strumento.
 - **Andata**: la fibra è annegata **a elica** nella guaina di risanamento. Quando la pressione dell'acqua dilata il
