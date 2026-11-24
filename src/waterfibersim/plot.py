@@ -360,3 +360,57 @@ def plot_uncertainty(scenario: Scenario, fmap: pd.DataFrame, fiber, path: str | 
     ax.set_title(f"Incertezza attesa dello strumento, fibra {fiber.id} (Soto & Thévenaz 2013, Eq. 7 e 9)\n{txt}",
                  fontsize=11, loc="left")
     return _save(fig, path)
+
+
+def plot_compensation(scenario: Scenario, sig, fiber, path: str | Path, hour: int = 8,
+                      k_range=(3.5, 8.0), ref_avg_m: float | None = None) -> Path:
+    """Grafico 1: pressione lungo l'elica (vera, apparente, compensata). Grafico 2: errore casuale vs media del riferimento."""
+    import numpy as np
+
+    from .compensation import apparent_pressure_bar, compensated_pressure_bar, random_error_bar
+
+    K = scenario.temperature.helix_mhz_per_c
+    f = sig.fiber_map
+    h = np.flatnonzero((f["fiber"].to_numpy() == fiber.id) & (f["leg"].to_numpy() == "sensing"))
+    z = f["z_m"].to_numpy()[h]
+    t = int(np.argmin(abs(sig.times_s / 3600 - hour)))
+    L_eq = (K / sig.coef.c_t_mhz_per_c) ** 2 * fiber.spatial_resolution_m
+    if ref_avg_m is None:
+        ref_avg_m = L_eq
+
+    fig = plt.figure(figsize=(15, 10), dpi=100)
+    gs = fig.add_gridspec(2, 1, height_ratios=[1.3, 1], hspace=0.45)
+    fig.suptitle(f"Compensazione della temperatura con il riferimento, fibra {fiber.id} (passo T3)", fontsize=15,
+                 fontweight="bold", x=0.02, ha="left")
+
+    ax = fig.add_subplot(gs[0])
+    ax.plot(z, sig.pressure_bar[t, h], color="#212529", lw=3, label="pressione vera (EPANET)")
+    ax.plot(z, apparent_pressure_bar(sig, scenario, fiber)[t, h], color="#adb5bd", lw=1.5,
+            label="letta SENZA compensare")
+    for k_ass, c in ((k_range[0], "#f08c00"), (k_range[1], "#7048e8")):
+        ax.plot(z, compensated_pressure_bar(sig, scenario, fiber, k_ass)[t, h], color=c, lw=1.2, ls="--",
+                label=f"compensata con K = {k_ass:g} MHz/°C (vero {K:g}): errore SISTEMATICO".replace(".", ","))
+    ax.plot(z, compensated_pressure_bar(sig, scenario, fiber, K, ref_avg_m)[t, h], color="#2b8a3e", lw=1.5,
+            label=f"compensata con K giusto e riferimento mediato su {ref_avg_m:.0f} m (sfuma le variazioni locali)")
+    ax.plot(z, compensated_pressure_bar(sig, scenario, fiber, K)[t, h], color="#c92a2a", lw=1, ls=":",
+            label="compensata con K giusto, punto per punto (senza rumore: coincide con la vera)")
+    ax.set_xlabel("z = distanza lungo la fibra dalla porta A [m] (solo il tratto a elica)")
+    ax.set_ylabel("pressione [bar]")
+    ax.legend(loc="lower left", fontsize=8.5)
+    ax.set_title(f"Grafico 1 — pressione lungo l'elica alle {hour:02d}:00, senza rumore: cosa fa la compensazione e cosa "
+                 f"sbaglia se K (sensibilità dell'elica alla temperatura) non è quello vero", fontsize=11, loc="left")
+
+    ax = fig.add_subplot(gs[1])
+    L = np.linspace(0, max(4 * L_eq, 50), 400)
+    tot, hel, th = random_error_bar(scenario, fiber, K, L)
+    ax.plot(L, tot * np.ones_like(L), color="#212529", lw=2.5, label="totale")
+    ax.plot(L, hel * np.ones_like(L), color="#ff6a00", lw=1.5, ls="--", label="dall'elica (rumore dello strumento)")
+    ax.plot(L, th, color="#1f5fbf", lw=1.5, ls="--", label=f"dal riferimento × K/C_T = {K:g} (temperatura)".replace(".", ","))
+    ax.axvline(L_eq, color="#868e96", lw=1, ls=":")
+    ax.text(L_eq, ax.get_ylim()[1] * 0.92, f"  {L_eq:.0f} m: i due contributi si eguagliano", fontsize=9, color="#495057")
+    ax.set_xlabel("lunghezza su cui si media il riferimento [m]")
+    ax.set_ylabel("errore casuale (1σ) [bar]")
+    ax.legend(loc="upper right", fontsize=9)
+    ax.set_title("Grafico 2 — errore casuale di UNA misura compensata (differenza dalla misura di base), "
+                 "in funzione della media del riferimento ([ST13] + propagazione degli errori)", fontsize=11, loc="left")
+    return _save(fig, path)

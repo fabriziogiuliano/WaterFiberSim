@@ -130,6 +130,16 @@ Differenza da tenere a mente: in [B23] la fibra è fissata **all'esterno** del t
 | Un afflusso rapido di acqua fredda (1–4 °C) cambia la temperatura del tubo in poco tempo | ✅ | [SB20] §1: *"Additional stress changes can occur because of a rapid influx of cold water … The cold water temperature is between 33 and 40°F (1 and 4°C)"* |
 | Equazione della temperatura del terreno con la profondità (onda annuale smorzata) | ⚠️ non letta | T. Kusuda, P. R. Achenbach, *Earth temperature and thermal diffusivity at selected stations in the United States*, NBS Report 8972, 1965, DOI [10.6028/NBS.RPT.8972](https://doi.org/10.6028/NBS.RPT.8972). PDF oltre 10 MB, non scaricato in automatico |
 
+### Compensazione della temperatura (passo T3)
+
+| Affermazione | Stato | Fonte o motivo |
+|---|---|---|
+| Compensazione: ΔT dal riferimento sullo stesso tubo nello stesso punto (ΔT = Δν_rif / C_T), poi Δν_pressione = Δν_elica − K·ΔT | ✅ principio, 🧮 formula | [B23]: ritorno libero *"for the thermal effect compensation"*; formula dalla somma lineare di [B23] Eq. 1 |
+| Errore sistematico se K è sbagliato: (K_vero − K_assunto)·ΔT / (MHz per bar); con 8 °C e K tra 3,5 e 8 invece di 6: da −1,4 a +1,1 bar | 🧮 | Calcolato dal simulatore (scenari S1t, S1th) |
+| Errore casuale di una misura compensata: √2·√(σ_elica² + (K/C_T)²·σ_rif²/N_rif) / (MHz per bar), con N_rif = lunghezza della media / risoluzione | 🧮 | Propagazione degli errori; σ da [ST13] Eq. 7–9. Ipotesi: punti del riferimento indipendenti ogni risoluzione (2 m) |
+| La media del riferimento su L metri sfuma le variazioni locali di temperatura: in S1th, con 74 m, errori fino a 0,58 bar ai bordi di un punto caldo di 40 m | 🧮 | Calcolato dal simulatore |
+| La sensibilità K va calibrata sul posto | ⚠️ da approfondire | Conseguenza delle righe sopra; metodo di calibrazione da cercare in letteratura |
+
 ### Meccanica del tubo in PE
 
 | Affermazione | Stato | Fonte e citazione |

@@ -48,3 +48,20 @@ def test_drift_and_hotspot():
     assert dT[-1, out][0] == pytest.approx(-8.0 - 0.15 * 6 / 24)        # deriva di 6 ore
     hot = ((f["pipe"] == "P6") & (f["s_pipe_m"].between(30, 50))).to_numpy()
     assert np.allclose(dT[0, hot], -5.0)                                # punto caldo: +3 °C in più
+
+
+def test_compensation(pair):
+    """K giusto: torna la pressione vera; K sbagliato: errore sistematico (K_vero - K) * dT / k_bar."""
+    from waterfibersim.compensation import compensated_pressure_bar
+    from waterfibersim.instrument import helix_mhz_per_bar
+
+    cold, _ = pair
+    sc = load_scenario(ROOT / "scenario_paths" / "S1t_street_flat_soil.yaml")
+    f = sc.fibers[0]
+    h = (cold.fiber_map["leg"] == "sensing").to_numpy()
+    good = compensated_pressure_bar(cold, sc, f, sc.temperature.helix_mhz_per_c)
+    assert np.allclose(good[:, h], cold.pressure_bar[:, h], atol=1e-6)
+    k = helix_mhz_per_bar(sc, f, cold.coef)["P1"]
+    wrong = compensated_pressure_bar(cold, sc, f, 3.5)
+    expected = (sc.temperature.helix_mhz_per_c - 3.5) * cold.delta_t_c[:, h] / k
+    assert np.allclose(wrong[:, h] - cold.pressure_bar[:, h], expected, atol=1e-6)

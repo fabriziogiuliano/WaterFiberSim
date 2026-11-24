@@ -291,6 +291,36 @@ Con le impostazioni di Bertulessi 2023 (20 ns, 1 MHz, 256 medie):
 
 ![Incertezza attesa, scenario S1](docs/img/S1_uncertainty.png)
 
+## Temperatura del terreno e compensazione (passi T2 e T3)
+
+**T2 — la temperatura nel segnale.** Uno scenario può avere una sezione `temperature` (facoltativa): terreno alla misura di base e oggi, deriva stagionale, sensibilità dell'elica alla temperatura, variazioni locali (`hotspots`, con `delta_c` positivo o negativo). Il riferimento sente 1 MHz/°C; l'elica sente anche la dilatazione del tubo: **3,5–8 MHz/°C** secondo le fonti (⚠️ da calibrare), contro 14,5 MHz/bar per la pressione. Quindi **1 °C si legge come 0,24–0,55 bar**. Scenari di prova: **S1t** (strada S1, terreno 8 °C più freddo che alla misura di base, uniforme) e **S1th** (in più un punto caldo di +3 °C su P6, scelto per mostrare l'effetto).
+
+```yaml
+temperature:
+  baseline_c: 18             # terreno alla misura di base
+  soil_c: 10                 # terreno oggi
+  drift_c_per_day: -0.15     # raffreddamento stagionale            [Stewart & Bilgin 2020]
+  helix_mhz_per_c: 6         # forbice 3,5–8: DA CALIBRARE
+  hotspots:                  # solo in S1th                          [Agudelo-Vera et al. 2017]
+    - {pipe: P6, from_m: 20, to_m: 60, delta_c: 3}
+```
+
+**T3 — la compensazione.** `python -m waterfibersim compensate scenario_paths/S1th_street_flat_soil_hotspot.yaml --out out/S1th`: per ogni punto dell'elica si prende il riferimento sullo stesso tubo nello stesso punto, ΔT = Δν_rif / 1 MHz/°C, si toglie K·ΔT dall'elica e si converte in bar.
+
+| alle 08:00, S1th (pressione vera circa 4,7 bar) | errore |
+|---|---|
+| senza compensare | −3,3 bar |
+| compensata, K giusto | circa 0 |
+| compensata con K = 3,5 o 8 invece di 6 | −1,4 / +1,1 bar (**sistematico**: non cala con le medie) |
+| K giusto, riferimento mediato su 74 m | fino a 0,58 bar ai bordi del punto caldo |
+| errore casuale di una misura, riferimento punto per punto / mediato su 74 m | 0,24 / 0,056 bar |
+
+- Il limite principale è **K**: va calibrato sul posto.
+- Il rumore del riferimento si riduce mediandolo, ma la media sfuma le variazioni locali di temperatura: la lunghezza va scelta secondo quanto è uniforme il terreno.
+- Senza compensare, solo le variazioni **nella giornata** restano leggibili (il terreno cambia di circa 0,15 °C al giorno); il valore assoluto no.
+
+![Compensazione, scenario S1th](docs/img/S1th_compensation.png)
+
 ### Cosa il simulatore non fa ancora
 
 Il **profilo a riposo** c'è già: ogni metro ha la sua frequenza a tubo vuoto (elica da +105 a +180 MHz, tratto libero +65 MHz, come in Bertulessi 2023 Fig. 7a; forma casuale, `--seed`: continua lungo un'elica avvolta senza interruzioni, con un salto solo dove la posa riparte, cioè dopo un cavo o dove cambia il tubo; ipotesi, vedi `docs/fonti.md`), e la misura di base lo cancella. Per il resto il segnale è **ideale**: la frequenza segue la pressione in modo esatto e proporzionale. È la **verità** (le etichette). Quello che riceverà chi elabora i dati (L0) sarà questa verità con i disturbi reali, aggiunti uno alla volta:
@@ -300,7 +330,7 @@ Il **profilo a riposo** c'è già: ogni metro ha la sua frequenza a tubo vuoto (
 | rumore dello strumento | ogni misura sbaglia; ±0,5 MHz è solo **indicativo** (da 0,1 a 2 MHz secondo strumento, lunghezza e tempo di media) | incertezza attesa calcolata (passo 3a, sopra); rumore sullo spettro al passo 3b | Bertulessi 2023: *"better than 0.5 °C/10 µε"*; schede OZ Optics e Prysmian DITEST (vedi `docs/fonti.md`) |
 | spettro invece del valore | si riceve la curva intera, il picco va trovato | passo 3 | Bertulessi 2023 §2.1, Fig. 7b |
 | risoluzione spaziale | lo strumento media su circa 2 m: i passaggi tra tubi si sfumano | passo 3 | Bertulessi 2023: 20 ns, *"equivalent to a 2 m spatial resolution"* |
-| temperatura | sposta la frequenza come la pressione (circa 11 MHz/°C sull'elica) | passo 5 | Bertulessi 2023, Eq. 1 e 9 |
+| temperatura dell'acqua | l'acqua che scorre può portare la temperatura del serbatoio, insieme ai consumi | dopo il terreno (T2/T3 fatti) | Agudelo-Vera et al. 2017; Stewart & Bilgin 2020 |
 | creep del PE | la deformazione arriva in ritardo e continua a crescere | più avanti | Bertulessi 2023, modello di Burgers, Fig. 8 |
 | trasferimento alla fibra < 100 % | la fibra sente solo una parte della deformazione | da decidere | ⚠️ oggi ipotesi: 100 % |
 | calibrazione del rapporto MHz → bar | nella realtà il rapporto (coefficienti della fibra, rigidezza del tubo, trasferimento) va calibrato; il simulatore oggi lo conosce esatto | da decidere | Bertulessi 2023 Eq. 1: i coefficienti *"are highly influenced by the cable coating properties and the bonding conditions"* |

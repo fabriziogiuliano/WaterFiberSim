@@ -10,7 +10,7 @@ from pathlib import Path
 
 from .fiber import load_scenario
 from .fibermap import build_map, fiber_length_m
-from .plot import plot_map, plot_true_signal, plot_uncertainty
+from .plot import plot_compensation, plot_map, plot_true_signal, plot_uncertainty
 from .simulate import simulate_true
 
 
@@ -31,6 +31,10 @@ def main(argv=None):
     u = sub.add_parser("instrument", help="expected instrument uncertainty and measurement time (Soto & Thevenaz 2013)")
     u.add_argument("scenario")
     u.add_argument("--out", default="out")
+    c = sub.add_parser("compensate", help="temperature compensation with the reference leg and remaining errors (T3)")
+    c.add_argument("scenario")
+    c.add_argument("--out", default="out")
+    c.add_argument("--hour", type=int, default=8)
     a = ap.parse_args(argv)
 
     if a.cmd == "map":
@@ -49,6 +53,9 @@ def main(argv=None):
 
     if a.cmd == "instrument":
         report_instrument(load_scenario(a.scenario), Path(a.out))
+
+    if a.cmd == "compensate":
+        report_compensation(load_scenario(a.scenario), Path(a.out), a.hour)
 
     if a.cmd == "run":
         sc = load_scenario(a.scenario)
@@ -99,6 +106,43 @@ def report_instrument(sc, out: Path) -> None:
               f"{w.usable_lo_mhz:.0f}-{w.usable_hi_mhz:.0f} MHz; true peaks {w.nu_min_mhz:.0f}-{w.nu_max_mhz:.0f} MHz: "
               f"{'OK' if w.ok else 'OUT OF WINDOW'}")
         png = plot_uncertainty(sc, fmap, f, out / f"uncertainty_{f.id}.png")
+        print(f"  written {png}")
+
+
+def report_compensation(sc, out: Path, hour: int) -> None:
+    import numpy as np
+
+    from .compensation import apparent_pressure_bar, compensated_pressure_bar, random_error_bar
+
+    if sc.temperature is None:
+        raise SystemExit("this scenario has no `temperature` section: nothing to compensate")
+    out.mkdir(parents=True, exist_ok=True)
+    sig = simulate_true(sc)
+    t = int(np.argmin(abs(sig.times_s / 3600 - hour)))
+    K = sc.temperature.helix_mhz_per_c
+    for f in sc.fibers:
+        h = np.flatnonzero((sig.fiber_map["fiber"].to_numpy() == f.id) & (sig.fiber_map["leg"].to_numpy() == "sensing"))
+        true = sig.pressure_bar[t, h]
+
+        def err(est):
+            e = est[t, h] - true
+            return f"mean {np.nanmean(e):+.3f}, max |{np.nanmax(abs(e)):.3f}| bar"
+
+        L_eq = (K / sig.coef.c_t_mhz_per_c) ** 2 * f.spatial_resolution_m
+        print(f"fiber {f.id}, {hour:02d}:00, dT from the baseline {sig.delta_t_c[t, h].min():+.1f} to "
+              f"{sig.delta_t_c[t, h].max():+.1f} degC, helix K = {K:g} MHz/degC (true)")
+        print(f"  not compensated:                     {err(apparent_pressure_bar(sig, sc, f))}")
+        print(f"  compensated, true K, point by point: {err(compensated_pressure_bar(sig, sc, f, K))}")
+        for k_ass in (3.5, 8.0):
+            print(f"  compensated, K = {k_ass:g} (systematic):   {err(compensated_pressure_bar(sig, sc, f, k_ass))}")
+        for L in (L_eq, 200.0):
+            print(f"  compensated, true K, reference averaged over {L:.0f} m: "
+                  f"{err(compensated_pressure_bar(sig, sc, f, K, L))}")
+        for L in (0.0, 20.0, L_eq, 200.0):
+            tot, hel, th = random_error_bar(sc, f, K, L)
+            print(f"  random error, one measurement, reference averaged over {L:5.0f} m: {float(tot):.3f} bar "
+                  f"(helix {hel:.3f}, temperature {float(th):.3f})")
+        png = plot_compensation(sc, sig, f, out / f"compensation_{f.id}.png", hour)
         print(f"  written {png}")
 
 
