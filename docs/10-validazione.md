@@ -1,5 +1,5 @@
 <!-- nav -->
-| [← 9. Scheda tecnica dei parametri](09-scheda-tecnica.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 10 di 11 · Parte III — Il simulatore</sub> | [11. Risultati e questioni aperte →](11-risultati-e-questioni-aperte.md) |
+| [← 9. Le manopole del simulatore](09-scheda-tecnica.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 10 di 11 · Parte III — Il simulatore</sub> | [11. Risultati e questioni aperte →](11-risultati-e-questioni-aperte.md) |
 |:---|:---:|---:|
 <!-- /nav -->
 
@@ -42,6 +42,6 @@ Spostamento Brillouin sull'elica a 70° per 1 bar; fibra a metà guaina (o della
 
 <!-- nav-fondo -->
 
-| [← 9. Scheda tecnica dei parametri](09-scheda-tecnica.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 10 di 11 · Parte III — Il simulatore</sub> | [11. Risultati e questioni aperte →](11-risultati-e-questioni-aperte.md) |
+| [← 9. Le manopole del simulatore](09-scheda-tecnica.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 10 di 11 · Parte III — Il simulatore</sub> | [11. Risultati e questioni aperte →](11-risultati-e-questioni-aperte.md) |
 |:---|:---:|---:|
 <!-- /nav-fondo -->

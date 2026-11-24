@@ -75,7 +75,7 @@ anche la configurazione opposta, in cui la sonda perde energia; il principio è 
 ## 2.4 Le manopole e i limiti
 
 Durata dell'impulso, frequenza dell'ADC, passo di frequenza, numero di medie: decidono incertezza e tempo di misura.
-Sono trattate nel cap. 6, con il modello di incertezza di Soto & Thévenaz [ST13].
+Il modello dell'incertezza è nel cap. 6; ogni manopola è studiata in dettaglio, con i grafici, nel **cap. 9**.
 
 ## 2.5 Strumenti reali
 

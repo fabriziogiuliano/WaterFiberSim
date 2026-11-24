@@ -1,5 +1,5 @@
 <!-- nav -->
-| [← 7. Temperatura e compensazione](07-temperatura-e-compensazione.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 8 di 11 · Parte III — Il simulatore</sub> | [9. Scheda tecnica dei parametri →](09-scheda-tecnica.md) |
+| [← 7. Temperatura e compensazione](07-temperatura-e-compensazione.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 8 di 11 · Parte III — Il simulatore</sub> | [9. Le manopole del simulatore →](09-scheda-tecnica.md) |
 |:---|:---:|---:|
 <!-- /nav -->
 
@@ -79,6 +79,6 @@ rumori dello strumento; transitori (colpo d'ariete, DAS); perdite d'acqua (passo
 
 <!-- nav-fondo -->
 
-| [← 7. Temperatura e compensazione](07-temperatura-e-compensazione.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 8 di 11 · Parte III — Il simulatore</sub> | [9. Scheda tecnica dei parametri →](09-scheda-tecnica.md) |
+| [← 7. Temperatura e compensazione](07-temperatura-e-compensazione.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 8 di 11 · Parte III — Il simulatore</sub> | [9. Le manopole del simulatore →](09-scheda-tecnica.md) |
 |:---|:---:|---:|
 <!-- /nav-fondo -->

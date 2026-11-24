@@ -24,7 +24,7 @@ parametri, le verifiche e i risultati. Ogni capitolo rimanda agli altri; le font
 
 **Parte III — Il simulatore**
 8. [Logica del simulatore](08-logica-del-simulatore.md)
-9. [Scheda tecnica dei parametri](09-scheda-tecnica.md)
+9. [Le manopole del simulatore: analisi di tutte le variabili](09-scheda-tecnica.md)
 10. [Validazione](10-validazione.md)
 
 **Parte IV — Conclusioni**
