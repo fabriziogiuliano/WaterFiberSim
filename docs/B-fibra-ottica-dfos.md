@@ -7,11 +7,11 @@
 
 *Primo documento del progetto. Il §2.1 è aggiornato; il resto è il testo iniziale, in parte superato dai capitoli 2–7.*
 
-Questo documento spiega come funziona un sensore distribuito in fibra ottica (DFOS, *Distributed Fibre Optic Sensing*), perché una perdita "si sente" lungo il tubo e come la fibra si inserisce nel Digital Twin dell'OR5 di MATRIS come tecnologia abilitante per un progetto successivo. Serve per capire prima di simulare: il codice verrà dopo, a piccoli passi.
+Questo documento spiega come funziona un sensore distribuito in fibra ottica (DFOS, *Distributed Fibre Optic Sensing*), perché una perdita "si sente" lungo il tubo e come la fibra può alimentare un gemello digitale della rete. Serve per capire prima di simulare: il codice verrà dopo, a piccoli passi.
 
 **Contenuto**
 
-1. [Il contesto: da MATRIS al follow-up](#1-il-contesto-da-matris-al-follow-up)
+1. [Il contesto](#1-il-contesto)
 2. [Il principio: un cavo, migliaia di sensori](#2-il-principio-un-cavo-migliaia-di-sensori)
    - [2.1 Come funziona la BOTDA, passo per passo](02-principio-di-misura.md#22-il-principio-botda-panoramica)
 3. [Tre fenomeni, tre sensori: DAS, DTS, DSS](#3-tre-fenomeni-tre-sensori-das-dts-dss)
@@ -19,18 +19,18 @@ Questo documento spiega come funziona un sensore distribuito in fibra ottica (DF
 5. [Perché una perdita "suona"](#5-perché-una-perdita-suona)
 6. [Che dati produce: il waterfall](#6-che-dati-produce-il-waterfall)
 7. [Fibra o MEMS nella guaina](#7-fibra-o-mems-nella-guaina)
-8. [Come si aggancia al Digital Twin (OR5)](#8-come-si-aggancia-al-digital-twin-or5)
+8. [Collegamento con un gemello digitale](#8-collegamento-con-un-gemello-digitale)
 9. [Cosa simuleremo, e cosa no](#9-cosa-simuleremo-e-cosa-no)
 10. [Glossario](#10-glossario)
 11. [Da leggere](#11-da-leggere)
 
 ---
 
-## 1. Il contesto: da MATRIS al follow-up
+## 1. Il contesto
 
-In MATRIS il monitoraggio "distribuito" è fatto da **accelerometri MEMS annegati nella guaina in composito** del relining (OR4), più **giunti smart** con sensori di pressione e portata usati come riferimento. Ogni nodo ha un microcontrollore che estrae feature spettrali (MFCC) dalle vibrazioni. È un sensore **quasi-distribuito**: tanti punti discreti, ognuno con la sua elettronica.
+Nelle soluzioni basate su sensori puntuali il monitoraggio è fatto, per esempio, da **accelerometri MEMS annegati nella guaina in composito** del relining, più **giunti smart** con sensori di pressione e portata usati come riferimento. Ogni nodo ha un microcontrollore che estrae feature spettrali (MFCC) dalle vibrazioni. È un sensore **quasi-distribuito**: tanti punti discreti, ognuno con la sua elettronica.
 
-Il follow-up propone di sostituire o affiancare i nodi MEMS con una **fibra ottica posata o annegata lungo la condotta**: un sensore **realmente distribuito**, passivo, senza elettronica né alimentazione lungo il tubo. Il Digital Twin dell'OR5 deve poterla ospitare: per questo la simuliamo.
+L'idea è di sostituire o affiancare i nodi MEMS con una **fibra ottica posata o annegata lungo la condotta**: un sensore **realmente distribuito**, passivo, senza elettronica né alimentazione lungo il tubo. Un gemello digitale della rete deve poterla ospitare: per questo la simuliamo.
 
 ## 2. Il principio: un cavo, migliaia di sensori
 
@@ -104,11 +104,11 @@ Per la BOTDA del simulatore un esempio vero di matrice tempo × posizione è il 
 | mezzo che passa lungo una strada parallela | traccia obliqua, che si sposta nel tempo |
 | onda di pressione (transitorio) | diagonale sottile; la pendenza è la sua velocità |
 
-Riconoscere eventi nel waterfall è un problema di **visione/segnali**: soglie, rilevamento di bande verticali, filtri, reti convoluzionali (CNN) sulle immagini tempo-posizione. È esattamente il tipo di "modello predittivo" previsto dall'att. 5.1 dell'OR5.
+Riconoscere eventi nel waterfall è un problema di **visione/segnali**: soglie, rilevamento di bande verticali, filtri, reti convoluzionali (CNN) sulle immagini tempo-posizione.
 
 ## 7. Fibra o MEMS nella guaina
 
-| | MEMS nella guaina (MATRIS) | Fibra DAS (follow-up) |
+| | MEMS nella guaina | Fibra DAS |
 |---|---|---|
 | Tipo di copertura | punti discreti (un nodo ogni N metri o nei giunti) | continua, un canale ogni ~1 m |
 | Elettronica lungo il tubo | sì: sensore + MCU + alimentazione + radio per ogni nodo | **nessuna**: la fibra è passiva |
@@ -116,19 +116,19 @@ Riconoscere eventi nel waterfall è un problema di **visione/segnali**: soglie, 
 | Costo | basso per nodo, cresce con il numero di nodi | interrogatore costoso (indicativamente decine di migliaia di euro), fibra economica; conviene su tratti lunghi |
 | Vita utile | limitata dalla batteria/elettronica | la fibra dura quanto il tubo (decenni) |
 | Localizzazione | tra due nodi, per correlazione | diretta, al canale più rumoroso (± qualche metro) |
-| Integrazione nel relining | sensori e cavi annegati nel composito (OR2) | fibra annegata nel composito durante la produzione della guaina |
+| Integrazione nel relining | sensori e cavi annegati nel composito | fibra annegata nel composito durante la produzione della guaina |
 | Comunicazione | LoRaWAN da ogni nodo | un collegamento dall'interrogatore (IP o LoRaWAN per gli eventi) |
 
-L'argomento per il follow-up: la guaina CIPP di MATRIS è **già un supporto ideale per annegare una fibra** durante la produzione, eliminando l'elettronica distribuita. I giunti smart restano utili come riferimento di pressione e portata per **calibrare** la fibra.
+L'argomento: una guaina CIPP è **già un supporto ideale per annegare una fibra** durante la produzione, eliminando l'elettronica distribuita. I giunti smart restano utili come riferimento di pressione e portata per **calibrare** la fibra.
 
-## 8. Come si aggancia al Digital Twin (OR5)
+## 8. Collegamento con un gemello digitale
 
 | livello | cosa fa |
 |---|---|
 | mondo fisico (simulato) | EPANET: pressioni, portate, perdite, guasti; modello del sensore (fibra, rumore, waterfall) |
 | edge, accanto all'interrogatore | rilevatore: dal waterfall a eventi compatti ("perdita probabile a 1050 m, intensità alta, da 07:12"); regole, poi CNN |
 | collegamento | pochi byte (LoRaWAN o IP) |
-| Active Digital Twin (OR5) | il tubo "sa" dov'è la perdita; fusione con contatori di distretto e sensori di pressione; agenti che spiegano l'incidente e propongono azioni |
+| gemello digitale | il tubo "sa" dov'è la perdita; fusione con contatori di distretto e sensori di pressione; agenti che spiegano l'incidente e propongono azioni |
 
 Quello che il repository ha già: la rete reale in EPANET con perdite e guasto pompa (`radio/hydraulics.py` nel progetto edge-slm-emulator), la pipeline LoRaWAN completa e gli agenti SLM. Quello che manca è il blocco centrale: **il modello acustico e il sensore in fibra**.
 
@@ -163,7 +163,7 @@ I parametri (attenuazione, livelli di rumore, risoluzione) verranno da letteratu
 | **Waterfall** | la matrice tempo × posizione prodotta dal DAS |
 | **Fading** | canali che a tratti diventano "sordi" per un effetto casuale di interferenza della luce |
 | **CIPP / relining** | risanamento senza scavo: una guaina impregnata di resina indurita dentro il tubo esistente |
-| **MEMS** | sensori microscopici su chip (es. accelerometri), quelli previsti da MATRIS |
+| **MEMS** | sensori microscopici su chip (es. accelerometri) |
 | **Strain** | deformazione relativa (allungamento / lunghezza); in µε = milionesimi |
 
 ## 11. Da leggere

@@ -116,7 +116,7 @@ Entrano nella deformazione della fibra (cap. 5): Lamé (uno o più strati) e ε_
 ### 9.2.4 Guaina e tubo ospite (`liner`)
 
 - **Valore.** 6 mm, 8 GPa, ν 0,35 ⚠️; letteratura: CIPP in feltro almeno 1,7 GPa (ASTM F1216), in vetro circa 10 GPa
-  (scheda di una guaina per fognatura) ⚠️. I valori MATRIS veri vengono da OR1.
+  (scheda di una guaina per fognatura) ⚠️. I valori veri vanno presi dal laminato reale.
 - **Se lo cambi (grafico 4).** È il parametro **decisivo**:
   - in un tubo ospite in PE la guaina lavora: 3–17 MHz/bar, più la guaina è morbida più si sente;
   - in ghisa degradata (rigidezza 1/10): 2–4 MHz/bar;
@@ -203,7 +203,7 @@ Verifica: la perdita di carico di EPANET coincide con la formula di [\[EPA\]](A-
 | ν del PE | 0,40 | 0,42–0,49 con la temperatura | ✅ [\[B23\]](A-fonti.md#b23), [\[SB20\]](A-fonti.md#sb20) | pochi % |
 | creep del PE (Burgers E2, η2, η3) | non modellato | E2 = 1,65–4,47 GPa | ✅ [\[B23\]](A-fonti.md#b23) Tab. 2 | +20 % a 5 bar dopo minuti; oltre a 10 bar molto di più |
 | ghisa: E, ν | 170 GPa, 0,26 | — | ⚠️ (scheda con unità errata) | rende il tubo quasi indeformabile |
-| guaina: spessore, E, ν | 6 mm, 8 GPa, 0,35 | E 1,7 (feltro, minimo ASTM F1216) – 10,3 GPa (vetro UV) | ⚠️ da laminato MATRIS OR1 | **decide se la pressione si vede** |
+| guaina: spessore, E, ν | 6 mm, 8 GPa, 0,35 | E 1,7 (feltro, minimo ASTM F1216) – 10,3 GPa (vetro UV) | ⚠️ da laminato reale | **decide se la pressione si vede** |
 | posizione della fibra nella guaina | metà spessore | — | ⚠️ | piccolo |
 | angolo dell'elica | 70° | 60–80° | ⚠️ scelto; [\[B23\]](A-fonti.md#b23) 75° | ε_fibra = ε_θ sin²α + ε_z cos²α |
 
@@ -214,8 +214,8 @@ in tubo in PE 3–10 MHz/bar; **guaina in ghisa integra circa 0,4–0,5 MHz/bar*
 
 | parametro | default | fonte | note |
 |---|---|---|---|
-| tratto di misura | elica, `bonded` (rete di prova) o `embedded` (MATRIS) | ✅ [\[B23\]](A-fonti.md#b23); decisione utente | sente pressione + temperatura |
-| tratto di riferimento | dritto, libero in un tubetto | ✅ [\[B23\]](A-fonti.md#b23) Fig. 7c; decisione MATRIS | sente solo temperatura |
+| tratto di misura | elica, `bonded` (rete di prova) o `embedded` (guaina di risanamento) | ✅ [\[B23\]](A-fonti.md#b23); decisione utente | sente pressione + temperatura |
+| tratto di riferimento | dritto, libero in un tubetto | ✅ [\[B23\]](A-fonti.md#b23) Fig. 7c; scelta di progetto | sente solo temperatura |
 | cavi (`lead`) e giunzione | lunghezze nello scenario | — | sentono la temperatura del terreno |
 | indice di gruppo n | 1,468 | ⚠️ a memoria (scheda Corning da scaricare) | sposta i metri del 2 % |
 | attenuazione | 0,2 dB/km | ✅ [\[ST13\]](A-fonti.md#st13) | sotto i 4 km pesa poco |

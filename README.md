@@ -116,7 +116,7 @@ pipes:
 
 Una fibra **non si dirama**: è un percorso lineare. Con la BOTDA i due capi tornano allo stesso strumento (porta A e porta B), quindi la fibra è un **anello** con due tratti (vedi la figura del sensore più sotto e [docs/B-fibra-ottica-dfos.md §2.1](docs/02-principio-di-misura.md#22-il-principio-botda-panoramica)):
 
-- **tratto di misura** (*sensing leg*): dalla porta A, a **elica solidale** al tubo; nel caso MATRIS è **annegata nella guaina**, che polimerizza in opera e la ancora; sente pressione + temperatura;
+- **tratto di misura** (*sensing leg*): dalla porta A, a **elica solidale** al tubo; nella guaina di risanamento è **annegata**, che polimerizza in opera e la ancora; sente pressione + temperatura;
 - **tratto di riferimento** (*reference leg*): ritorna alla porta B ripercorrendo **gli stessi tubi** al contrario, **dritto e libero in un tubetto**; sente solo la temperatura.
 
 Nel file si scrive solo il percorso di andata. Il ritorno è sempre lo stesso percorso al contrario, perché il riferimento deve misurare la temperatura negli stessi punti.
@@ -378,7 +378,7 @@ L'acqua esce dal serbatoio a una temperatura diversa dal terreno e lungo i tubi 
 
 S1w (acqua +2 °C sul terreno): in fondo alla strada la pressione vera scende di 0,27 bar al picco, quella letta senza compensare **sale** di 0,09 bar (segno invertito). Con il riferimento (libero nel tubetto, stessa temperatura dell'elica) l'errore torna quello del rumore (circa 0,06 bar per misura).
 
-Posa MATRIS decisa: elica annegata nella guaina, ritorno annegato nella stessa guaina ma libero in un tubetto. I cavi di collegamento (`lead`) stanno nel terreno e misurano la temperatura del terreno.
+Posa decisa: elica annegata nella guaina, ritorno annegato nella stessa guaina ma libero in un tubetto. I cavi di collegamento (`lead`) stanno nel terreno e misurano la temperatura del terreno.
 
 ### Cosa il simulatore non fa ancora
 
@@ -393,7 +393,7 @@ Il **profilo a riposo** c'è già: ogni metro ha la sua frequenza a tubo vuoto (
 | creep del PE | la deformazione arriva in ritardo e continua a crescere | più avanti | Bertulessi 2023, modello di Burgers, Fig. 8 |
 | trasferimento alla fibra < 100 % | la fibra sente solo una parte della deformazione | da decidere | ⚠️ oggi ipotesi: 100 % |
 | calibrazione del rapporto MHz → bar | nella realtà il rapporto (coefficienti della fibra, rigidezza del tubo, trasferimento) va calibrato; il simulatore oggi lo conosce esatto | da decidere | Bertulessi 2023 Eq. 1: i coefficienti *"are highly influenced by the cable coating properties and the bonding conditions"* |
-| guaina + tubo ospite | il rapporto MHz/bar dipende dal laminato e dal tubo dietro; i tubi risanati danno errore | quando arriverà il laminato (MATRIS OR1) | modello a più strati da fare |
+| guaina + tubo ospite | il rapporto MHz/bar dipende dal laminato e dal tubo dietro; i tubi risanati danno errore | quando arriverà il laminato (dati del laminato reale) | modello a più strati da fare |
 
 Altre semplificazioni: pressione a scalini di un'ora (gli andamenti di consumo nell'`.inp` sono orari), tubi dritti tra i due nodi.
 
@@ -430,7 +430,7 @@ Altri due vincoli:
 - **Curvatura:** l'elica ha raggio di curvatura R / sin²α, quindi non scende mai sotto il raggio del tubo. Per un DN110 (R = 55 mm) va bene anche una fibra standard; le fibre "insensibili alla curvatura" (ITU-T G.657) reggono fino a 7,5–10 mm.
 - **Fibra di riferimento:** di solito accanto all'elica si posa una **fibra dritta in tubetto libero**, che non sente lo strain e misura solo la temperatura. Serve a compensare (vedi passo 5).
 
-Nel caso MATRIS la fibra si annega nel composito della guaina durante la produzione. Se la guaina è fatta per avvolgimento di filamenti, l'elica viene naturale.
+Nella guaina di risanamento la fibra si annega nel composito della guaina durante la produzione. Se la guaina è fatta per avvolgimento di filamenti, l'elica viene naturale.
 
 ---
 

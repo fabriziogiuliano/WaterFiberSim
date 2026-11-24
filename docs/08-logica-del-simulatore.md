@@ -29,7 +29,7 @@ Comandi: `map` (geometria), `run` (segnale vero), `instrument` (incertezza attes
 1. Pressione lineare lungo il tubo tra due nodi; regime quasi stazionario (EPANET a scalini).
 2. Materiali elastici lineari; il creep del PE non è modellato (a 5 bar sottostima circa il 20 %, vedi validazione).
 3. Deformazione trasferita alla fibra al 100 %; elica e guaina incollate.
-4. Ritorno libero nel tubetto: niente deformazione, stessa temperatura dell'elica nello stesso istante (posa MATRIS).
+4. Ritorno libero nel tubetto: niente deformazione, stessa temperatura dell'elica nello stesso istante (posa nella guaina).
 5. Strumento: rumore gaussiano bianco, nessuna polarizzazione, nessuno svuotamento della pompa, misura istantanea.
 6. Temperatura dell'acqua: modello di Blokker, mescolamento nei nodi, velocità dell'ora corrente.
 

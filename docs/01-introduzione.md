@@ -16,10 +16,10 @@ Chi elabora i dati (L1–L3) può così sviluppare e verificare i suoi algoritmi
 
 ## 1.2 Contesto
 
-Follow-up del progetto MATRIS (risanamento delle condotte con guaine polimerizzate in opera), obiettivo OR5
-(*Active Digital Twin*). L'idea: annegare la fibra nella guaina di risanamento, così che il tubo risanato diventi
-anche un sensore (cap. 3). Il riferimento scientifico più vicino è Bertulessi et al. 2023 [\[B23\]](A-fonti.md#b23) (Politecnico di
-Milano, Cohaerentia), che ha provato lo stesso schema su tubi in PE in laboratorio.
+Il lavoro si colloca nel risanamento delle condotte con guaine polimerizzate in opera e nello sviluppo di gemelli
+digitali delle reti idriche. L'idea è annegare la fibra nella guaina di risanamento, così che il tubo risanato diventi
+anche un sensore (cap. 3). Il riferimento scientifico più vicino è Bertulessi et al. 2023 [\[B23\]](A-fonti.md#b23) (Politecnico di Milano,
+Cohaerentia), che ha provato lo stesso schema su tubi in PE in laboratorio.
 
 ## 1.3 Domande di ricerca
 
@@ -33,7 +33,7 @@ Le risposte, con i loro limiti, sono riassunte nel cap. 11.
 ## 1.4 Ambito e limiti
 
 Non è l'elaborazione dei dati: il fit e la compensazione inclusi sono **esempi** per verificare che dal dato grezzo
-si torni alla pressione (cap. 6 e 7). Non è un progetto di installazione: i parametri dei materiali MATRIS non sono
+si torni alla pressione (cap. 6 e 7). Non è un progetto di installazione: i parametri dei materiali della guaina non sono
 ancora noti (cap. 9).
 
 <!-- nav-fondo -->

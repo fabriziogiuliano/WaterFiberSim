@@ -18,7 +18,7 @@
 1. **Guaina in un tubo ospite rigido integro**: circa 0,4–0,5 MHz/bar, la pressione si perde nel rumore e negli
    errori di temperatura (cap. 5). Su ospite in PE o degradato la fibra sente 2,5–10 MHz/bar.
 2. **Calibrazione di K** (sensibilità dell'elica alla temperatura): ±1 bar di errore sistematico possibile (cap. 7).
-3. **Proprietà del laminato MATRIS** (modulo, spessore, Poisson, comportamento della fibra nella polimerizzazione):
+3. **Proprietà del laminato della guaina** (modulo, spessore, Poisson, comportamento della fibra nella polimerizzazione):
    oggi valori di letteratura per guaine da fogna ⚠️ (cap. 9).
 4. **Creep del PE** oltre i 5 bar e nel tempo (cap. 5, 10).
 
@@ -29,7 +29,7 @@
 
 ## 11.4 Sviluppi
 
-1. Ottenere i dati del laminato MATRIS (OR1) e rifare il cap. 5 con valori veri.
+1. Ottenere i dati del laminato reale della guaina e rifare il cap. 5 con valori veri.
 2. Cercare in letteratura metodi di calibrazione di K in opera.
 3. Perdite d'acqua (effetto su pressione e temperatura).
 4. Contattare il gruppo di [\[B23\]](A-fonti.md#b23) (Politecnico di Milano / Cohaerentia): misure reali sullo stesso schema.
