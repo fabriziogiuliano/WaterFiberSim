@@ -92,7 +92,11 @@ def simulate_true(scenario: Scenario, duration_s: int = 86_400, step_s: int = 90
         # tratto di riferimento: fibra libera nel tubetto, deformazione 0 (resta 0)
 
     rest = rest_offset_mhz(fmap, scenario, seed) if rest_profile else np.zeros(Z)
-    dT = delta_t_c(scenario.temperature, fmap, hyd.times_s)
+    if scenario.temperature is not None and scenario.temperature.water is not None:
+        from .temperature import water_delta_t_c
+        dT = water_delta_t_c(scenario.temperature, net, hyd, fmap)
+    else:
+        dT = delta_t_c(scenario.temperature, fmap, hyd.times_s)
     nu = brillouin_shift_mhz(strain, dT, coef) + rest
     if scenario.temperature is not None:
         # sull'elica la temperatura pesa di più: la dilatazione del tubo tira la fibra (helix_mhz_per_c in tutto)

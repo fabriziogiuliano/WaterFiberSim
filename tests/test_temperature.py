@@ -82,3 +82,20 @@ def test_adaptive_average_keeps_hotspot_and_interpolation_has_no_steps():
 
     assert max_err() < 0.005
     assert max_err(ref_avg_m=74, mode="adaptive") < 0.5 * max_err(ref_avg_m=74, mode="moving")
+
+
+def test_water_temperature_follows_demand():
+    """S1w: vicino al serbatoio l'acqua resta calda; in fondo alla strada è calda al picco e torna al terreno di notte."""
+    os.chdir(ROOT)
+    sc = load_scenario(ROOT / "scenario_paths" / "S1w_street_flat_water.yaml")
+    s = simulate_true(sc, duration_s=86_400, step_s=3600)
+    f = s.fiber_map
+    sens = (f["leg"] == "sensing").to_numpy()
+
+    def dT(pid, hour):
+        return s.delta_t_c[hour, sens & (f["pipe"] == pid).to_numpy()].mean()
+
+    assert dT("P1", 3) > 1.7 and dT("P1", 8) > 1.9            # sorgente +2 °C
+    assert dT("P10", 3) < 0.3 < 0.9 < dT("P10", 8)           # di notte terreno, al picco ancora calda
+    lead = (f["leg"] == "lead").to_numpy()
+    assert np.allclose(s.delta_t_c[:, lead], 0)               # cavi nel terreno, invariato

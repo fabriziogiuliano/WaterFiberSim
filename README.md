@@ -367,6 +367,14 @@ temperature:
 
 ![Compensazione sul dato misurato, scenario S1th](docs/img/S1th_compensation_measured.png)
 
+### Temperatura dell'acqua (scenario S1w)
+
+L'acqua esce dal serbatoio a una temperatura diversa dal terreno e lungo i tubi vi si avvicina (Blokker et al. 2024, *Water* 16, 2796, Eq. 1–3): T = T_terreno + (T_ingresso − T_terreno)·e^(−k·τ), con k da diametro, PE (0,38 W/m·K), terreno e velocità, ora per ora; nei nodi le acque si mescolano. Di giorno l'acqua arriva veloce e calda in fondo alla strada, di notte si porta al terreno: la temperatura cambia **con il ritmo dei consumi**.
+
+S1w (acqua +2 °C sul terreno): in fondo alla strada la pressione vera scende di 0,27 bar al picco, quella letta senza compensare **sale** di 0,09 bar (segno invertito). Con il riferimento (libero nel tubetto, stessa temperatura dell'elica) l'errore torna quello del rumore (circa 0,06 bar per misura).
+
+Posa MATRIS decisa: elica annegata nella guaina, ritorno annegato nella stessa guaina ma libero in un tubetto. I cavi di collegamento (`lead`) stanno nel terreno e misurano la temperatura del terreno.
+
 ### Cosa il simulatore non fa ancora
 
 Il **profilo a riposo** c'è già: ogni metro ha la sua frequenza a tubo vuoto (elica da +105 a +180 MHz, tratto libero +65 MHz, come in Bertulessi 2023 Fig. 7a; forma casuale, `--seed`: continua lungo un'elica avvolta senza interruzioni, con un salto solo dove la posa riparte, cioè dopo un cavo o dove cambia il tubo; ipotesi, vedi `docs/fonti.md`), e la misura di base lo cancella. Per il resto il segnale è **ideale**: la frequenza segue la pressione in modo esatto e proporzionale. È la **verità** (le etichette). Quello che riceverà chi elabora i dati (L0) sarà questa verità con i disturbi reali, aggiunti uno alla volta:

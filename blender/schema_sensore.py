@@ -44,7 +44,6 @@ Z1 = Z_ELICA0 + X_P * K                   # lo stesso punto sull'elica...
 Z2 = Z_RIT0 + (L_TUBO - X_P)              # ...e sul ritorno (percorso al contrario)
 # Fonti: vedi docs/fonti.md. Coefficienti e parametri del PE da Bertulessi et al., Sensors 23, 6205 (2023).
 C_EPS, C_T = 0.05, 1.0                    # MHz/µε, MHz/°C (fibra standard; Bertulessi 2023, Eq. 1)
-ALFA_PE = 200                             # µε/°C, dilatazione termica HDPE (Bertulessi 2023, Tab. 2)
 E_PE, NU_PE = 1050.0, 0.4                 # MPa, - (Bertulessi 2023, Tab. 2)
 DE_MM, SP_MM = 110.0, 10.0                # tubo dell'esempio: PE DN110, spessore 10 mm
 BETA = (DE_MM / 2 - SP_MM) / (DE_MM / 2)  # raggio interno / esterno
@@ -54,7 +53,7 @@ EPS_THETA = (2 - NU_PE) * BETA**2 / (1 - BETA**2) * P_1BAR / E_PE * 1e6     # µ
 EPS_Z = (1 - 2 * NU_PE) * BETA**2 / (1 - BETA**2) * P_1BAR / E_PE * 1e6     # µε
 S2 = np.sin(np.radians(ALFA)) ** 2
 EPS_1BAR = EPS_THETA * S2 + EPS_Z * (1 - S2)  # µε sentiti dall'elica per 1 bar
-K_T_ELICA = C_T + C_EPS * ALFA_PE         # MHz/°C sull'elica: la fibra solidale segue la dilatazione del PE
+K_T_ELICA = 6.0                           # MHz/°C sull'elica: forbice 3,5-8 dalle fonti, DA CALIBRARE (docs/fonti.md)
 
 
 def box(ax, x, y, w, h, colore="#f4f6f9", bordo="#c9ced6"):
@@ -72,8 +71,10 @@ def riga(fs):
 
 def paragrafo(fig, x, y, n, titolo, testo, larghezza, colore_n=TESTO, fs=13.5, stacco=0.9):
     """Numero tondo + titolo in grassetto + testo a capo dopo `larghezza` caratteri. Ritorna la y successiva."""
-    fig.text(x, y, f" {n} ", fontsize=14, fontweight="bold", color="white", va="top", ha="left",
-             bbox=dict(boxstyle="circle,pad=0.25", fc=colore_n, ec="none"))
+    # numeri a due cifre: niente spazi e carattere più piccolo, così il cerchio resta della stessa misura
+    fig.text(x, y, f" {n} " if n < 10 else f"{n}", fontsize=14 if n < 10 else 11.5, fontweight="bold", color="white",
+             va="top", ha="left", bbox=dict(boxstyle="circle,pad=0.25" if n < 10 else "circle,pad=0.42",
+                                            fc=colore_n, ec="none"))
     fig.text(x + 0.03, y, titolo, fontsize=fs + 2, fontweight="bold", va="top", color=TESTO)
     y -= riga(fs + 2) * 1.15
     righe = []
@@ -85,7 +86,8 @@ def paragrafo(fig, x, y, n, titolo, testo, larghezza, colore_n=TESTO, fs=13.5, s
 
 def numero(ax, x, y, n, r=17, colore=TESTO):
     ax.add_patch(Circle((x, y), r, fc=colore, ec="white", lw=2.5, zorder=5))
-    ax.text(x, y, str(n), color="white", ha="center", va="center", fontsize=15, fontweight="bold", zorder=6)
+    ax.text(x, y, str(n), color="white", ha="center", va="center", fontsize=15 if n < 10 else 11.5,
+            fontweight="bold", zorder=6)
 
 
 def main():
@@ -116,6 +118,7 @@ def main():
         (7, "acqua", (-150, 160)),
         (8, "guaina", (10, -190)),
         (9, "ospite", (120, -140)),
+        (10, "cavo", (120, 130)),
     ]
     for n, k, (dx, dy) in etichette:
         (u, v) = px[k]
@@ -145,10 +148,13 @@ def main():
                                   f"{EPS_THETA / 1e4:.2f}\u00a0% per bar (DN110).".replace(".", ",", 1)),
         (8, "Guaina in composito (relining)", "Lo strato che contiene la fibra."),
         (9, "Tubo ospite", "Il tubo esistente, tagliato per vedere dentro."),
+        (10, "Cavi di collegamento", "La stessa fibra, protetta in un cavo, dall'interrogatore all'inizio del tubo e "
+                                     "ritorno (nello scenario: `lead`). Sta nel terreno, non sul tubo: sente solo la "
+                                     "temperatura del terreno."),
     ]
     y = 0.955
     for n, titolo, testo in voci:
-        y = paragrafo(fig, 0.625, y, n, titolo, testo, 76, fs=12.5, stacco=0.55)
+        y = paragrafo(fig, 0.625, y, n, titolo, testo, 84, fs=11.5, stacco=0.3)
     fig.text(0.03, 0.672, "Frecce arancioni sulla fibra: verso in cui cresce la distanza z, contata dalla porta A, dove "
              "si legge.\nGli impulsi viaggiano in questo verso, la luce di lettura nel verso opposto.   "
              "La fibra è di un solo colore perché è UNA sola.",
@@ -269,10 +275,10 @@ def main():
         (f"a z₁ (elica, pressione + temperatura): lo strumento vede +{EPS_1BAR * C_EPS + K_T_ELICA:.0f} MHz   →   "
          f"tolgo la parte della temperatura (1 °C × {K_T_ELICA:.0f} MHz per °C sull'elica*) = "
          f"{EPS_1BAR * C_EPS:.0f} MHz   →   {EPS_1BAR:.0f} µε   →   ≈ 1 bar", False),
-        (f"* sull'elica il calore pesa di più: la fibra è solidale al PE, che col caldo si dilata ({ALFA_PE} µε/°C) e "
-         f"la tira: {C_T:.0f} + {str(C_EPS).replace('.', ',')} × {ALFA_PE} ≈ {K_T_ELICA:.0f} MHz/°C. Il simulatore fornisce anche i valori VERI "
+        (f"* sull'elica il calore pesa di più: la fibra è solidale al PE, che col caldo si dilata e la tira. Secondo le fonti "
+         f"tra circa 3,5 e 8 MHz/°C (qui {K_T_ELICA:.0f}): va calibrato in opera. Il simulatore fornisce anche i valori VERI "
          "di pressione, temperatura e allungamento.", False),
-        ("Fonti: Bertulessi et al., Sensors 23, 6205 (2023), doi:10.3390/s23136205;  schede tecniche OZ Optics "
+        ("Fonti: Bertulessi et al., Sensors 23, 6205 (2023), doi:10.3390/s23136205;  Stewart & Bilgin, PPI (2020);  schede tecniche OZ Optics "
          "DTS0115 e Prysmian DITEST.  Elenco completo e stato di verifica: docs/fonti.md", False),
     ]
     y = 0.1

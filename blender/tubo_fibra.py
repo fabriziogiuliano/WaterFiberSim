@@ -310,6 +310,7 @@ def costruisci():
         "interrogatore": BOX + Vector((0, -0.35, 0.4)),
         "porta_A": PORTA_A,
         "porta_B": PORTA_B,
+        "cavo": Vector(cavo_a[len(cavo_a) // 3]),
         "elica": punto_elica(x_vis),
         "riferimento": Vector((2.6, y_r, z_r)),
         "giunzione": giunto,
@@ -319,6 +320,7 @@ def costruisci():
     }
     nomi = {
         "interrogatore": "interrogatore BOTDA", "porta_A": "porta A", "porta_B": "porta B",
+        "cavo": "cavo di collegamento",
         "elica": "ANDATA: fibra a elica", "riferimento": "RITORNO: fibra dritta in tubetto libero",
         "giunzione": "giunzione", "ospite": "tubo ospite", "guaina": "guaina", "acqua": "acqua in pressione",
     }
