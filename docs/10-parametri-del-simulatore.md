@@ -1,9 +1,9 @@
 <!-- nav -->
-| [← 8. Logica del simulatore](08-logica-del-simulatore.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 9 di 11 · Parte III — Simulatore</sub> | [10. Validazione →](10-validazione.md) |
+| [← 9. Logica del simulatore](09-logica-del-simulatore.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 10 di 12 · Parte III — Simulatore</sub> | [11. Validazione →](11-validazione.md) |
 |:---|:---:|---:|
 <!-- /nav -->
 
-# 9. I parametri del simulatore
+# 10. I parametri del simulatore
 
 Un **parametro** è una variabile che si può cambiare: un valore nel file della rete (`.inp`), nello scenario
 (`scenario_paths/*.yaml`), nei parametri dei tubi (`pipes.yaml`) o, per poche scelte di modello, una costante nel
@@ -14,7 +14,7 @@ I grafici si rigenerano con `python -m waterfibersim parameters` (modulo `parame
 simulatore, su un tubo PE100 DN110 SDR11 e uno strumento con le impostazioni di [\[B23\]](A-fonti.md#b23). Quando un grafico è in MHz,
 l'asse di destra dà l'equivalente in bar sull'elica in PE (1 bar ≈ 14,5 MHz). Simboli delle fonti come nell'appendice A.
 
-## 9.1 Parametri dello strumento
+## 10.1 Parametri dello strumento
 
 ![Parametri dello strumento](img/parametri_strumento.png)
 
@@ -22,7 +22,7 @@ Tutte entrano nell'incertezza di una misura attraverso il modello di Soto & Thé
 
 $$\sigma_\nu = \frac{1}{\mathrm{SNR}}\sqrt{\frac{3\,\delta\,\Delta\nu_B}{8\sqrt{2}\,(1-\eta)^{3/2}}} \qquad \mathrm{SNR} = \mathrm{SNR}_0\,\frac{\Delta z}{\Delta z_0}\,\sqrt{N_{AV}}\;e^{-\alpha z}$$
 
-### 9.1.1 Durata dell'impulso `pulse_width_ns`
+### 10.1.1 Durata dell'impulso `pulse_width_ns`
 
 - **Cos'è.** Quanto dura ogni impulso di interrogazione (pompa). Lo strumento fa la media su tutta la fibra che
   l'impulso occupa: è la **risoluzione spaziale**, $\Delta z = c\,\tau/(2n)$ [\[ST13\]](A-fonti.md#st13) §2.
@@ -34,7 +34,7 @@ $$\sigma_\nu = \frac{1}{\mathrm{SNR}}\sqrt{\frac{3\,\delta\,\Delta\nu_B}{8\sqrt{
 - **Compromesso.** Risoluzione contro rumore. Per la pressione, che cambia lentamente lungo il tubo, 2 m bastano;
   servirebbe di più solo per localizzare eventi brevi (giunti, perdite).
 
-### 9.1.2 Frequenza dell'ADC `adc_sample_rate_msps`
+### 10.1.2 Frequenza dell'ADC `adc_sample_rate_msps`
 
 - **Cos'è.** Quante volte al secondo lo strumento legge il fotodiodo. Fissa il **passo dei punti**:
   $\Delta z = c/(2\,n\,f_{ADC})$ (calcolo nostro) (tempo di volo).
@@ -43,7 +43,7 @@ $$\sigma_\nu = \frac{1}{\mathrm{SNR}}\sqrt{\frac{3\,\delta\,\Delta\nu_B}{8\sqrt{
   stessa fibra, quindi il loro rumore è **correlato** (calcolo nostro). Non cambia σ.
 - **Consiglio.** Un passo di circa metà risoluzione (come 0,8 m su 2 m) è sufficiente.
 
-### 9.1.3 Passo di frequenza `freq_step_mhz` ($\delta$) e finestra `scan_window_ghz`
+### 10.1.3 Passo di frequenza `freq_step_mhz` ($\delta$) e finestra `scan_window_ghz`
 
 - **Cos'è.** Lo strumento costruisce la campana provando tante differenze di frequenza $\Delta\nu$, a passi di $\delta$, dentro la
   finestra.
@@ -56,7 +56,7 @@ $$\sigma_\nu = \frac{1}{\mathrm{SNR}}\sqrt{\frac{3\,\delta\,\Delta\nu_B}{8\sqrt{
 - **Compromesso.** $\delta$ e medie pesano allo stesso modo sull'incertezza; ma cambiare frequenza è lento per lo strumento
   [\[ST13\]](A-fonti.md#st13) §3, quindi conviene un $\delta$ un po' più largo con più medie.
 
-### 9.1.4 Medie `n_averages` ($N_{AV}$)
+### 10.1.4 Medie `n_averages` ($N_{AV}$)
 
 - **Cos'è.** Quante tracce lo strumento somma per ogni passo di frequenza.
 - **Valore.** 256 [\[B23\]](A-fonti.md#b23); commerciali fino a 65 000 [\[OZ\]](A-fonti.md#oz).
@@ -65,17 +65,17 @@ $$\sigma_\nu = \frac{1}{\mathrm{SNR}}\sqrt{\frac{3\,\delta\,\Delta\nu_B}{8\sqrt{
   morti, [\[B23\]](A-fonti.md#b23) dichiara 7–20 s); con 65 000 medie si superano i 15 minuti del passo idraulico.
 - **Consiglio.** È il parametro più utile: il tempo c'è (la pressione cambia in ore). Fino a qualche migliaio di medie.
 
-### 9.1.5 Prestazioni dello strumento: `snr0_db`, `snr0_resolution_m`, `linewidth_mhz`
+### 10.1.5 Prestazioni dello strumento: `snr0_db`, `snr0_resolution_m`, `linewidth_mhz`
 
 - **Cos'è.** $\mathrm{SNR}_0$ riassume potenze, rivelatore e perdite: SNR della traccia all'inizio della fibra con una sola media.
   `linewidth_mhz` è la larghezza della campana.
 - **Valore.** $\mathrm{SNR}_0$ = 0 dB a 2 m, valore indicato come realistico [\[ST13\]](A-fonti.md#st13); campana 58 MHz a 2 m [\[ST13\]](A-fonti.md#st13).
 - **Se lo cambi.** σ ∝ 1/$\mathrm{SNR}_0$ e ∝ √$\Delta\nu_B$. Con questi valori il modello dà 0,40 MHz per le impostazioni di [\[B23\]](A-fonti.md#b23), che
-  dichiara meno di 0,5 MHz (cap. 10).
+  dichiara meno di 0,5 MHz (cap. 11).
 - **Da sapere.** [\[B23\]](A-fonti.md#b23) dichiara SNR > 40 dB, che con [\[ST13\]](A-fonti.md#st13) darebbe incertezze 500 volte più piccole: definizioni
   diverse (da verificare). Questo parametro va **tarato sullo strumento vero**, il giorno che lo si sceglie.
 
-### 9.1.6 Proprietà della fibra e passo di calcolo: `attenuation_db_per_km`, `group_index`, `calc_step_m`
+### 10.1.6 Proprietà della fibra e passo di calcolo: `attenuation_db_per_km`, `group_index`, `calc_step_m`
 
 - **Attenuazione** 0,2 dB/km [\[ST13\]](A-fonti.md#st13). Grafico 3: a 4 km σ passa da 0,40 a 0,49 MHz; a 50 km 4 MHz. Per i nostri
   anelli (≤ 4 km) è irrilevante.
@@ -83,14 +83,14 @@ $$\sigma_\nu = \frac{1}{\mathrm{SNR}}\sqrt{\frac{3\,\delta\,\Delta\nu_B}{8\sqrt{
 - **Passo di calcolo** 0,1 m: non è lo strumento, è la griglia su cui il simulatore calcola la verità; deve essere
   ≤ 1/10 della risoluzione (controllato).
 
-## 9.2 Parametri meccanici
+## 10.2 Parametri meccanici
 
 ![Parametri meccaniche](img/parametri_meccanica.png)
 
 Entrano nella deformazione della fibra (cap. 5): Lamé (uno o più strati) e $\varepsilon_{fibra}$ = $\varepsilon_\theta$ sin²$\alpha$ + $\varepsilon_z$ cos²$\alpha$, poi
 $\Delta\nu$ = $C_\varepsilon$ · $\varepsilon$.
 
-### 9.2.1 Angolo dell'elica `angle_deg`
+### 10.2.1 Angolo dell'elica `angle_deg`
 
 - **Valore.** 70° (da verificare) scelto; [\[B23\]](A-fonti.md#b23) circa 75°.
 - **Se lo cambi (grafico 1).** 0° (fibra dritta): 2,0 MHz/bar; 45°: 9,1; 70°: 14,5; 80°: 15,8. Ma la fibra per metro
@@ -98,7 +98,7 @@ $\Delta\nu$ = $C_\varepsilon$ · $\varepsilon$.
 - **Compromesso.** Oltre 70° si guadagna poco segnale e si raddoppia la fibra (e quindi la lunghezza dell'anello,
   il tempo di misura e il costo). 70° è un buon punto.
 
-### 9.2.2 Spessore del tubo (SDR) e diametro
+### 10.2.2 Spessore del tubo (SDR) e diametro
 
 - **Valore.** PE100 SDR11 schede Uponor, Aliaxis.
 - **Se lo cambi (grafico 2).** La sensibilità dipende solo dal rapporto diametro/spessore: SDR11 14,5 MHz/bar, SDR17
@@ -106,14 +106,14 @@ $\Delta\nu$ = $C_\varepsilon$ · $\varepsilon$.
 - **Compromesso.** Tubi più sottili sentono di più ma reggono meno pressione (SDR17 = PN10). Il tubo lo sceglie
   l'acquedotto, non il sensore.
 
-### 9.2.3 Modulo elastico `E_GPa` e Poisson `nu`
+### 10.2.3 Modulo elastico `E_GPa` e Poisson `nu`
 
 - **Valore.** E = 1,0 GPa (scenari), 1,05 [\[B23\]](A-fonti.md#b23), 1,1 (scheda) ; $\nu$ = 0,40 [\[B23\]](A-fonti.md#b23), 0,42–0,49 con la temperatura [\[SB20\]](A-fonti.md#sb20) .
 - **Se lo cambi (grafico 3).** MHz/bar ∝ 1/E: 1,0 → 14,5; 1,1 → 13,2. $\nu$ pesa pochi per cento.
 - **Attenzione.** Il PE fa **creep**: sotto pressione costante E apparente cala nel tempo [\[B23\]](A-fonti.md#b23). È un errore
   sistematico sulla conversione MHz → bar se non calibrato (cap. 10: −20 % a 5 bar dopo minuti).
 
-### 9.2.4 Guaina e tubo ospite (`liner`)
+### 10.2.4 Guaina e tubo ospite (`liner`)
 
 - **Valore.** 6 mm, 8 GPa, $\nu$ 0,35 (da verificare); letteratura: CIPP in feltro almeno 1,7 GPa (ASTM F1216), in vetro circa 10 GPa
   (scheda di una guaina per fognatura) (da verificare). I valori veri vanno presi dal laminato reale.
@@ -125,20 +125,20 @@ $\Delta\nu$ = $C_\varepsilon$ · $\varepsilon$.
 - **Soglia pratica.** Con il rumore di [\[B23\]](A-fonti.md#b23) servono almeno circa 4,5 MHz/bar per vedere 0,1 bar in una misura
   (linea rossa).
 
-## 9.3 Parametri termici e di compensazione
+## 10.3 Parametri termici e di compensazione
 
 ![Parametri della temperatura](img/parametri_temperatura.png)
 
-### 9.3.1 Sensibilità dell'elica alla temperatura `helix_mhz_per_c` (K)
+### 10.3.1 Sensibilità dell'elica alla temperatura `helix_mhz_per_c` (K)
 
 - **Cos'è.** Quanti MHz sposta l'elica per 1 °C: 1 MHz/°C della fibra più la dilatazione del tubo che la tira.
 - **Valore.** 6 MHz/°C; forbice da fonti 3,5 ([\[B23\]](A-fonti.md#b23) con K_T) – 8 ([\[SB20\]](A-fonti.md#sb20), tubo trattenuto) (da verificare).
 - **Se lo cambi (grafico 1).** 1 °C non compensato vale 0,24–0,55 bar apparenti.
 - **Se è sbagliata (grafico 2).** Errore sistematico = ΔK·$\Delta T$ / (MHz per bar): con 1 MHz/°C di errore e 10 °C dalla misura
   di base, 0,69 bar; con l'escursione stagionale (11–15 °C [\[SB20\]](A-fonti.md#sb20)) anche di più. Non cala con le medie.
-- **Consiglio.** È il parametro più incerto e più pesante: va **calibrato in opera** (metodo da cercare, cap. 11).
+- **Consiglio.** È il parametro più incerto e più pesante: va **calibrato in opera** (metodo da cercare, cap. 12).
 
-### 9.3.2 Temperatura del terreno: `baseline_c`, `soil_c`, `drift_c_per_day`, `hotspots`
+### 10.3.2 Temperatura del terreno: `baseline_c`, `soil_c`, `drift_c_per_day`, `hotspots`
 
 - **Valore.** S1t: 18 → 10 °C, −0,15 °C/giorno [\[SB20\]](A-fonti.md#sb20) (11–15 °C in 90 giorni); punti caldi fino a 7–10 °C [\[AV17\]](A-fonti.md#av17),
   posizione e ampiezza (da verificare) scelte. `delta_c` può essere positivo o negativo.
@@ -148,7 +148,7 @@ $\Delta\nu$ = $C_\varepsilon$ · $\varepsilon$.
   dalla misura di base (grafico 3 della figura del segnale) un punto caldo permanente è una banda verticale, un evento
   un rettangolo; nella variazione giornaliera (grafico 4) il punto caldo permanente sparisce, l'evento resta.
 
-### 9.3.3 Temperatura dell'acqua: `water.source_c`, `soil_k_w_mk`, `pipe_k_w_mk`, `tsoi`
+### 10.3.3 Temperatura dell'acqua: `water.source_c`, `soil_k_w_mk`, `pipe_k_w_mk`, `tsoi`
 
 - **Cos'è.** L'acqua esce dal serbatoio a `source_c` e si avvicina al terreno con il tempo di permanenza [\[BL24\]](A-fonti.md#bl24).
 - **Valore.** +2 °C sul terreno (da verificare) ([\[BL24\]](A-fonti.md#bl24) misura 0,6–1,6 °C); PE 0,38 W/(m·K) scheda; sabbia 1,6 [\[BL24\]](A-fonti.md#bl24);
@@ -157,7 +157,7 @@ $\Delta\nu$ = $C_\varepsilon$ · $\varepsilon$.
   0,1 m/s (notte) solo il 13 %. La sfera di influenza sposta le curve, non la conclusione: **la temperatura dell'acqua
   segue i consumi** nelle reti piccole.
 
-### 9.3.4 Media della fibra di riferimento
+### 10.3.4 Media della fibra di riferimento
 
 - **Cos'è.** Su quanti metri del ritorno si media la temperatura prima di toglierla dall'elica (`compensate`).
 - **Se lo cambi (grafico 3).** Punto per punto: 0,14–0,32 bar di errore casuale (secondo K); mediata su 74 m:
@@ -166,7 +166,7 @@ $\Delta\nu$ = $C_\varepsilon$ · $\varepsilon$.
   media **adattiva** (soglia 2σ, mediana su 10 m (da verificare)) le conserva (0,2 bar), con poco rumore in più.
 - **Misura di base.** Mediarne 10 riduce di circa 3 volte l'errore "congelato" (cap. 7).
 
-## 9.4 Parametri idraulici
+## 10.4 Parametri idraulici
 
 ![Parametri idrauliche](img/parametri_idraulica.png)
 
@@ -179,7 +179,7 @@ $\Delta\nu$ = $C_\varepsilon$ · $\varepsilon$.
 - **Quota e pendenza** (`Elev` dei nodi, testa del serbatoio): danno pressione statica (circa 0,1 bar/m), fissa nel
   tempo (cap. 4).
 
-## 9.5 Tabella riassuntiva
+## 10.5 Tabella riassuntiva
 
 ### Rete e idraulica (file `.inp` di EPANET)
 
@@ -260,6 +260,6 @@ circa 3–6 s per misura (tempi morti esclusi).
 
 <!-- nav-fondo -->
 
-| [← 8. Logica del simulatore](08-logica-del-simulatore.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 9 di 11 · Parte III — Simulatore</sub> | [10. Validazione →](10-validazione.md) |
+| [← 9. Logica del simulatore](09-logica-del-simulatore.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 10 di 12 · Parte III — Simulatore</sub> | [11. Validazione →](11-validazione.md) |
 |:---|:---:|---:|
 <!-- /nav-fondo -->

@@ -16,15 +16,16 @@ CAPITOLI = [
     ("05-meccanica-del-tubo.md", "5. Meccanica del tubo e della guaina"),
     ("06-strumento-e-dato-grezzo.md", "6. Modello dello strumento e dato grezzo"),
     ("07-temperatura-e-compensazione.md", "7. Temperatura e compensazione"),
-    ("08-logica-del-simulatore.md", "8. Logica del simulatore"),
-    ("09-parametri-del-simulatore.md", "9. Parametri del simulatore"),
-    ("10-validazione.md", "10. Validazione"),
-    ("11-risultati-e-questioni-aperte.md", "11. Risultati e questioni aperte"),
+    ("08-guida-all-uso.md", "8. Guida all'uso"),
+    ("09-logica-del-simulatore.md", "9. Logica del simulatore"),
+    ("10-parametri-del-simulatore.md", "10. Parametri del simulatore"),
+    ("11-validazione.md", "11. Validazione"),
+    ("12-risultati-e-questioni-aperte.md", "12. Risultati e questioni aperte"),
     ("A-fonti.md", "Appendice A. Fonti"),
     ("B-fibra-ottica-dfos.md", "Appendice B. Sensori distribuiti in fibra ottica"),
     ("C-diario-sessioni.md", "Appendice C. Diario delle sessioni"),
 ]
-N_CAPITOLI = 11
+N_CAPITOLI = 12
 TOP, BOTTOM = ("<!-- nav -->", "<!-- /nav -->"), ("<!-- nav-fondo -->", "<!-- /nav-fondo -->")
 
 
@@ -35,7 +36,7 @@ def _strip(testo: str) -> str:
 
 
 PARTI = {1: "Parte I — Problema e principio di misura", 4: "Parte II — I modelli", 8: "Parte III — Simulatore",
-         11: "Parte IV — Conclusioni"}
+         12: "Parte IV — Conclusioni"}
 
 
 def _parte(i: int) -> str:

@@ -1,5 +1,5 @@
 <!-- nav -->
-| [← 5. Meccanica del tubo e della guaina](05-meccanica-del-tubo.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 6 di 11 · Parte II — I modelli</sub> | [7. Temperatura e compensazione →](07-temperatura-e-compensazione.md) |
+| [← 5. Meccanica del tubo e della guaina](05-meccanica-del-tubo.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 6 di 12 · Parte II — I modelli</sub> | [7. Temperatura e compensazione →](07-temperatura-e-compensazione.md) |
 |:---|:---:|---:|
 <!-- /nav -->
 
@@ -32,7 +32,7 @@ L'indice di gruppo n = 1,468 è (da verificare) (scheda della fibra da leggere).
 
 ## 6.2 Incertezza sulla frequenza Brillouin
 
-Modello di Soto & Thévenaz [\[ST13\]](A-fonti.md#st13) Eq. 7–9, validato sui loro dati (cap. 10):
+Modello di Soto & Thévenaz [\[ST13\]](A-fonti.md#st13) Eq. 7–9, validato sui loro dati (cap. 11):
 
 $$\sigma_\nu = \frac{1}{\mathrm{SNR}}\sqrt{\tfrac{3}{4}\,\delta\,\Delta\nu_B} \qquad \mathrm{SNR}(z) = \mathrm{SNR}_0\,\frac{\Delta z}{\Delta z_0}\,\sqrt{N_{AV}}\;e^{-\alpha z}$$
 
@@ -70,10 +70,10 @@ tratti diversi (giunzione, cavi) gli spettri hanno più picchi e il fit sbaglia:
 Tempo minimo di una misura: passi × medie × andata e ritorno sull'anello, 3–6 s (calcolo nostro); lo strumento reale ha tempi morti
 ([\[B23\]](A-fonti.md#b23): 7–20 s). Molto meno del passo idraulico (15 min).
 
-Parametri: cap. 9, sezione 4. Effetto sulla compensazione: cap. 7.
+Parametri: cap. 10, sezione 4. Effetto sulla compensazione: cap. 7.
 
 <!-- nav-fondo -->
 
-| [← 5. Meccanica del tubo e della guaina](05-meccanica-del-tubo.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 6 di 11 · Parte II — I modelli</sub> | [7. Temperatura e compensazione →](07-temperatura-e-compensazione.md) |
+| [← 5. Meccanica del tubo e della guaina](05-meccanica-del-tubo.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 6 di 12 · Parte II — I modelli</sub> | [7. Temperatura e compensazione →](07-temperatura-e-compensazione.md) |
 |:---|:---:|---:|
 <!-- /nav-fondo -->

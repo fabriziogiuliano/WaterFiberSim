@@ -3,8 +3,8 @@
 # WaterFiberSim
 
 > **Documentazione completa: [documentazione tecnica](docs/00-indice.md)** — capitoli su fisica, modelli, parametri
-> ([scheda tecnica](docs/09-parametri-del-simulatore.md)), [validazione](docs/10-validazione.md) e
-> [risultati](docs/11-risultati-e-questioni-aperte.md). Questo README resta la guida pratica (installazione, comandi).
+> ([scheda tecnica](docs/10-parametri-del-simulatore.md)), [validazione](docs/11-validazione.md) e
+> [risultati](docs/12-risultati-e-questioni-aperte.md). Questo README resta la guida pratica (installazione, comandi).
 > **Interrogatori BOTDA commerciali** (Prysmian DITEST, OZ Optics DSTS, Neubrex, Cohaerentia): [§2.5 della documentazione](docs/02-principio-di-misura.md#25-interrogatori-botda-commerciali).
 
 Simulatore di **sensori distribuiti in fibra ottica** (DFOS) posati su una rete idrica descritta in EPANET. Prende la rete (`.inp`), sovrappone una o più fibre ai tubi, trasforma pressione e temperatura dell'acqua in una grandezza ottica lungo tutta la fibra e produce il **segnale grezzo** che leggerebbe l'interrogatore. Il DSP su quel segnale è il lavoro di chi usa il simulatore.

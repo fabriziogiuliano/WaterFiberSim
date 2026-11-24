@@ -1,5 +1,5 @@
 <!-- nav -->
-| [← Indice](00-indice.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 1 di 11 · Parte I — Problema e principio di misura</sub> | [2. Principio di misura (BOTDA) →](02-principio-di-misura.md) |
+| [← Indice](00-indice.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 1 di 12 · Parte I — Problema e principio di misura</sub> | [2. Principio di misura (BOTDA) →](02-principio-di-misura.md) |
 |:---|:---:|---:|
 <!-- /nav -->
 
@@ -39,18 +39,18 @@ Cohaerentia), che ha provato lo stesso schema su tubi in PE in laboratorio.
 1. Quanto si sposta la frequenza della fibra per 1 bar, su quale tubo e con quale posa? (cap. 5)
 2. Con quale errore lo strumento la misura? (cap. 6)
 3. Quanto disturba la temperatura del terreno e dell'acqua, e come si toglie? (cap. 7)
-4. Le ipotesi reggono il confronto con i dati veri? (cap. 10)
+4. Le ipotesi reggono il confronto con i dati veri? (cap. 11)
 
-Le risposte, con i loro limiti, sono riassunte nel cap. 11.
+Le risposte, con i loro limiti, sono riassunte nel cap. 12.
 
 ## 1.4 Ambito e limiti
 
 Non è l'elaborazione dei dati: il fit e la compensazione inclusi sono **esempi** per verificare che dal dato grezzo
 si torni alla pressione (cap. 6 e 7). Non è un progetto di installazione: i parametri dei materiali della guaina non sono
-ancora noti (cap. 9).
+ancora noti (cap. 10).
 
 <!-- nav-fondo -->
 
-| [← Indice](00-indice.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 1 di 11 · Parte I — Problema e principio di misura</sub> | [2. Principio di misura (BOTDA) →](02-principio-di-misura.md) |
+| [← Indice](00-indice.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 1 di 12 · Parte I — Problema e principio di misura</sub> | [2. Principio di misura (BOTDA) →](02-principio-di-misura.md) |
 |:---|:---:|---:|
 <!-- /nav-fondo -->

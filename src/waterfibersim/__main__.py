@@ -47,9 +47,9 @@ def main(argv=None):
     ms.add_argument("--every-min", type=float, default=60, help="one instrument measurement every N minutes")
     ms.add_argument("--seed", type=int, default=0)
     va = sub.add_parser("validate", help="validation campaign: every hypothesis against an independent reference")
-    va.add_argument("--out", default="docs/10-validazione.md")
+    va.add_argument("--out", default="docs/11-validazione.md")
     va.add_argument("--quick", action="store_true", help="skip the slow check on noisy data")
-    kn = sub.add_parser("parameters", help="sensitivity study of the simulator parameters (figures for chapter 9)")
+    kn = sub.add_parser("parameters", help="sensitivity study of the simulator parameters (figures for chapter 10)")
     kn.add_argument("--out", default="docs/img")
     a = ap.parse_args(argv)
 

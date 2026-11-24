@@ -1,5 +1,5 @@
 <!-- nav -->
-| [← 1. Introduzione](01-introduzione.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 2 di 11 · Parte I — Problema e principio di misura</sub> | [3. Configurazione del sensore →](03-il-sensore-sul-tubo.md) |
+| [← 1. Introduzione](01-introduzione.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 2 di 12 · Parte I — Problema e principio di misura</sub> | [3. Configurazione del sensore →](03-il-sensore-sul-tubo.md) |
 |:---|:---:|---:|
 <!-- /nav -->
 
@@ -71,7 +71,7 @@ Come si legge lo schema:
 
 Il simulatore non riproduce i blocchi interni: parte da $\nu_B$ vera lungo la fibra e produce gli spettri che lo strumento
 restituirebbe (dato grezzo L0, §1.1), insieme alle etichette vere dei livelli successivi, con la risoluzione, il passo,
-la scansione e il rumore impostati nello scenario. Il modello dell'incertezza è quello di Soto & Thévenaz [\[ST13\]](A-fonti.md#st13) (cap. 6); ogni parametro è studiato nel **cap. 9**.
+la scansione e il rumore impostati nello scenario. Il modello dell'incertezza è quello di Soto & Thévenaz [\[ST13\]](A-fonti.md#st13) (cap. 6); ogni parametro è studiato nel **cap. 10**.
 
 ## 2.5 Interrogatori BOTDA commerciali
 
@@ -103,10 +103,10 @@ letta. Sono [fibrisTerre fTB 5020](https://polytec.com/fileadmin/website/optical
 
 Verifica incrociata: per Neubrex la scheda dichiara 2 cm di risoluzione con impulsi da 0,2 ns, e la formula del
 simulatore dà 2,04 cm. Le accuratezze dichiarate non bastano da sole a fissare il rumore del simulatore (dipendono da
-medie e tempo di misura): per uno strumento scelto, `snr0_db` va tarato sui suoi dati (cap. 9, §9.1.5).
+medie e tempo di misura): per uno strumento scelto, `snr0_db` va tarato sui suoi dati (cap. 10, §10.1.5).
 
 <!-- nav-fondo -->
 
-| [← 1. Introduzione](01-introduzione.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 2 di 11 · Parte I — Problema e principio di misura</sub> | [3. Configurazione del sensore →](03-il-sensore-sul-tubo.md) |
+| [← 1. Introduzione](01-introduzione.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 2 di 12 · Parte I — Problema e principio di misura</sub> | [3. Configurazione del sensore →](03-il-sensore-sul-tubo.md) |
 |:---|:---:|---:|
 <!-- /nav-fondo -->

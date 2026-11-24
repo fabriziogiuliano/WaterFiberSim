@@ -2,7 +2,7 @@
 
 Usa le stesse funzioni del simulatore (instrument, mechanics, compensation, temperature), su una fibra e un tubo di
 riferimento (scenario S1: PE100 DN110 SDR11, interrogatore con le impostazioni di [B23]). Scrive le figure del
-capitolo 9 in docs/img/parametri_*.png e restituisce i numeri citati nel testo.
+capitolo 10 in docs/img/parametri_*.png e restituisce i numeri citati nel testo.
 
     python -m waterfibersim parameters
 """

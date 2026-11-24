@@ -96,7 +96,7 @@ Altri eventi idraulici hanno firme diverse:
 L'uscita naturale di un DAS è una matrice **tempo × posizione**, detta *waterfall*: ogni colonna è un canale, ogni riga un istante, il colore è l'energia della vibrazione (di solito in una banda di frequenza).
 
 Per la BOTDA del simulatore un esempio vero di matrice tempo × posizione è il grafico 3 della figura del segnale
-(cap. 8; esempio: [A_signal_true.png](img/A_signal_true.png)). In un waterfall DAS gli eventi tipici si riconoscono così:
+(cap. 9; esempio: [A_signal_true.png](img/A_signal_true.png)). In un waterfall DAS gli eventi tipici si riconoscono così:
 
 | evento | aspetto nel waterfall |
 |---|---|

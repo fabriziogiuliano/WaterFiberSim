@@ -28,12 +28,13 @@ parametri, le verifiche e i risultati. Ogni capitolo rimanda agli altri; le font
 7. [Temperatura e compensazione](07-temperatura-e-compensazione.md)
 
 **Parte III — Simulatore**
-8. [Logica del simulatore](08-logica-del-simulatore.md)
-9. [Parametri del simulatore](09-parametri-del-simulatore.md)
-10. [Validazione](10-validazione.md)
+8. [Guida all'uso del simulatore](08-guida-all-uso.md)
+9. [Logica del simulatore](09-logica-del-simulatore.md)
+10. [Parametri del simulatore](10-parametri-del-simulatore.md)
+11. [Validazione](11-validazione.md)
 
 **Parte IV — Conclusioni**
-11. [Risultati e questioni aperte](11-risultati-e-questioni-aperte.md)
+12. [Risultati e questioni aperte](12-risultati-e-questioni-aperte.md)
 
 **Appendici**
 A. [Fonti e stato di verifica](A-fonti.md) — ogni affermazione con fonte e stato  
@@ -42,7 +43,7 @@ C. [Diario delle sessioni e decisioni](C-diario-sessioni.md) — le decisioni in
 
 ## Guida alla lettura
 
-- Chi deve **usare** il simulatore: capitoli 4, 8, 9 (e il README del repository per l'installazione).
+- Chi deve **usare** il simulatore: capitolo 8 (guida all'uso), poi i capitoli 4 e 10.
 - Chi vuole capire **la fisica**: capitoli 2, 3, 5, 6, 7.
 - Chi vuole sapere **se funziona**: capitoli 10 e 11.
 
@@ -50,8 +51,6 @@ Accanto alle affermazioni, nei capitoli: la fonte citata tra parentesi quadre (l
 nostro)" per i risultati ricavati da noi con formule o con il simulatore; "(da verificare)" per i valori scelti o
 non ancora confermati da una fonte. Nell'appendice A lo stato di ogni affermazione è indicato con ✅ (verificato su
 una fonte letta), 🧮 (calcolo nostro), ⚠️ (scelto o da verificare).
-
-La navigazione in cima e in fondo a ogni capitolo si rigenera con `python docs/navigazione.py`.
 
 <!-- nav-fondo -->
 

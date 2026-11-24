@@ -1,5 +1,5 @@
 <!-- nav -->
-| [← 3. Configurazione del sensore](03-il-sensore-sul-tubo.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 4 di 11 · Parte II — I modelli</sub> | [5. Meccanica del tubo e della guaina →](05-meccanica-del-tubo.md) |
+| [← 3. Configurazione del sensore](03-il-sensore-sul-tubo.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 4 di 12 · Parte II — I modelli</sub> | [5. Meccanica del tubo e della guaina →](05-meccanica-del-tubo.md) |
 |:---|:---:|---:|
 <!-- /nav -->
 
@@ -9,7 +9,7 @@
 
 L'idraulica è calcolata con EPANET 2.2 (libreria owa-epanet): pressione, carico, portate e velocità ogni 15 minuti.
 EPANET non contiene catalogo di tubi né criteri di progetto [\[EPA\]](A-fonti.md#epa); la perdita di carico segue Hazen-Williams, e il
-simulatore coincide con la formula ufficiale (cap. 10). Lungo un tubo la pressione è lineare tra i nodi.
+simulatore coincide con la formula ufficiale (cap. 11). Lungo un tubo la pressione è lineare tra i nodi.
 
 ## 4.2 Pressione statica e perdite di carico
 
@@ -37,10 +37,10 @@ Il serbatoio a valle è stato scartato: servirebbe una pompa (appendice C).
 Le reti sono dimensionate con criteri di progetto (velocità 0,5–0,9 m/s, perdita ≤ 10 m/km (da verificare) da manuali, EN 805 da
 leggere). Conseguenza: la pressione cambia nella giornata di **0,04–0,8 bar**, non di più. È il segnale da misurare.
 
-Tutti i parametri della rete: cap. 9, sezione 1.
+Tutti i parametri della rete: cap. 10, sezione 1.
 
 <!-- nav-fondo -->
 
-| [← 3. Configurazione del sensore](03-il-sensore-sul-tubo.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 4 di 11 · Parte II — I modelli</sub> | [5. Meccanica del tubo e della guaina →](05-meccanica-del-tubo.md) |
+| [← 3. Configurazione del sensore](03-il-sensore-sul-tubo.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 4 di 12 · Parte II — I modelli</sub> | [5. Meccanica del tubo e della guaina →](05-meccanica-del-tubo.md) |
 |:---|:---:|---:|
 <!-- /nav-fondo -->

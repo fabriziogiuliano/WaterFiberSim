@@ -1,5 +1,5 @@
 <!-- nav -->
-| [← 11. Risultati e questioni aperte](11-risultati-e-questioni-aperte.md) | [📖 Indice](00-indice.md)<br><sub>appendici</sub> | [Appendice B. Sensori distribuiti in fibra ottica →](B-fibra-ottica-dfos.md) |
+| [← 12. Risultati e questioni aperte](12-risultati-e-questioni-aperte.md) | [📖 Indice](00-indice.md)<br><sub>appendici</sub> | [Appendice B. Sensori distribuiti in fibra ottica →](B-fibra-ottica-dfos.md) |
 |:---|:---:|---:|
 <!-- /nav -->
 
@@ -234,7 +234,7 @@ Differenza da tenere a mente: in [\[B23\]](#b23) la fibra è fissata **all'ester
 | Modello a strati (Lamé, strati incollati, fondi chiusi): con uno strato coincide con la formula chiusa | 🧮 | Scienza delle costruzioni; verificato nei test |
 | Guaina CIPP: modulo a flessione minimo 1724 MPa (250 000 psi) | ⚠️ | ASTM F1216 Tab. 1, letto solo nel riassunto di una ricerca (anteprima iteh); da leggere sulla norma |
 | Guaina CIPP in vetro con resina UV: modulo a flessione circa 10 300 MPa (scheda di una guaina per fognature) | ⚠️ | Vortex, *EnviroCure UV* TDS (letta nel riassunto di una ricerca); per acquedotto servono i dati del laminato reale |
-| Guaina in ghisa integra: circa 0,4–0,5 MHz/bar sull'elica; in ghisa con rigidezza ridotta a 1/10: 2,5–3,8; in PE: 3–10 | 🧮 | Modello a strati con i valori sopra (`validate`, [cap. 10](10-validazione.md)). **Corregge** il "circa 0,2 MHz/bar" detto prima a voce per P0 |
+| Guaina in ghisa integra: circa 0,4–0,5 MHz/bar sull'elica; in ghisa con rigidezza ridotta a 1/10: 2,5–3,8; in PE: 3–10 | 🧮 | Modello a strati con i valori sopra (`validate`, [cap. 11](11-validazione.md)). **Corregge** il "circa 0,2 MHz/bar" detto prima a voce per P0 |
 | Strato comprimibile di 10 mm con rigidezza confinata circa 70 MPa tra guaina e ghisa: circa 7 MHz/bar (pelle in feltro) o 3 (pelle in vetro) | 🧮, ⚠️ materiale ipotetico | Modello a strati; idea dell'utente |
 | [\[B23\]](#b23) PN16 a 5 bar: 73 MHz misurati contro 69 MHz del modello con il rilassamento E2; a 10 bar 200 contro 138 | 🧮 | [\[B23\]](#b23) §3.1 e Tab. 2; il PE oltre i 5 bar non è lineare (creep) |
 
@@ -373,6 +373,6 @@ Vengono dal [dump del 2026-11-23](C-diario-sessioni.md) e sono **citate a memori
 
 <!-- nav-fondo -->
 
-| [← 11. Risultati e questioni aperte](11-risultati-e-questioni-aperte.md) | [📖 Indice](00-indice.md)<br><sub>appendici</sub> | [Appendice B. Sensori distribuiti in fibra ottica →](B-fibra-ottica-dfos.md) |
+| [← 12. Risultati e questioni aperte](12-risultati-e-questioni-aperte.md) | [📖 Indice](00-indice.md)<br><sub>appendici</sub> | [Appendice B. Sensori distribuiti in fibra ottica →](B-fibra-ottica-dfos.md) |
 |:---|:---:|---:|
 <!-- /nav-fondo -->
