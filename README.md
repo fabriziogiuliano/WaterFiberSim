@@ -259,13 +259,45 @@ python -m waterfibersim run scenario_paths/S2_street_downhill.yaml --out out/S2
 
 ![Segnale vero, scenario S2](docs/img/S2_signal_true.png)
 
+## Passo 3a — incertezza attesa dello strumento
+
+```bash
+python -m waterfibersim instrument scenario_paths/S1_street_flat.yaml --out out/S1
+```
+
+Dalle manopole dell'interrogatore nello scenario calcola, senza ancora simulare il rumore, quanto sbaglierà lo strumento. Modello di Soto & Thévenaz 2013 (`docs/fonti.md`, [ST13]):
+
+```
+incertezza sul picco   σ_ν = (1/SNR) · √( 3·δ·Δν_B / (8√2·(1−η)^{3/2}) )      [ST13] Eq. 7  (η = 0,5: √(¾·δ·Δν_B)/SNR)
+SNR lungo la fibra     SNR(z) = SNR₀ · (Δz/Δz₀) · √N_AV · e^(−αz)              [ST13] Eq. 9
+tempo minimo           passi di frequenza × N_AV × (andata e ritorno sull'anello, 2·L·n/c)
+```
+
+δ = passo di frequenza, Δν_B = larghezza della campana, N_AV = medie, Δz = risoluzione, α = attenuazione, SNR₀ = 0 dB a 2 m e una traccia (valore "realistico" di [ST13]).
+
+Con le impostazioni di Bertulessi 2023 (20 ns, 1 MHz, 256 medie):
+
+| | S1 (anello 3,9 km) | A (anello 2,0 km) |
+|---|---|---|
+| incertezza di una misura sull'elica | 0,40–0,46 MHz = 0,028–0,032 bar | 0,41–0,43 MHz = 0,028–0,030 bar |
+| dopo la sottrazione della misura di base (×√2) | fino a 0,65 MHz = 0,045 bar | fino a 0,61 MHz = 0,042 bar |
+| riferimento | 0,46–0,48 °C | 0,43–0,44 °C |
+| tempo minimo di una misura | 5,5 s (senza i tempi morti dello strumento) | 2,8 s |
+
+- In fondo alla strada S1 l'escursione giornaliera (0,27 bar) è circa 6 volte l'incertezza; vicino al serbatoio (0,04 bar) è pari all'incertezza: con una misura sola non si vede.
+- Sulle nostre lunghezze (2–4 km) la distanza pesa poco: +15 % di incertezza.
+- Il comando controlla anche che tutti i picchi cadano nella finestra di scansione (margine oggi circa 120 MHz: circa 10 °C sull'elica).
+- **Da affrontare:** la compensazione della temperatura. L'errore del riferimento (circa 0,47 °C) pesa circa 11 MHz/°C sull'elica: circa 5 MHz ≈ 0,36 bar, dieci volte l'incertezza della sola pressione, se il riferimento non viene mediato su molti metri (🧮, passo 5).
+
+![Incertezza attesa, scenario S1](docs/img/S1_uncertainty.png)
+
 ### Cosa il simulatore non fa ancora
 
 Il **profilo a riposo** c'è già: ogni metro ha la sua frequenza a tubo vuoto (elica da +105 a +180 MHz, tratto libero +65 MHz, come in Bertulessi 2023 Fig. 7a; forma casuale, `--seed`: continua lungo un'elica avvolta senza interruzioni, con un salto solo dove la posa riparte, cioè dopo un cavo o dove cambia il tubo; ipotesi, vedi `docs/fonti.md`), e la misura di base lo cancella. Per il resto il segnale è **ideale**: la frequenza segue la pressione in modo esatto e proporzionale. È la **verità** (le etichette). Quello che riceverà chi elabora i dati (L0) sarà questa verità con i disturbi reali, aggiunti uno alla volta:
 
 | Cosa manca | Effetto sul segnale | Quando | Fonte |
 |---|---|---|---|
-| rumore dello strumento | ogni misura sbaglia; ±0,5 MHz è solo **indicativo** (da 0,1 a 2 MHz secondo strumento, lunghezza e tempo di media) | passo 3, come parametro calcolato con Soto & Thévenaz 2013 | Bertulessi 2023: *"better than 0.5 °C/10 µε"*; schede OZ Optics e Prysmian DITEST (vedi `docs/fonti.md`) |
+| rumore dello strumento | ogni misura sbaglia; ±0,5 MHz è solo **indicativo** (da 0,1 a 2 MHz secondo strumento, lunghezza e tempo di media) | incertezza attesa calcolata (passo 3a, sopra); rumore sullo spettro al passo 3b | Bertulessi 2023: *"better than 0.5 °C/10 µε"*; schede OZ Optics e Prysmian DITEST (vedi `docs/fonti.md`) |
 | spettro invece del valore | si riceve la curva intera, il picco va trovato | passo 3 | Bertulessi 2023 §2.1, Fig. 7b |
 | risoluzione spaziale | lo strumento media su circa 2 m: i passaggi tra tubi si sfumano | passo 3 | Bertulessi 2023: 20 ns, *"equivalent to a 2 m spatial resolution"* |
 | temperatura | sposta la frequenza come la pressione (circa 11 MHz/°C sull'elica) | passo 5 | Bertulessi 2023, Eq. 1 e 9 |

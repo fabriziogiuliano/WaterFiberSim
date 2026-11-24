@@ -308,3 +308,40 @@ def plot_true_signal(sig, path: str | Path, fiber_id: str | None = None) -> Path
 def sig_mid(f, pid):
     s = f.loc[f["pipe"] == pid, "s_pipe_m"]
     return (s.min() + s.max()) / 2
+
+
+def plot_uncertainty(scenario: Scenario, fmap: pd.DataFrame, fiber, path: str | Path) -> Path:
+    """Incertezza attesa di UNA misura lungo la fibra ([ST13]), in MHz; a destra in bar sull'elica."""
+    import numpy as np
+
+    from .brillouin import BrillouinCoefficients
+    from .instrument import helix_mhz_per_bar, sigma_nu_mhz, snr_linear
+
+    f = fmap[fmap["fiber"] == fiber.id]
+    z = f["z_m"].to_numpy()
+    sig = sigma_nu_mhz(fiber, z)
+    k = np.nanmean(list(helix_mhz_per_bar(scenario, fiber, BrillouinCoefficients()).values()))
+    i = fiber.interrogator
+
+    fig, ax = plt.subplots(figsize=(15, 4.6), dpi=100)
+    for leg in ("lead", "sensing", "junction", "reference"):
+        m = (f["leg"] == leg).to_numpy()
+        ax.scatter(z[m], sig[m], s=1, color=LEG_COLORS[leg],
+                   label={"lead": "cavi", "sensing": "elica (misura)", "junction": "giunzione",
+                          "reference": "dritto (riferimento)"}[leg])
+    ax.plot(z, sig * np.sqrt(2), color="#495057", ls="--", lw=1,
+            label="differenza dalla misura di base (×√2: due misure rumorose)")
+    ax.set_ylim(0, sig.max() * np.sqrt(2) * 1.25)
+    ax.set_xlabel("z = distanza lungo la fibra dalla porta A [m]")
+    ax.set_ylabel("incertezza σ_ν di una misura [MHz]")
+    sec = ax.secondary_yaxis("right", functions=(lambda m: m / k, lambda b: b * k))
+    sec.set_ylabel(f"[bar] sull'elica\n(1 bar = {k:.1f} MHz)".replace(".", ","), color="#2b8a3e", fontsize=9)
+    sec.tick_params(colors="#2b8a3e")
+    ax.legend(loc="lower left", fontsize=8.5, markerscale=6)
+    snr0 = 10 * np.log10(snr_linear(fiber, 0.0))
+    txt = (f"impulso {i.pulse_width_ns:g} ns (risoluzione {fiber.spatial_resolution_m:.2f} m), "
+           f"passo {i.freq_step_mhz:g} MHz, {i.n_averages} medie, campana {i.linewidth_mhz:g} MHz, "
+           f"SNR all'ingresso {snr0:.1f} dB con le medie (SNR₀ {i.snr0_db:g} dB a {i.snr0_resolution_m:g} m, 1 traccia), attenuazione {fiber.attenuation_db_per_km:g} dB/km").replace(".", ",")
+    ax.set_title(f"Incertezza attesa dello strumento, fibra {fiber.id} (Soto & Thévenaz 2013, Eq. 7 e 9)\n{txt}",
+                 fontsize=11, loc="left")
+    return _save(fig, path)
