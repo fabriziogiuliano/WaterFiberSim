@@ -1,5 +1,5 @@
 """Schemi della documentazione (docs/), in .drawio.svg: interrogatore BOTDA (cap. 2), posa della fibra (cap. 3) e
-catena del simulatore (cap. 8).
+catena del simulatore (README e cap. 9).
 
     python docs/img/schemi.py
 """
@@ -59,39 +59,36 @@ def posa_fibra():
 
 
 def catena():
-    d = Drawing(1200, 1060, nome="catena del simulatore")
-    d.label(30, 40, "La catena del simulatore: dall'acqua al dato grezzo", size=20, weight="bold", w=1100)
-    W, X = 560, 60
-
-    def blocco(y, titolo, testo, modulo, fill="#ffffff", stroke=NERO):
-        d.box(X, y, W, 96, [titolo, *testo], fill=fill, stroke=stroke, size=13, align="left")
-        d.label(X + W + 20, y + 52, modulo, size=13, color=GRIGIO, w=300)
-
-    def freccia(y):
-        d.line([(X + W / 2, y), (X + W / 2, y + 28)], color=NERO, sw=2, arrow=True)
-
-    y = 80
-    blocco(y, "1. Rete idraulica (EPANET)", ["pressione, carico, portate, velocità nei tubi, ogni 15 min"],
-           "hydraulics.py · cap. 4"); freccia(y + 96); y += 124
-    blocco(y, "2. Pressione lungo ogni tubo", ["lineare tra i due nodi, per ogni punto della fibra (mappa fibra → tubo)"],
-           "simulate.py, fibermap.py · cap. 3"); freccia(y + 96); y += 124
-    blocco(y, "3. Meccanica", ["Lamé a 1 o N strati (tubo ospite + guaina); elica: ε_θ sin²α + ε_z cos²α"],
-           "mechanics.py · cap. 5"); freccia(y + 96); y += 124
-    blocco(y, "4. Frequenza Brillouin vera ν_B(z, t)", ["ν_B0 + profilo a riposo + C_ε·ε + temperatura  →  etichette vere"],
-           "brillouin.py, rest_profile.py · cap. 2, 3", fill="#fff4e6", stroke=ARANCIO); freccia(y + 96); y += 124
-    blocco(y, "5. Strumento BOTDA", ["media su 2 m, un punto ogni 0,82 m, scansione a 1 MHz, rumore 1/SNR"],
-           "instrument.py, measure.py · cap. 6"); freccia(y + 96); y += 124
-    blocco(y, "6. Dato grezzo L0", ["uno spettro per punto e per misura + misura di base + etichette"],
-           "raw_L0_<fibra>.npz", fill="#e7f5ff", stroke=BLU); freccia(y + 96); y += 124
-    blocco(y, "7. Elaborazione di esempio", ["fit del picco, differenza dalla base, compensazione con il ritorno"],
-           "compensation.py · cap. 7 (non è il compito del simulatore)", fill="#ebfbee", stroke=VERDE)
-    # temperatura, a lato
-    d.box(X + W + 20, 400, 340, 110, ["Temperatura", "terreno: stagione, punti caldi", "acqua: segue i consumi (Blokker)"],
-          fill="#fff5f5", stroke="#c92a2a", size=13, align="left")
-    d.label(X + W + 30, 530, "temperature.py · cap. 7", size=13, color=GRIGIO, w=300)
-    d.line([(X + W + 20, 455), (X + W, 455), (X + W, 470), (X + W - 2, 470)], color="#c92a2a", sw=2, arrow=True)
-    d.label(X, 1020, "Verifiche di ogni anello: `python -m waterfibersim validate` (cap. 10)", size=13, color=GRIGIO,
-            w=900)
+    """Catena del simulatore: sei passi in colonna (testo grande, leggibile anche ridotto nel README)."""
+    X, W, H, G, Y0 = 20, 640, 76, 30, 20
+    passi = [
+        ("Rete idraulica", "EPANET calcola la pressione nei tubi", "cap. 4", NERO, "#ffffff"),
+        ("Posa della fibra", "ogni metro di fibra va su un tubo", "cap. 3", NERO, "#ffffff"),
+        ("Meccanica", "la pressione allunga la fibra", "cap. 5", NERO, "#ffffff"),
+        ("Effetto Brillouin", "allungamento e calore spostano la frequenza", "cap. 2", ARANCIO, "#fff4e6"),
+        ("Strumento BOTDA", "misura gli spettri, con il rumore", "cap. 6", NERO, "#ffffff"),
+        ("Dato grezzo + verità", "spettri con rumore ed etichette vere", "cap. 8", BLU, "#e7f5ff"),
+    ]
+    d = Drawing(980, Y0 + 6 * H + 5 * G + 20, nome="catena del simulatore")
+    for k, (titolo, riga, cap, col, fill) in enumerate(passi):
+        y = Y0 + k * (H + G)
+        d.box(X, y, W, H, [], fill=fill, stroke=col, sw=2)
+        d.circle(X + 40, y + H / 2, 20, col, text=str(k + 1), size=20)
+        d.label(X + 76, y + 33, titolo, size=21, weight="bold", w=440)
+        d.label(X + 76, y + 61, riga, size=18, color="#343a40", w=480)
+        d.label(X + W - 16, y + 33, cap, size=16, color=GRIGIO, anchor="end", w=80)
+        if k:
+            d.line([(X + W / 2, y - G + 2), (X + W / 2, y - 4)], color=NERO, sw=2.5, arrow=True)
+    # temperatura: entra nel passo 4
+    y4 = Y0 + 3 * (H + G)
+    d.box(720, y4 - 10, 240, H + 20, ["Temperatura", "di terreno e acqua"], fill="#fff5f5", stroke="#c92a2a",
+          size=19, sw=2)
+    d.line([(718, y4 + H / 2), (X + W + 4, y4 + H / 2)], color="#c92a2a", sw=2.5, arrow=True)
+    # elaborazione: uscita del passo 6, lavoro di chi usa il simulatore
+    y6 = Y0 + 5 * (H + G)
+    d.box(720, y6 - 10, 240, H + 20, ["Elaborazione", "dei dati (utente)"], fill="#ebfbee", stroke=VERDE, size=19,
+          sw=2, dashed=True)
+    d.line([(X + W + 2, y6 + H / 2), (716, y6 + H / 2)], color=VERDE, sw=2.5, arrow=True)
     d.save(QUI / "catena_simulatore.drawio.svg")
 
 
