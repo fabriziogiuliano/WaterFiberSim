@@ -117,7 +117,7 @@ Entrano nella deformazione della fibra (cap. 5): Lamé (uno o più strati) e ε_
 
 - **Valore.** 6 mm, 8 GPa, ν 0,35 ⚠️; letteratura: CIPP in feltro almeno 1,7 GPa (ASTM F1216), in vetro circa 10 GPa
   (scheda di una guaina per fognatura) ⚠️. I valori MATRIS veri vengono da OR1.
-- **Se lo cambi (grafico 4).** È il parametro **decisiva**:
+- **Se lo cambi (grafico 4).** È il parametro **decisivo**:
   - in un tubo ospite in PE la guaina lavora: 3–17 MHz/bar, più la guaina è morbida più si sente;
   - in ghisa degradata (rigidezza 1/10): 2–4 MHz/bar;
   - **in ghisa integra: 0,4–0,7 MHz/bar, qualunque sia la guaina**: la pressione la regge il tubo, la fibra quasi non
@@ -136,7 +136,7 @@ Entrano nella deformazione della fibra (cap. 5): Lamé (uno o più strati) e ε_
 - **Se lo cambi (grafico 1).** 1 °C non compensato vale 0,24–0,55 bar apparenti.
 - **Se è sbagliata (grafico 2).** Errore sistematico = ΔK·ΔT / (MHz per bar): con 1 MHz/°C di errore e 10 °C dalla misura
   di base, 0,69 bar; con l'escursione stagionale (11–15 °C ✅ [SB20]) anche di più. Non cala con le medie.
-- **Consiglio.** È il parametro più incerta e più pesante: va **calibrata in opera** (metodo da cercare, cap. 11).
+- **Consiglio.** È il parametro più incerto e più pesante: va **calibrato in opera** (metodo da cercare, cap. 11).
 
 ### 9.3.2 Terreno: `baseline_c`, `soil_c`, `drift_c_per_day`, `hotspots`
 
