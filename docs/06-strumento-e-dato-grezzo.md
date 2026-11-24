@@ -5,9 +5,9 @@
 
 # 6. Lo strumento e il dato grezzo
 
-## 6.1 Le manopole sono nel tempo
+## 6.1 I parametri sono nel tempo
 
-Nello scenario le manopole dello strumento sono quelle vere, nel tempo; i metri si ricavano con il tempo di volo:
+Nello scenario i parametri dello strumento sono quelle vere, nel tempo; i metri si ricavano con il tempo di volo:
 
   passo dei punti Δz = c / (2 n f_ADC)  (125 MS/s → 0,82 m)   ·   risoluzione Δz = c τ / (2 n)  (20 ns → 2,04 m)
 

@@ -36,7 +36,7 @@ Raccolta di tutto ciò che è stato formulato nella sessione di lavoro del 23/11
 | Decisione | Motivo |
 |---|---|
 | Tutto **in simulazione** | non ci sono misure reali disponibili |
-| Il simulatore è un **prodotto per un utente informatico**: lui lancia scenari, prende dati e fa esperimenti (DSP, ML) senza dover conoscere la fisica | la fisica resta dentro, con default dalla letteratura e poche manopole documentate |
+| Il simulatore è un **prodotto per un utente informatico**: lui lancia scenari, prende dati e fa esperimenti (DSP, ML) senza dover conoscere la fisica | la fisica resta dentro, con default dalla letteratura e poche parametri documentati |
 | Non si simula l'ottica impulso per impulso: si simula il **segnale grezzo già mediato** (spettro Brillouin con il rumore corretto) | statisticamente equivalente e molto meno costoso |
 | Il simulatore si ferma a **L0 (grezzo)** e fornisce le **etichette vere** di tutti i livelli; L1–L3 sono DSP dell'utente | vedi §7 |
 | **Wrapper su EPANET `.inp`**: l'`.inp` non si tocca, i parametri meccanici per tubo stanno in un YAML a parte | separare idraulica e meccanica |
@@ -454,9 +454,9 @@ Concetti chiariti con l'utente: pressione statica = dislivello tra pelo dell'acq
 
 Figure: nuova mappa per le reti in linea (profilo con quote, pelo dell'acqua, rubinetti, interrogatore; fibra srotolata con cavi e giunzione etichettati); nel grafico 1 del segnale, con più di 5 tubi solo i bar su due livelli; titolo del grafico 4 corretto. `Network` legge anche quota, tipo e prelievo di base dei nodi.
 
-### 13.4j Manopole dello strumento e incertezza attesa (2026-11-24)
+### 13.4j Parametri dello strumento e incertezza attesa (2026-11-24)
 
-- L'utente ha chiesto di ragionare sull'incertezza della strumentazione prima di tutto, partendo dalle **manopole**. Ha corretto due cose: il vecchio `sampling_step_m: 0.5` era un passo di calcolo scelto da me, non lo strumento ("non ci prendiamo in giro"); e le manopole vere sono **nel tempo**, non in metri.
+- L'utente ha chiesto di ragionare sull'incertezza della strumentazione prima di tutto, partendo dalle **parametri**. Ha corretto due cose: il vecchio `sampling_step_m: 0.5` era un passo di calcolo scelto da me, non lo strumento ("non ci prendiamo in giro"); e i parametri veri sono **nel tempo**, non in metri.
 - Ora nello scenario: `pulse_width_ns` e `adc_sample_rate_msps` (i metri si ricavano con Δz = c·t/(2n), stampati dal CLI); `freq_step_mhz`, `n_averages`, `scan_window_ghz` ([B23] Tab. 1, fase II); `linewidth_mhz: 58`, `snr0_db: 0` a 2 m ([ST13]); `attenuation_db_per_km: 0.2` ([ST13]); `group_index: 1.468` (⚠️ a memoria: scheda Corning SMF-28 non scaricabile in automatico); `calc_step_m: 0.1` (passo di calcolo, ≤ 1/10 della risoluzione).
 - Letto per intero Soto & Thévenaz 2013 [ST13] (PDF fornito dall'utente, in `.gitignore`: licenza non verificata). Formula dell'incertezza sul picco (Eq. 7–9) validata contro i loro dati; con le impostazioni di [B23] dà 0,41 MHz, vicino allo 0,5 MHz dichiarato. Incongruenza ⚠️: [B23] dichiara SNR > 40 dB, che con [ST13] darebbe incertezze 500 volte più piccole.
 - Nuovo comando `instrument` (`instrument.py`): incertezza lungo la fibra in MHz, bar sull'elica e °C sul riferimento; tempo minimo di misura; controllo della finestra di scansione; figura `uncertainty_<fibra>.png`. Risultato: circa 0,03 bar per misura sull'elica, 0,045 bar dopo la sottrazione della base; la distanza conta poco sotto i 4 km.

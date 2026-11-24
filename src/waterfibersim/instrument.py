@@ -1,4 +1,4 @@
-"""Incertezza attesa dello strumento e tempo di misura, dalle manopole dello scenario.
+"""Incertezza attesa dello strumento e tempo di misura, dali parametri dello scenario.
 
 Modello di Soto & Thévenaz, Opt. Express 21, 31347 (2013) [ST13] (vedi docs/A-fonti.md):
   - incertezza sul picco con fit parabolico dei punti sopra eta * picco, Eq. 7:

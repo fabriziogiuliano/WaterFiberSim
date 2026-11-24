@@ -33,7 +33,7 @@ Lo schema, blocco per blocco (valori di [B23] §2.1, citazioni nell'appendice A)
 |---|---|---|
 | sorgente | **laser DFB** a 1530 nm, continuo | una sola luce, da cui nascono entrambe le luci di misura |
 | | **accoppiatore 3 dB** | divide la luce in due rami uguali |
-| ramo blu: **luce di lettura** (*sonda*) | **generatore RF** + **modulatore Mach-Zehnder** | sposta la frequenza di Δν ≈ 10,8 GHz: la sonda è un tono continuo a frequenza laser − Δν. Il generatore RF è **la manopola**: girandolo si sceglie Δν |
+| ramo blu: **luce di lettura** (*sonda*) | **generatore RF** + **modulatore Mach-Zehnder** | sposta la frequenza di Δν ≈ 10,8 GHz: la sonda è un tono continuo a frequenza laser − Δν. Il generatore RF è **il parametro**: cambiandolo si sceglie Δν |
 | | **depolarizzatore** | rende la misura indipendente dalla polarizzazione della luce |
 | | **circolatore C1 → porta B** | manda la sonda nell'anello dal capo B |
 | ramo arancione: **impulso di interrogazione** (*pompa*) | **generatore di impulsi** + **modulatore** | impulsi di 20 ns, 30 000 al secondo |
@@ -72,15 +72,15 @@ precisione: serve, perché 1 MHz di errore su Δν vale circa 20 µε 🧮.
 ⚠️ *Variante:* in [B23] la sonda ha frequenza **più bassa** degli impulsi e **riceve** energia (gradino in su). Esiste
 anche la configurazione opposta, in cui la sonda perde energia; il principio è lo stesso (fonte da trovare).
 
-## 2.4 Le manopole e i limiti
+## 2.4 I parametri e i limiti
 
 Durata dell'impulso, frequenza dell'ADC, passo di frequenza, numero di medie: decidono incertezza e tempo di misura.
-Il modello dell'incertezza è nel cap. 6; ogni manopola è studiata in dettaglio, con i grafici, nel **cap. 9**.
+Il modello dell'incertezza è nel cap. 6; ogni parametro è studiato in dettaglio, con i grafici, nel **cap. 9**.
 
 ## 2.5 Strumenti reali
 
 Esistono interrogatori commerciali con queste caratteristiche: Prysmian DITEST (80 km), OZ Optics DSTS (100 km),
-Neubrex (fino a 2 cm di risoluzione) ✅ (appendice A, sezione "Manopole dello strumento").
+Neubrex (fino a 2 cm di risoluzione) ✅ (appendice A, sezione "Parametri dello strumento").
 
 <!-- nav-fondo -->
 

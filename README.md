@@ -1,7 +1,7 @@
 # WaterFiberSim
 
 > **Documentazione completa: [il libro del simulatore](docs/00-indice.md)** — capitoli su fisica, modelli, parametri
-> ([scheda tecnica](docs/09-scheda-tecnica.md)), [validazione](docs/10-validazione.md) e
+> ([scheda tecnica](docs/09-parametri-del-simulatore.md)), [validazione](docs/10-validazione.md) e
 > [risultati](docs/11-risultati-e-questioni-aperte.md). Questo README resta la guida pratica (installazione, comandi).
 
 Simulatore di **sensori distribuiti in fibra ottica** (DFOS) posati su una rete idrica descritta in EPANET. Prende la rete (`.inp`), sovrappone una o più fibre ai tubi, trasforma pressione e temperatura dell'acqua in una grandezza ottica lungo tutta la fibra e produce il **segnale grezzo** che leggerebbe l'interrogatore. Il DSP su quel segnale è il lavoro di chi usa il simulatore.
@@ -155,7 +155,7 @@ fibers:
     junction_m: 2              # splice at the far end: sensing leg -> reference leg
 ```
 
-**Le manopole dello strumento sono nel tempo**, come nell'interrogatore vero: la durata dell'impulso (ns) e la frequenza dell'ADC (milioni di campioni al secondo). I metri si **ricavano**, perché la luce va e torna e il punto z arriva al fotodiodo dopo t = 2z/v, con v = c/n:
+**I parametri dello strumento sono nel tempo**, come nell'interrogatore vero: la durata dell'impulso (ns) e la frequenza dell'ADC (milioni di campioni al secondo). I metri si **ricavano**, perché la luce va e torna e il punto z arriva al fotodiodo dopo t = 2z/v, con v = c/n:
 
 ```
 passo di campionamento   Δz = c / (2 · n · f_ADC)   125 MS/s (un campione ogni 8 ns) → 0,82 m
@@ -269,7 +269,7 @@ python -m waterfibersim run scenario_paths/S2_street_downhill.yaml --out out/S2
 python -m waterfibersim instrument scenario_paths/S1_street_flat.yaml --out out/S1
 ```
 
-Dalle manopole dell'interrogatore nello scenario calcola, senza ancora simulare il rumore, quanto sbaglierà lo strumento. Modello di Soto & Thévenaz 2013 (`docs/A-fonti.md`, [ST13]):
+Dali parametri dell'interrogatore nello scenario calcola, senza ancora simulare il rumore, quanto sbaglierà lo strumento. Modello di Soto & Thévenaz 2013 (`docs/A-fonti.md`, [ST13]):
 
 ```
 incertezza sul picco   σ_ν = (1/SNR) · √( 3·δ·Δν_B / (8√2·(1−η)^{3/2}) )      [ST13] Eq. 7  (η = 0,5: √(¾·δ·Δν_B)/SNR)

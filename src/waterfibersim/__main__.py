@@ -49,7 +49,7 @@ def main(argv=None):
     va = sub.add_parser("validate", help="validation campaign: every hypothesis against an independent reference")
     va.add_argument("--out", default="docs/10-validazione.md")
     va.add_argument("--quick", action="store_true", help="skip the slow check on noisy data")
-    kn = sub.add_parser("knobs", help="sensitivity study of the simulator knobs (figures for chapter 9)")
+    kn = sub.add_parser("parameters", help="sensitivity study of the simulator parameters (figures for chapter 9)")
     kn.add_argument("--out", default="docs/img")
     a = ap.parse_args(argv)
 
@@ -67,9 +67,9 @@ def main(argv=None):
             print(describe_instrument(f))
         print(f"written {csv} and {png}")
 
-    if a.cmd == "knobs":
-        from .knobs import run as run_knobs
-        for k_, v_ in run_knobs(Path.cwd(), Path(a.out)).items():
+    if a.cmd == "parameters":
+        from .parameters import run as run_parameters
+        for k_, v_ in run_parameters(Path.cwd(), Path(a.out)).items():
             print(f"  {k_:16s} {v_:.4g}")
 
     if a.cmd == "validate":
@@ -285,7 +285,7 @@ def report_compensation_measured(sc, out: Path, hours: float, every_min: float, 
 
 
 def describe_instrument(f) -> str:
-    """Le manopole dello strumento (tempi) e i metri che ne derivano."""
+    """I parametri dello strumento (tempi) e i metri che ne derivano."""
     i = f.interrogator
     return (f"  instrument {f.id}: pulse {i.pulse_width_ns:g} ns -> spatial resolution {f.spatial_resolution_m:.2f} m; "
             f"ADC {i.adc_sample_rate_msps:g} MS/s (one sample every {1e3 / i.adc_sample_rate_msps:.1f} ns) -> "

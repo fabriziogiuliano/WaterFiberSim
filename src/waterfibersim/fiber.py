@@ -30,7 +30,7 @@ _TECHNIQUES = {"BOTDA"}           # per ora solo la BOTDA ad anello
 
 @dataclass(frozen=True)
 class Interrogator:
-    """Lo strumento. Le manopole sono nel TEMPO, come nello strumento vero; i metri si ricavano (vedi Fiber)."""
+    """Lo strumento. I parametri sono nel TEMPO, come nello strumento vero; i metri si ricavano (vedi Fiber)."""
 
     node: str
     technique: str

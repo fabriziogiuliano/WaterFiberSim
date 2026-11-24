@@ -1,10 +1,10 @@
-"""Studio delle manopole (variabili) del simulatore: per ognuna, cosa succede se la si gira.
+"""Studio deli parametri (variabili) del simulatore: per ognuna, cosa succede se la si gira.
 
 Usa le stesse funzioni del simulatore (instrument, mechanics, compensation, temperature), su una fibra e un tubo di
 riferimento (scenario S1: PE100 DN110 SDR11, interrogatore con le impostazioni di [B23]). Scrive le figure del
-capitolo 9 in docs/img/manopole_*.png e restituisce i numeri citati nel testo.
+capitolo 9 in docs/img/parametri_*.png e restituisce i numeri citati nel testo.
 
-    python -m waterfibersim knobs
+    python -m waterfibersim parameters
 """
 
 from __future__ import annotations
@@ -62,7 +62,7 @@ def instrument_figure(root: Path, out: Path) -> dict:
         return replace(f0, interrogator=replace(i0, **kw))
 
     fig, axs = plt.subplots(2, 2, figsize=(15, 10), dpi=100)
-    fig.suptitle("Manopole dello strumento: incertezza di UNA misura e tempo di misura (Soto & Thévenaz 2013)",
+    fig.suptitle("Parametri dello strumento: incertezza di UNA misura e tempo di misura (Soto & Thévenaz 2013)",
                  fontsize=14, fontweight="bold", x=0.02, ha="left")
     ax = axs[0, 0]
     nav = np.logspace(0, np.log10(65000), 200)
@@ -111,14 +111,14 @@ def instrument_figure(root: Path, out: Path) -> dict:
     ax.set_title("Grafico 4 — tempo di misura (senza i tempi morti dello strumento)", loc="left", fontsize=11)
     nums["t_256_4km"] = 551 * 256 * 2 * 4000 * f0.group_index / C_M_PER_S
     fig.tight_layout(rect=(0, 0, 1, 0.96))
-    _save(fig, out / "manopole_strumento.png")
+    _save(fig, out / "parametri_strumento.png")
     return nums
 
 
 def mechanics_figure(out: Path) -> dict:
     nums = {}
     fig, axs = plt.subplots(2, 2, figsize=(15, 10), dpi=100)
-    fig.suptitle("Manopole meccaniche: quanti MHz per bar sente la fibra a elica", fontsize=14, fontweight="bold",
+    fig.suptitle("Parametri meccaniche: quanti MHz per bar sente la fibra a elica", fontsize=14, fontweight="bold",
                  x=0.02, ha="left")
     ax = axs[0, 0]
     a = np.linspace(0, 89, 200)
@@ -169,7 +169,7 @@ def mechanics_figure(out: Path) -> dict:
     ax.set_xlabel("modulo della guaina [GPa] (spessore 6 mm, fibra a metà)"); ax.set_ylabel("MHz per bar")
     ax.set_title("Grafico 4 — guaina dentro il tubo ospite (modello a strati)", loc="left", fontsize=11)
     fig.tight_layout(rect=(0, 0, 1, 0.96))
-    _save(fig, out / "manopole_meccanica.png")
+    _save(fig, out / "parametri_meccanica.png")
     return nums
 
 
@@ -181,7 +181,7 @@ def temperature_figure(root: Path, out: Path) -> dict:
     k = _mhz_per_bar_pe()
     nums = {}
     fig, axs = plt.subplots(2, 2, figsize=(15, 10), dpi=100)
-    fig.suptitle("Manopole della temperatura e della compensazione", fontsize=14, fontweight="bold", x=0.02, ha="left")
+    fig.suptitle("Parametri della temperatura e della compensazione", fontsize=14, fontweight="bold", x=0.02, ha="left")
     ax = axs[0, 0]
     K = np.linspace(3.5, 8, 50)
     ax.plot(K, K / k, color="#c92a2a")
@@ -221,7 +221,7 @@ def temperature_figure(root: Path, out: Path) -> dict:
     nums["water_frac_0.8"] = math.exp(-(1000 / 0.8) * heat_rate_per_s(pe, 0.8, w))
     nums["water_frac_0.1"] = math.exp(-(1000 / 0.1) * heat_rate_per_s(pe, 0.1, w))
     fig.tight_layout(rect=(0, 0, 1, 0.96))
-    _save(fig, out / "manopole_temperatura.png")
+    _save(fig, out / "parametri_temperatura.png")
     return nums
 
 
@@ -235,7 +235,7 @@ def hydraulics_figure(out: Path) -> dict:
         return h * 0.0980665
     nums = {}
     fig, axs = plt.subplots(1, 2, figsize=(15, 5), dpi=100)
-    fig.suptitle("Manopole idrauliche: quanto cambia la pressione nella giornata (strada di 1 km, Hazen-Williams)",
+    fig.suptitle("Parametri idrauliche: quanto cambia la pressione nella giornata (strada di 1 km, Hazen-Williams)",
                  fontsize=14, fontweight="bold", x=0.02, ha="left")
     q = np.linspace(0.05, 0.6, 100)
     for d, lab in ((0.0736, "DN90 SDR11"), (0.090, "DN110 SDR11"), (0.1022, "DN125 SDR11")):
@@ -252,7 +252,7 @@ def hydraulics_figure(out: Path) -> dict:
     axs[1].set_title("Grafico 2 — criterio di progetto: velocità al picco", loc="left", fontsize=11); axs[1].legend()
     nums["exc_0.3_110"] = drop_bar(0.3, 0.090, 1.6) - drop_bar(0.3, 0.090, 0.35)
     fig.tight_layout(rect=(0, 0, 1, 0.92))
-    _save(fig, out / "manopole_idraulica.png")
+    _save(fig, out / "parametri_idraulica.png")
     return nums
 
 

@@ -64,7 +64,7 @@ Differenza da tenere a mente: in [B23] la fibra è fissata **all'esterno** del t
 | Lo scambio di energia avviene solo se Δν = ν_B per conservazione dell'energia (pompa → sonda + onda acustica) | ⚠️ | Fisica dello scattering Brillouin stimolato, da manuale; fonte da trovare (per esempio Hartog 2017 o Bao & Chen 2011) |
 | Esiste anche la configurazione a perdita (sonda più alta della pompa, che cede energia) | ⚠️ | Da trovare una fonte |
 
-### Manopole dello strumento: tempo e metri
+### Parametri dello strumento: tempo e metri
 
 | Affermazione | Stato | Fonte e citazione |
 |---|---|---|
@@ -73,7 +73,7 @@ Differenza da tenere a mente: in [B23] la fibra è fissata **all'esterno** del t
 | Conversione tempo → metri: Δz = c·t / (2n), per l'andata e ritorno della luce; campionamento Δz = c / (2 n f_ADC), risoluzione Δz = c·τ / (2n) | 🧮 | Tempo di volo. Con n = 1,5 riproduce esattamente i numeri di [B23] (0,80 m e 2,00 m); con n = 1,468 dà 0,82 e 2,04 m |
 | Indice di gruppo della fibra monomodale standard a 1550 nm: n ≈ 1,468 | ⚠️ | **Citato a memoria.** Da verificare sulla scheda Corning SMF-28 (*"Effective Group Index of Refraction"*): corning.com blocca il download automatico, da scaricare a mano |
 | Risoluzione lungo il tubo con l'elica: Δs = i·S/Lc (i = risoluzione dello strumento, S = passo dell'elica, Lc = lunghezza di una spira); con l'elica a 70° circa 2 m × cos 70° ≈ 0,7 m di tubo | ✅ formula, 🧮 numero | [B23] Eq. 2 e 3; Tab. 1: Δs = 0,45 e 0,72 m nelle loro prove |
-| Altre manopole in [B23]: finestra di scansione Δν (10,4–11,4 e 10,75–11,3 GHz), passo di frequenza νs (5 e 1 MHz), medie per passo N_avg (256), tempo di misura Δt (7 e 20 s) | ✅ | [B23] Tab. 1 e §2.1: *"The total measurement time ∆t has been tuned according to the experimental needs by properly setting the frequency scanning window ∆ν, the frequency step νs and the number of averages Navg per frequency step"* |
+| Altri parametri in [B23]: finestra di scansione Δν (10,4–11,4 e 10,75–11,3 GHz), passo di frequenza νs (5 e 1 MHz), medie per passo N_avg (256), tempo di misura Δt (7 e 20 s) | ✅ | [B23] Tab. 1 e §2.1: *"The total measurement time ∆t has been tuned according to the experimental needs by properly setting the frequency scanning window ∆ν, the frequency step νs and the number of averages Navg per frequency step"* |
 | Strumenti commerciali: campionamento e risoluzione sono impostazioni separate, date in metri | ✅ | [DIT]: *"Spatial resolution (setting) 1-20 m (0.25 m increments)"*, *"Spatial sampling interval (setting) 0.25-10 m (0.25 m increments)"*. [OZ]: *"Spatial Step as low as 5 cm"*, *"Averaging 1 to 65,000 scans"*. Neubrex NBX-7031 ([pagina prodotto](https://www.neubrex.com/products/NEUBRESCOPE/dtss_2/NBX-7031)): *"Readout Resolution 5 cm (default), 1 cm (minimum)"* |
 | Il passo di calcolo del simulatore (`calc_step_m`, 0,1 m) non è un parametro dello strumento | — | Scelta del simulatore: abbastanza fine (≤ 1/10 della risoluzione) per simulare la media dello strumento al passo 3 |
 

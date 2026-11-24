@@ -17,7 +17,7 @@ CAPITOLI = [
     ("06-strumento-e-dato-grezzo.md", "6. Lo strumento e il dato grezzo"),
     ("07-temperatura-e-compensazione.md", "7. Temperatura e compensazione"),
     ("08-logica-del-simulatore.md", "8. Logica del simulatore"),
-    ("09-scheda-tecnica.md", "9. Le manopole del simulatore"),
+    ("09-parametri-del-simulatore.md", "9. I parametri del simulatore"),
     ("10-validazione.md", "10. Validazione"),
     ("11-risultati-e-questioni-aperte.md", "11. Risultati e questioni aperte"),
     ("A-fonti.md", "Appendice A. Fonti"),
