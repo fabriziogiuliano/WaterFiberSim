@@ -26,6 +26,9 @@ come la vede chi elabora i dati.
 Scelta di posa (appendice C, §13.4n): elica e ritorno nella stessa guaina, ritorno libero nel tubicino;
 quindi vedono **la stessa temperatura nello stesso istante** (cap. 7).
 
+La disposizione degli strati nel tubo risanato (tubo ospite, guaina, fibra a elica, tubicino, acqua) è mostrata in
+sezione nel §5.3.
+
 ## 3.3 Posa a elica
 
 La pressione allarga soprattutto la **circonferenza** del tubo; una fibra dritta lungo l'asse sentirebbe poco.

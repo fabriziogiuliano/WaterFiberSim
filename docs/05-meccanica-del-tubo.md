@@ -39,6 +39,20 @@ come sopra. A 70° la fibra raccoglie l'88 % della deformazione del giro.
 
 ![Sezione del tubo risanato con il sensore in fibra ottica](img/sezione_tubo.png)
 
+La figura mostra gli strati di un tubo risanato, dall'esterno verso l'interno; gli strati sono accorciati a gradini e
+un quarto è tolto per vedere dentro (spessori non in scala):
+1. **tubo ospite**: il tubo esistente; nel modello è lo strato esterno, con il suo modulo elastico (per la ghisa circa
+   170 GPa);
+2. **guaina di risanamento**: polimerizzata in opera e aderente al tubo ospite; è lo strato in cui sta la fibra;
+3. **fibra a elica** (andata): annegata nella guaina, a metà spessore nel modello; si allunga con la deformazione
+   circonferenziale della guaina e misura quindi la pressione (più la temperatura);
+4. **tubicino con la fibra di riferimento** (ritorno): annegato nella stessa guaina; la fibra al suo interno è libera,
+   non si allunga e misura solo la temperatura (cap. 3 e 7);
+5. **acqua in pressione**: la pressione $p$ agisce sulla faccia interna della guaina.
+
+Il modello meccanico segue la stessa sequenza di strati: la pressione si trasmette dalla guaina al tubo ospite, e
+l'allungamento della fibra dipende dalla rigidezza di entrambi.
+
 Con la guaina la fibra sta **dentro** la guaina, e la guaina sta dentro il tubo ospite. Il simulatore risolve Lamé a
 N strati incollati (spostamento e pressione continui alle interfacce, fondi chiusi) (calcolo nostro); con uno strato coincide con
 la formula sopra (verificato nei test).
