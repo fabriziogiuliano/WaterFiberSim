@@ -63,11 +63,14 @@ Il simulatore non riproduce i blocchi interni: parte da ν_B vera lungo la fibra
 restituirebbe (dato grezzo L0), con la risoluzione, il passo, la scansione e il rumore impostati nello scenario. Il
 modello dell'incertezza è quello di Soto & Thévenaz [\[ST13\]](A-fonti.md#st13) (cap. 6); ogni parametro è studiato nel **cap. 9**.
 
+Livelli di elaborazione (definiti nel §1.1):
+
 | livello | contenuto | chi lo produce |
 |---|---|---|
-| **L0** | per ogni punto e ogni misura, lo spettro (potenza in funzione della differenza di frequenza), con il rumore | il simulatore (cap. 6) |
-| L1 | il picco ν_B(z, t) | l'elaborazione (fit, esempio nel cap. 6) |
-| L2–L3 | allungamento, temperatura, pressione | l'elaborazione (esempio di compensazione nel cap. 7) |
+| **L0** — dato grezzo | per ogni punto e ogni misura, lo spettro (potenza in funzione della differenza di frequenza), con il rumore | il simulatore (cap. 6) |
+| **L1** — frequenza Brillouin | il picco ν_B(z, t) | elaborazione: fit (esempio nel cap. 6) |
+| **L2** — grandezze fisiche | deformazione e temperatura | elaborazione: misura di base e compensazione (esempio nel cap. 7) |
+| **L3** — informazione sulla rete | pressione lungo i tubi, anomalie | elaborazione: conversione in pressione (cap. 5, 7) |
 
 ## 2.5 Interrogatori BOTDA commerciali
 

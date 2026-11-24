@@ -14,6 +14,19 @@ lungo il tubo e letta da uno strumento Brillouin (cap. 2). Il simulatore produce
 
 Chi elabora i dati (L1–L3) può così sviluppare e verificare i suoi algoritmi sapendo la verità.
 
+### Livelli di elaborazione del dato
+
+Nel documento i dati sono indicati per livello di elaborazione:
+
+| livello | contenuto | esempio |
+|---|---|---|
+| **L0** — dato grezzo | per ogni punto della fibra e ogni misura, lo spettro Brillouin (potenza in funzione della frequenza), con il rumore | 551 valori per punto |
+| **L1** — frequenza Brillouin | il picco dello spettro in ogni punto, ν_B(z, t) | 11 095,3 MHz |
+| **L2** — grandezze fisiche della fibra | deformazione e temperatura, dopo la sottrazione della misura di base e la compensazione | 277 µε; +1,2 °C |
+| **L3** — informazione sulla rete | pressione dell'acqua lungo i tubi ed eventuali anomalie | 4,7 bar in P5 alle 08:00 |
+
+Il simulatore produce L0 e le etichette vere di tutti i livelli; il passaggio da L0 a L3 è l'elaborazione dei dati.
+
 ## 1.2 Contesto
 
 Il lavoro si colloca nel risanamento delle condotte con guaine polimerizzate in opera e nello sviluppo di gemelli
