@@ -1,0 +1,50 @@
+"""Temperatura del terreno (passo T2): riferimento a C_T, elica a helix_mhz_per_c, punti caldi locali."""
+
+import os
+from pathlib import Path
+
+import numpy as np
+import pytest
+
+from waterfibersim.fiber import load_scenario
+from waterfibersim.simulate import simulate_true
+
+ROOT = Path(__file__).resolve().parents[1]
+
+
+@pytest.fixture(scope="module")
+def pair():
+    os.chdir(ROOT)
+    kw = dict(duration_s=6 * 3600, step_s=3600, seed=5)
+    cold = simulate_true(load_scenario(ROOT / "scenario_paths" / "S1t_street_flat_soil.yaml"), **kw)
+    flat = simulate_true(load_scenario(ROOT / "scenario_paths" / "S1_street_flat.yaml"), **kw)
+    return cold, flat
+
+
+def test_uniform_scenario_has_no_hotspot(pair):
+    cold, _ = pair
+    assert np.ptp(cold.delta_t_c[0]) == pytest.approx(0)              # S1t: stesso dT ovunque
+
+
+def test_temperature_adds_on_top_of_pressure(pair):
+    cold, flat = pair
+    sc = load_scenario(ROOT / "scenario_paths" / "S1t_street_flat_soil.yaml")
+    leg = cold.fiber_map["leg"].to_numpy()
+    extra = cold.nu_b_mhz - flat.nu_b_mhz                              # stessa pressione, stesso profilo a riposo
+    dT = cold.delta_t_c
+    assert np.allclose(extra[:, leg == "reference"], dT[:, leg == "reference"] * cold.coef.c_t_mhz_per_c)
+    assert np.allclose(extra[:, leg == "sensing"], dT[:, leg == "sensing"] * sc.temperature.helix_mhz_per_c)
+    assert np.allclose(cold.strain_ue, flat.strain_ue)                  # la pressione non cambia
+
+
+def test_drift_and_hotspot():
+    os.chdir(ROOT)
+    cold = simulate_true(load_scenario(ROOT / "scenario_paths" / "S1th_street_flat_soil_hotspot.yaml"),
+                         duration_s=6 * 3600, step_s=3600, seed=5)
+    f = cold.fiber_map
+    dT = cold.delta_t_c
+    out = ((f["pipe"] == "P2") & (f["leg"] == "sensing")).to_numpy()
+    assert dT[0, out] == pytest.approx(-8.0)                            # 10 - 18 °C
+    assert dT[-1, out][0] == pytest.approx(-8.0 - 0.15 * 6 / 24)        # deriva di 6 ore
+    hot = ((f["pipe"] == "P6") & (f["s_pipe_m"].between(30, 50))).to_numpy()
+    assert np.allclose(dT[0, hot], -5.0)                                # punto caldo: +3 °C in più

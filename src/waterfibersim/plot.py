@@ -176,7 +176,9 @@ def plot_true_signal(sig, path: str | Path, fiber_id: str | None = None) -> Path
     fig = plt.figure(figsize=(15, 20), dpi=100)
     gs = fig.add_gridspec(4, 1, height_ratios=[1, 1, 1.6, 1.1], hspace=0.6, top=0.94)
     consumi = "" if sig.demand_multiplier == 1 else f", consumi \u00d7{sig.demand_multiplier:g}"
-    fig.suptitle(f"Segnale vero (senza rumore, temperatura costante), fibra {fid}{consumi}", fontsize=15,
+    temp_txt = ("con la temperatura del terreno, NON compensata" if np.any(sig.delta_t_c != 0)
+                else "temperatura costante")
+    fig.suptitle(f"Segnale vero (senza rumore, {temp_txt}), fibra {fid}{consumi}", fontsize=15,
                  fontweight="bold", x=0.02, ha="left")
 
     def bande(ax, testo=True):
@@ -191,10 +193,15 @@ def plot_true_signal(sig, path: str | Path, fiber_id: str | None = None) -> Path
     sens = (f["leg"] == "sensing").to_numpy()
     ore = [(4, "#1f5fbf"), (8, "#c92a2a")]
     # rapporto MHz/bar della fibra a elica (lineare: Δν = k · p); vale solo sul tratto a elica
-    mhz_per_bar = dnu[:, sens].mean() / np.nanmean(press[:, sens])
+    # dalla sola pressione: la temperatura, se c'è, non deve entrare nel rapporto
+    dnu_p = sig.strain_ue[:, sel] * sig.coef.c_eps_mhz_per_ue
+    mhz_per_bar = dnu_p[:, sens].mean() / np.nanmean(press[:, sens])
+    con_temp = bool(np.any(sig.delta_t_c != 0))
     k_txt = f"{mhz_per_bar:.1f}".replace(".", ",")
 
     def asse_bar(ax, offset_mhz=0.0, nome="pressione equivalente"):
+        if con_temp:
+            nome = "pressione APPARENTE"
         sec = ax.secondary_yaxis("right", functions=(lambda m: (m - offset_mhz) / mhz_per_bar,
                                                      lambda b: b * mhz_per_bar + offset_mhz))
         sec.set_ylabel(f"{nome} [bar]\n(sull'elica: 1 bar = {k_txt} MHz)", color="#2b8a3e", fontsize=9)
@@ -231,9 +238,11 @@ def plot_true_signal(sig, path: str | Path, fiber_id: str | None = None) -> Path
             ax.text(z[m].mean(), ytop + 8 + 14 * (len(righe) - 1 - r), txt, ha="center", fontsize=8, color=c)
     lo, hi = ax.get_ylim()
     ax.set_ylim(lo, hi + (75 if sfalsa else 30))
-    if sfalsa:
-        ax.text(0.005, 0.98, "sopra ogni tubo: pressione media sull'elica alle due ore", transform=ax.transAxes,
-                fontsize=8, va="top", color="#495057")
+    if sfalsa or con_temp:
+        nota = "sopra ogni tubo: pressione media sull'elica alle due ore"
+        if con_temp:
+            nota += " — APPARENTE: Δν/(MHz per bar), con dentro la temperatura non compensata"
+        ax.text(0.005, 0.98, nota, transform=ax.transAxes, fontsize=8, va="top", color="#495057")
     ax.set_xlabel("z = distanza lungo la fibra dalla porta A [m]")
     ax.legend(loc="center right", fontsize=9)
     ax.set_title("Grafico 1 \u2014 frequenza Brillouin lungo la fibra: a vuoto e con il carico (valori assoluti, come in Bertulessi "
@@ -245,14 +254,20 @@ def plot_true_signal(sig, path: str | Path, fiber_id: str | None = None) -> Path
     for hh, c in ore:
         i = int(np.argmin(abs(h - hh)))
         ax.plot(z, dnu[i], color=c, lw=1.5, label=f"ore {hh:02d}:00")
+        if con_temp:
+            ax.plot(z, dnu_p[i], color=c, lw=1, ls=":", label=f"ore {hh:02d}:00, solo pressione (senza temperatura)")
     bande(ax)
     ax.set_ylabel("\u0394\u03bd_B [MHz]")
     asse_bar(ax)
     ax.set_xlabel("z [m]")
     ax.legend(loc="center right")
-    medio = f"circa +{dnu[:, sens].mean():.0f} MHz (circa {np.nanmean(press[:, sens]):.1f} bar)".replace(".", ",")
+    if con_temp:
+        medio = (f"circa +{dnu[:, sens].mean():.0f} MHz (sembrerebbero {dnu[:, sens].mean() / mhz_per_bar:.1f} bar; "
+                 f"la pressione vera è circa {np.nanmean(press[:, sens]):.1f} bar: il resto è temperatura)").replace(".", ",")
+    else:
+        medio = f"circa +{dnu[:, sens].mean():.0f} MHz (circa {np.nanmean(press[:, sens]):.1f} bar)".replace(".", ",")
     ax.set_title(f"Grafico 2 \u2014 differenza rispetto alla misura di base: \u0394\u03bd_B = \u03bd_B \u2212 \u03bd_B a vuoto. "
-                 f"Fibra a elica sui tubi in PE {medio} in media; riferimento e cavi 0", fontsize=11, loc="left", pad=16)
+                 f"\nFibra a elica sui tubi in PE {medio} in media; riferimento e cavi " + ("solo temperatura" if con_temp else "0"), fontsize=11, loc="left", pad=16)
 
     # grafico 3: variazione rispetto alla media del giorno
     ax = fig.add_subplot(gs[2])

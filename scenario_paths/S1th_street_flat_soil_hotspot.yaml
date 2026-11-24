@@ -1,0 +1,50 @@
+# Scenario S1th - as S1t, plus a LOCAL temperature perturbation (hotspot) on P6 (step T2). S1 - flat street: pressure drops only because of head loss.
+# Same fibre in S1 and S2 (interrogator at the start of the street, N0): only the water changes,
+# so the figures can be compared directly (z is about the distance along the street).
+title: "S1th. Strada piana, terreno che si raffredda + punto caldo su P6"
+description: "Strada di 1 km in piano, serbatoio a monte (N0).\nUn rubinetto ogni 100 m. La pressione cala\nsolo per la perdita di carico."
+network: network/street_flat.inp
+pipes: network/street_pipes.yaml
+
+temperature:                 # soil only (water temperature: later). Values: see docs/fonti.md, "Temperatura"
+  baseline_c: 18             # soil when the baseline (0 bar) was measured, e.g. at installation in late summer
+  soil_c: 10                 # soil at the start of the simulated day: 8 °C colder than at the baseline
+  drift_c_per_day: -0.15     # seasonal cooling, about 13 °C in 90 days                          [SB20]
+  helix_mhz_per_c: 6         # helix thermal sensitivity: range 3.5 [B23] - 8 [SB20] MHz/°C, TO CALIBRATE
+  hotspots:                  # local extra change since the baseline (e.g. a stretch under sunny pavement)
+    # position, length and +3 °C CHOSEN to show the effect; only the order of magnitude is sourced:
+    # up to ~7 °C warmer hotspots, ~10 °C between locations at 1 m depth in a city            [AV17]
+    - {pipe: P6, from_m: 20, to_m: 60, delta_c: 3}
+
+fibers:
+  - id: S1th
+    interrogator:                # loop: both fiber ends on the instrument (ports A and B)
+      node: N0
+      technique: BOTDA
+      channel: 1
+      pulse_width_ns: 20         # pump pulse duration -> spatial resolution c*tau/(2n) ~ 2 m       [B23]
+      adc_sample_rate_msps: 125  # ADC sampling rate   -> sampling interval c/(2n f_s) ~ 0.8 m     [B23]
+      freq_step_mhz: 1           # frequency scan step (delta)                                     [B23] Tab. 1, phase II
+      n_averages: 256            # traces averaged per frequency step (N_AV)                       [B23] Tab. 1
+      scan_window_ghz: [10.75, 11.3]  # must contain every peak (rest profile + pressure + temperature)  [B23] Tab. 1, phase II
+      linewidth_mhz: 58          # Brillouin gain FWHM with a 2 m resolution                       [ST13] §3
+      snr0_db: 0                 # SNR at the fibre input, one trace, at snr0_resolution_m ("realistic")  [ST13] §3
+      snr0_resolution_m: 2
+    group_index: 1.468         # fibre group index (v = c/n), standard single-mode at 1550 nm: TO VERIFY on a datasheet
+    attenuation_db_per_km: 0.2 # fibre loss at 1550 nm (measured 0.211-0.22 dB/km)                       [ST13] §2-3
+    calc_step_m: 0.1           # simulator calculation step along the fibre (NOT the instrument sampling)
+    sensing_leg:   {layout: helix, angle_deg: 70, bonding: bonded}
+    reference_leg: {layout: straight, bonding: loose_tube}
+    route:                     # ordered from port A; the reference leg retraces it backwards to port B
+      - {lead: 10, to: N0}     # cable from the cabinet to the pipe
+      - {pipe: P1, from: N0}
+      - {pipe: P2, from: N1}
+      - {pipe: P3, from: N2}
+      - {pipe: P4, from: N3}
+      - {pipe: P5, from: N4}
+      - {pipe: P6, from: N5}
+      - {pipe: P7, from: N6}
+      - {pipe: P8, from: N7}
+      - {pipe: P9, from: N8}
+      - {pipe: P10, from: N9}
+    junction_m: 2              # splice at the far end (N10): sensing leg -> reference leg

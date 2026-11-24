@@ -4,7 +4,8 @@
            -> deformazione della parete (Lamé) -> deformazione della fibra (elica; riferimento = 0)
            -> nu_B(z, t)
 
-Profilo a riposo per metro (rest_profile.py, da [B23] Fig. 7a) incluso. Semplificazioni: temperatura costante (dT = 0), nessun rumore,
+Profilo a riposo per metro (rest_profile.py, da [B23] Fig. 7a) incluso. Temperatura del terreno (temperature.py) se lo
+scenario ha la sezione `temperature`, altrimenti costante. Semplificazioni: nessun rumore,
 nessuno spettro (L0 arriva al passo 3), niente creep. Sono le etichette vere L1/L2 dei passi successivi.
 """
 
@@ -22,6 +23,7 @@ from .fibermap import build_map
 from .hydraulics import run_hydraulics
 from .mechanics import helix_strain_ue, wall_strain_ue
 from .rest_profile import rest_offset_mhz
+from .temperature import delta_t_c
 
 MPA_TO_BAR = 10.0
 
@@ -31,8 +33,9 @@ class TrueSignal:
     fiber_map: pd.DataFrame        # (Z righe) una riga per campione lungo le fibre
     times_s: np.ndarray            # (T,)
     pressure_bar: np.ndarray       # (T, Z) pressione dell'acqua nel punto del tubo; NaN su cavi e giunzione
-    strain_ue: np.ndarray          # (T, Z) deformazione della fibra
-    nu_b_mhz: np.ndarray           # (T, Z) frequenza Brillouin vera (profilo a riposo + effetto della pressione)
+    strain_ue: np.ndarray          # (T, Z) deformazione della fibra dovuta alla PRESSIONE (etichetta)
+    delta_t_c: np.ndarray          # (T, Z) variazione di temperatura dalla misura di base (etichetta)
+    nu_b_mhz: np.ndarray           # (T, Z) frequenza Brillouin vera (profilo a riposo + pressione + temperatura)
     rest_mhz: np.ndarray           # (Z,) profilo a riposo: scostamento a tubo vuoto rispetto a nu_B0 (etichetta)
     coef: BrillouinCoefficients
     demand_multiplier: float = 1.0
@@ -53,6 +56,7 @@ class TrueSignal:
             fiber=self.fiber_map["fiber"].to_numpy(dtype=str), leg=self.fiber_map["leg"].to_numpy(dtype=str),
             pipe=self.fiber_map["pipe"].fillna("").to_numpy(dtype=str),
             pressure_bar=self.pressure_bar.astype(np.float32), strain_ue=self.strain_ue.astype(np.float32),
+            delta_t_c=self.delta_t_c.astype(np.float32),
             nu_b_mhz=self.nu_b_mhz, nu_b0_mhz=self.coef.nu_b0_mhz, rest_mhz=self.rest_mhz, baseline_mhz=self.baseline_mhz,
             demand_multiplier=self.demand_multiplier, seed=self.seed)
         return out / "signal_true.npz"
@@ -88,5 +92,10 @@ def simulate_true(scenario: Scenario, duration_s: int = 86_400, step_s: int = 90
         # tratto di riferimento: fibra libera nel tubetto, deformazione 0 (resta 0)
 
     rest = rest_offset_mhz(fmap, scenario, seed) if rest_profile else np.zeros(Z)
-    nu = brillouin_shift_mhz(strain, 0.0, coef) + rest
-    return TrueSignal(fmap, hyd.times_s, pressure, strain, nu, rest, coef, demand_multiplier, seed)
+    dT = delta_t_c(scenario.temperature, fmap, hyd.times_s)
+    nu = brillouin_shift_mhz(strain, dT, coef) + rest
+    if scenario.temperature is not None:
+        # sull'elica la temperatura pesa di più: la dilatazione del tubo tira la fibra (helix_mhz_per_c in tutto)
+        helix = fmap["leg"].to_numpy() == "sensing"
+        nu[:, helix] += (scenario.temperature.helix_mhz_per_c - coef.c_t_mhz_per_c) * dT[:, helix]
+    return TrueSignal(fmap, hyd.times_s, pressure, strain, dT, nu, rest, coef, demand_multiplier, seed)

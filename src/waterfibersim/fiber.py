@@ -14,8 +14,9 @@ from pathlib import Path
 import yaml
 
 from .network import Network, load_network
+from .temperature import SoilTemperature, parse_temperature
 
-_SCENARIO_KEYS = {"title", "description", "network", "pipes", "fibers"}
+_SCENARIO_KEYS = {"title", "description", "network", "pipes", "fibers", "temperature"}
 _FIBER_KEYS = {"id", "interrogator", "group_index", "attenuation_db_per_km", "calc_step_m", "sensing_leg", "reference_leg", "route", "junction_m"}
 _INTERROGATOR_KEYS = {"node", "technique", "channel", "pulse_width_ns", "adc_sample_rate_msps", "freq_step_mhz",
                       "n_averages", "scan_window_ghz", "linewidth_mhz", "snr0_db", "snr0_resolution_m"}
@@ -105,6 +106,7 @@ class Scenario:
     description: str
     network: Network
     fibers: tuple[Fiber, ...]
+    temperature: SoilTemperature | None = None   # terreno (passo T2); None = temperatura costante
 
 
 def _check(raw: dict, keys: set, where: str) -> None:
@@ -223,4 +225,5 @@ def load_scenario(path: str | Path) -> Scenario:
     if len(set(channels)) != len(channels):
         raise ValueError("two fibers on the same interrogator channel")
     return Scenario(path=path, title=raw.get("title", path.stem), description=raw.get("description", ""),
-                    network=net, fibers=tuple(fibers))
+                    network=net, fibers=tuple(fibers),
+                    temperature=parse_temperature(raw.get("temperature"), set(net.pipes)))
