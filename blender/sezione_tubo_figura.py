@@ -59,8 +59,6 @@ def main():
         fig.text(0.668, y - 0.042, "\n".join(textwrap.wrap(testo, 58)), fontsize=12.5, color=TESTO, va="top",
                  linespacing=1.35)
         y -= 0.145
-    fig.text(0.02, 0.03, "Spessori non in scala; gli strati sono accorciati e un quarto è tolto per mostrare l'interno.",
-             fontsize=12, style="italic", color=GRIGIO)
     USCITA.parent.mkdir(parents=True, exist_ok=True)
     fig.savefig(USCITA, facecolor="white")
     print(f"scritto {USCITA}")

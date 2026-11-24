@@ -40,7 +40,7 @@ come sopra. A 70° la fibra raccoglie l'88 % della deformazione del giro.
 ![Sezione del tubo risanato con il sensore in fibra ottica](img/sezione_tubo.png)
 
 La figura mostra gli strati di un tubo risanato, dall'esterno verso l'interno; gli strati sono accorciati a gradini e
-un quarto è tolto per vedere dentro (spessori non in scala):
+un quarto è tolto per vedere dentro:
 1. **tubo ospite**: il tubo esistente; nel modello è lo strato esterno, con il suo modulo elastico (per la ghisa circa
    170 GPa);
 2. **guaina di risanamento**: polimerizzata in opera e aderente al tubo ospite; è lo strato in cui sta la fibra;
