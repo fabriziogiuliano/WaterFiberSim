@@ -6,7 +6,7 @@
 # 9. Scheda tecnica dei parametri
 
 Ogni parametro: dove si imposta, valore di default, intervallo plausibile, da dove viene, quanto pesa sul risultato.
-Stato delle fonti come in `docs/fonti.md`: ✅ verificato su fonte letta · 🧮 calcolato · ⚠️ scelto o da verificare.
+Stato delle fonti come in `docs/A-fonti.md`: ✅ verificato su fonte letta · 🧮 calcolato · ⚠️ scelto o da verificare.
 Sigle delle fonti: [B23] Bertulessi 2023 · [ST13] Soto & Thévenaz 2013 · [BL24] Blokker 2024 · [SB20] Stewart & Bilgin 2020 ·
 [AV17] Agudelo-Vera 2017 · [EPA] manuale EPANET 2.2 · [DIT]/[OZ] schede degli interrogatori.
 

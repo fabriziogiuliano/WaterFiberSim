@@ -6,7 +6,7 @@ description: "Strada di 1 km in piano, serbatoio a monte (N0).\nUn rubinetto ogn
 network: network/street_flat.inp
 pipes: network/street_pipes.yaml
 
-temperature:                 # soil only (water temperature: later). Values: see docs/fonti.md, "Temperatura"
+temperature:                 # soil only (water temperature: later). Values: see docs/A-fonti.md, "Temperatura"
   baseline_c: 18             # soil when the baseline (0 bar) was measured, e.g. at installation in late summer
   soil_c: 10                 # soil at the start of the simulated day: 8 °C colder than at the baseline
   drift_c_per_day: -0.15     # seasonal cooling, about 13 °C in 90 days                          [SB20]

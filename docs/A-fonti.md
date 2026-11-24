@@ -1,9 +1,9 @@
 <!-- nav -->
-| [📖 Indice del libro](00-indice.md) · appendice |
-|:---:|
+| [← 11. Risultati e questioni aperte](11-risultati-e-questioni-aperte.md) | [📖 Indice](00-indice.md)<br><sub>appendici</sub> | [Appendice B. Approfondimento sulla fibra →](B-fibra-ottica-dfos.md) |
+|:---|:---:|---:|
 <!-- /nav -->
 
-# Fonti e stato di verifica
+# Appendice A — Fonti e stato di verifica
 
 Questo file elenca le affermazioni tecniche usate nel progetto: nella figura [blender/tubo_fibra.png](../blender/tubo_fibra.png), nel README e nei parametri del simulatore. Per ognuna dice da dove viene e se è stata verificata.
 
@@ -297,7 +297,7 @@ Prysmian OptiStrain, Solifos BRUsens e Clearfield producono cavi per misure di s
 
 ## Citate nel dump della sessione e ancora da verificare
 
-Vengono dal [dump del 2026-11-23](sessione-2026-11-23.md) e sono **citate a memoria**:
+Vengono dal [dump del 2026-11-23](C-diario-sessioni.md) e sono **citate a memoria**:
 
 - [ ] E. Todini, S. Pilati, metodo del gradiente, 1988.
 - [ ] L. A. Rossman, *EPANET 2 Users Manual*, US EPA.
@@ -310,3 +310,9 @@ Vengono dal [dump del 2026-11-23](sessione-2026-11-23.md) e sono **citate a memo
 - [ ] X. Bao, L. Chen, "Recent Progress in Brillouin Scattering Based Fiber Sensors", *Sensors* 11(4), 4152–4187, 2011. Esiste ([PMC3231321](https://pmc.ncbi.nlm.nih.gov/articles/PMC3231321/)), non letta.
 
 **Correzione rispetto al dump.** Il dump (§4.2) stima per un tubo in PE DN110 "~400 µε per bar" con la formula a parete sottile sul diametro medio. Con la formula di Lamé sulla superficie esterna usata da [B23] vengono circa 309 µε. Stesso ordine di grandezza, ma per il simulatore si usa la formula di [B23].
+
+<!-- nav-fondo -->
+
+| [← 11. Risultati e questioni aperte](11-risultati-e-questioni-aperte.md) | [📖 Indice](00-indice.md)<br><sub>appendici</sub> | [Appendice B. Approfondimento sulla fibra →](B-fibra-ottica-dfos.md) |
+|:---|:---:|---:|
+<!-- /nav-fondo -->

@@ -31,9 +31,9 @@ parametri, le verifiche e i risultati. Ogni capitolo rimanda agli altri; le font
 11. [Risultati e questioni aperte](11-risultati-e-questioni-aperte.md)
 
 **Appendici**
-- A. [Fonti e stato di verifica](fonti.md)
-- B. [Approfondimento sulla fibra ottica (DFOS)](fibra-ottica-dfos.md) — §2.1 aggiornato, il resto è il testo iniziale
-- C. [Diario delle sessioni e decisioni](sessione-2026-11-23.md)
+A. [Fonti e stato di verifica](A-fonti.md) — ogni affermazione con fonte e stato  
+B. [Approfondimento sulla fibra ottica (DFOS)](B-fibra-ottica-dfos.md) — primo documento del progetto; §2.1 aggiornato  
+C. [Diario delle sessioni e decisioni](C-diario-sessioni.md) — le decisioni in ordine di tempo
 
 ## Come si legge
 

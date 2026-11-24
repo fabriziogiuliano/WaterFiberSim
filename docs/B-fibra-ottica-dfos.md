@@ -1,9 +1,11 @@
 <!-- nav -->
-| [📖 Indice del libro](00-indice.md) · appendice |
-|:---:|
+| [← Appendice A. Fonti](A-fonti.md) | [📖 Indice](00-indice.md)<br><sub>appendici</sub> | [Appendice C. Diario delle sessioni →](C-diario-sessioni.md) |
+|:---|:---:|---:|
 <!-- /nav -->
 
-# Sensori distribuiti in fibra ottica su condotte idriche
+# Appendice B — Sensori distribuiti in fibra ottica su condotte idriche (approfondimento)
+
+*Primo documento del progetto. Il §2.1 è aggiornato; il resto è il testo iniziale, in parte superato dai capitoli 2–7 del libro.*
 
 Questo documento spiega come funziona un sensore distribuito in fibra ottica (DFOS, *Distributed Fibre Optic Sensing*), perché una perdita "si sente" lungo il tubo e come la fibra si inserisce nel Digital Twin dell'OR5 di MATRIS come tecnologia abilitante per un progetto successivo. Serve per capire prima di simulare: il codice verrà dopo, a piccoli passi.
 
@@ -38,7 +40,7 @@ Alla fibra è collegato un solo apparecchio, l'**interrogatore**. Nelle tecniche
 
 ![Interrogatore BOTDA con fibra ad anello: schema a blocchi](img/dfos-interrogatore.drawio.svg)
 
-*Lo schema mostra il caso usato in questo progetto, la BOTDA ad anello (Bertulessi et al., Sensors 23, 6205, 2023, Fig. 2). La BOTDA misura con due luci in versi opposti; il principio del tempo di volo descritto qui sotto vale per tutte le tecniche. Fonti: [fonti.md](fonti.md).*
+*Lo schema mostra il caso usato in questo progetto, la BOTDA ad anello (Bertulessi et al., Sensors 23, 6205, 2023, Fig. 2). La BOTDA misura con due luci in versi opposti; il principio del tempo di volo descritto qui sotto vale per tutte le tecniche. Fonti: [A-fonti.md](A-fonti.md).*
 
 1. Il laser manda un **impulso** brevissimo (decine di nanosecondi).
 2. L'impulso viaggia nella fibra; ogni punto ne rimanda indietro un po'.
@@ -53,7 +55,7 @@ La traccia di ritorno viene divisa in "fette" di tempo, ognuna corrispondente a 
 
 ### 2.1 Come funziona la BOTDA, passo per passo
 
-La BOTDA (*Brillouin Optical Time-Domain Analysis*) è la tecnica scelta per misurare la pressione (DSS, §3). Funziona in modo diverso dallo schema "un impulso e la luce che torna indietro" descritto sopra: usa **due luci** che percorrono la stessa fibra **in versi opposti**. Le fonti di ogni affermazione sono in [fonti.md](fonti.md). Le sigle usate sono: **[B23]** = Bertulessi et al., *Sensors* 23, 6205 (2023), §2.1; **[OZ]** = scheda tecnica OZ Optics DTS0115.
+La BOTDA (*Brillouin Optical Time-Domain Analysis*) è la tecnica scelta per misurare la pressione (DSS, §3). Funziona in modo diverso dallo schema "un impulso e la luce che torna indietro" descritto sopra: usa **due luci** che percorrono la stessa fibra **in versi opposti**. Le fonti di ogni affermazione sono in [A-fonti.md](A-fonti.md). Le sigle usate sono: **[B23]** = Bertulessi et al., *Sensors* 23, 6205 (2023), §2.1; **[OZ]** = scheda tecnica OZ Optics DTS0115.
 
 **1. Una fibra ad anello, due capi sullo stesso strumento.** La fibra parte dalla **porta A** dell'interrogatore, percorre il tubo e torna alla **porta B** dello stesso interrogatore. La BOTDA ha bisogno di entrambi i capi ([OZ]: *"requires both ends of fiber to be connected"*).
 
@@ -103,7 +105,7 @@ In termini tecnici, l'impulso **modula in ampiezza** il tono continuo della luce
 
 La potenza letta in A nel tempo, P(t), è quindi il profilo della fibra "srotolato" nel tempo. La durata dell'impulso fissa la risoluzione: 20 ns corrispondono a circa 2 m. La velocità di campionamento fissa il passo: 125 milioni di campioni al secondo danno un campione ogni 0,8 m [B23].
 
-**7. La frequenza dà la grandezza fisica.** L'altezza del gradino in un punto dipende da quanto Δν è vicino alla ν_B di quel punto. Lo strumento ripete la misura per tanti valori di Δν: [B23] scansiona 1 GHz. Per ogni punto z ottiene una curva "altezza del gradino in funzione di Δν", lo **spettro di guadagno Brillouin**. Il **picco** della curva è ν_B(z). Da ν_B(z), confrontata con una misura di base, si ricavano allungamento e temperatura (§3 e [fonti.md](fonti.md)).
+**7. La frequenza dà la grandezza fisica.** L'altezza del gradino in un punto dipende da quanto Δν è vicino alla ν_B di quel punto. Lo strumento ripete la misura per tanti valori di Δν: [B23] scansiona 1 GHz. Per ogni punto z ottiene una curva "altezza del gradino in funzione di Δν", lo **spettro di guadagno Brillouin**. Il **picco** della curva è ν_B(z). Da ν_B(z), confrontata con una misura di base, si ricavano allungamento e temperatura (§3 e [A-fonti.md](A-fonti.md)).
 
 **8. Cosa significa per il simulatore.**
 
@@ -273,3 +275,9 @@ In ordine di utilità per iniziare (verificare i riferimenti esatti prima di cit
 4. O. Hunaidi, W. T. Chu, "Acoustical characteristics of leak signals in plastic water distribution pipes", *Applied Acoustics* 58, 1999 — come "suona" una perdita nei tubi plastici.
 5. Y. Gao, M. J. Brennan, P. F. Joseph, J. M. Muggleton, O. Hunaidi, "A model of the correlation function of leak noise in buried plastic pipes", *Journal of Sound and Vibration* 277, 2004 — modello di propagazione e attenuazione del rumore di perdita: la base del nostro modello acustico.
 6. K. A. Klise et al., Water Network Tool for Resilience (WNTR), Sandia National Laboratories — il simulatore idraulico citato nell'att. 5.1.
+
+<!-- nav-fondo -->
+
+| [← Appendice A. Fonti](A-fonti.md) | [📖 Indice](00-indice.md)<br><sub>appendici</sub> | [Appendice C. Diario delle sessioni →](C-diario-sessioni.md) |
+|:---|:---:|---:|
+<!-- /nav-fondo -->

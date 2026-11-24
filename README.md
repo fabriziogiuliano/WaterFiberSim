@@ -6,7 +6,7 @@
 
 Simulatore di **sensori distribuiti in fibra ottica** (DFOS) posati su una rete idrica descritta in EPANET. Prende la rete (`.inp`), sovrappone una o più fibre ai tubi, trasforma pressione e temperatura dell'acqua in una grandezza ottica lungo tutta la fibra e produce il **segnale grezzo** che leggerebbe l'interrogatore. Il DSP su quel segnale è il lavoro di chi usa il simulatore.
 
-Le tecniche di base: **DAS** (vibrazioni, Rayleigh), **DTS** (temperatura, Raman), **DSS** (deformazione + temperatura, Brillouin). Per misurare la pressione sulle pareti del tubo servono DSS + DTS. Il documento di contesto è [docs/fibra-ottica-dfos.md](docs/fibra-ottica-dfos.md). Decisioni, ricerca e piano della sessione iniziale: [docs/sessione-2026-11-23.md](docs/sessione-2026-11-23.md).
+Le tecniche di base: **DAS** (vibrazioni, Rayleigh), **DTS** (temperatura, Raman), **DSS** (deformazione + temperatura, Brillouin). Per misurare la pressione sulle pareti del tubo servono DSS + DTS. Il documento di contesto è [docs/B-fibra-ottica-dfos.md](docs/B-fibra-ottica-dfos.md). Decisioni, ricerca e piano della sessione iniziale: [docs/C-diario-sessioni.md](docs/C-diario-sessioni.md).
 
 ## INSTALL
 
@@ -113,7 +113,7 @@ pipes:
 
 ### 1.3 La fibra: un anello sull'interrogatore BOTDA
 
-Una fibra **non si dirama**: è un percorso lineare. Con la BOTDA i due capi tornano allo stesso strumento (porta A e porta B), quindi la fibra è un **anello** con due tratti (vedi la figura del sensore più sotto e [docs/fibra-ottica-dfos.md §2.1](docs/fibra-ottica-dfos.md#21-come-funziona-la-botda-passo-per-passo)):
+Una fibra **non si dirama**: è un percorso lineare. Con la BOTDA i due capi tornano allo stesso strumento (porta A e porta B), quindi la fibra è un **anello** con due tratti (vedi la figura del sensore più sotto e [docs/B-fibra-ottica-dfos.md §2.1](docs/B-fibra-ottica-dfos.md#21-come-funziona-la-botda-passo-per-passo)):
 
 - **tratto di misura** (*sensing leg*): dalla porta A, a **elica solidale** al tubo; nel caso MATRIS è **annegata nella guaina**, che polimerizza in opera e la ancora; sente pressione + temperatura;
 - **tratto di riferimento** (*reference leg*): ritorna alla porta B ripercorrendo **gli stessi tubi** al contrario, **dritto e libero in un tubetto**; sente solo la temperatura.
@@ -218,7 +218,7 @@ Scenario A: 2001,5 m di fibra (2 × 215 m di cavo + 400 m di tubo × 2,92 + 2 m 
 python -m waterfibersim run scenario_paths/A_main_line.yaml --out out/A --hours 24 --step-min 15
 ```
 
-**La rete di prova è dimensionata con criteri di progetto** (vedi `docs/fonti.md`): al picco dei consumi la velocità nei tubi principali è di 0,5–0,9 m/s e la perdita di carico non supera 10 m/km in nessun tubo. Per questo P1 e P11, che portano l'acqua nella griglia, sono DN160; P2 e P12 (risanato) DN125; gli altri DN110 (PE100 SDR11). Le utenze J13, J31, J33 consumano 4 L/s ciascuna. Con una rete così, **la pressione nella giornata varia di circa 0,2 bar**: in una rete ben progettata le perdite di carico sono tenute basse apposta. Variazioni più grandi, nella realtà, vengono da dislivelli, pompe, valvole e distanze lunghe.
+**La rete di prova è dimensionata con criteri di progetto** (vedi `docs/A-fonti.md`): al picco dei consumi la velocità nei tubi principali è di 0,5–0,9 m/s e la perdita di carico non supera 10 m/km in nessun tubo. Per questo P1 e P11, che portano l'acqua nella griglia, sono DN160; P2 e P12 (risanato) DN125; gli altri DN110 (PE100 SDR11). Le utenze J13, J31, J33 consumano 4 L/s ciascuna. Con una rete così, **la pressione nella giornata varia di circa 0,2 bar**: in una rete ben progettata le perdite di carico sono tenute basse apposta. Variazioni più grandi, nella realtà, vengono da dislivelli, pompe, valvole e distanze lunghe.
 
 Con `--demand-multiplier` si moltiplicano tutti i consumi (opzione EPANET *Demand Multiplier*), solo per esperimenti di sensibilità: con ×3 la rete esce dai criteri di progetto (perdite di carico ben oltre 10 m/km).
 
@@ -269,7 +269,7 @@ python -m waterfibersim run scenario_paths/S2_street_downhill.yaml --out out/S2
 python -m waterfibersim instrument scenario_paths/S1_street_flat.yaml --out out/S1
 ```
 
-Dalle manopole dell'interrogatore nello scenario calcola, senza ancora simulare il rumore, quanto sbaglierà lo strumento. Modello di Soto & Thévenaz 2013 (`docs/fonti.md`, [ST13]):
+Dalle manopole dell'interrogatore nello scenario calcola, senza ancora simulare il rumore, quanto sbaglierà lo strumento. Modello di Soto & Thévenaz 2013 (`docs/A-fonti.md`, [ST13]):
 
 ```
 incertezza sul picco   σ_ν = (1/SNR) · √( 3·δ·Δν_B / (8√2·(1−η)^{3/2}) )      [ST13] Eq. 7  (η = 0,5: √(¾·δ·Δν_B)/SNR)
@@ -381,11 +381,11 @@ Posa MATRIS decisa: elica annegata nella guaina, ritorno annegato nella stessa g
 
 ### Cosa il simulatore non fa ancora
 
-Il **profilo a riposo** c'è già: ogni metro ha la sua frequenza a tubo vuoto (elica da +105 a +180 MHz, tratto libero +65 MHz, come in Bertulessi 2023 Fig. 7a; forma casuale, `--seed`: continua lungo un'elica avvolta senza interruzioni, con un salto solo dove la posa riparte, cioè dopo un cavo o dove cambia il tubo; ipotesi, vedi `docs/fonti.md`), e la misura di base lo cancella. Per il resto il segnale è **ideale**: la frequenza segue la pressione in modo esatto e proporzionale. È la **verità** (le etichette). Quello che riceverà chi elabora i dati (L0) sarà questa verità con i disturbi reali, aggiunti uno alla volta:
+Il **profilo a riposo** c'è già: ogni metro ha la sua frequenza a tubo vuoto (elica da +105 a +180 MHz, tratto libero +65 MHz, come in Bertulessi 2023 Fig. 7a; forma casuale, `--seed`: continua lungo un'elica avvolta senza interruzioni, con un salto solo dove la posa riparte, cioè dopo un cavo o dove cambia il tubo; ipotesi, vedi `docs/A-fonti.md`), e la misura di base lo cancella. Per il resto il segnale è **ideale**: la frequenza segue la pressione in modo esatto e proporzionale. È la **verità** (le etichette). Quello che riceverà chi elabora i dati (L0) sarà questa verità con i disturbi reali, aggiunti uno alla volta:
 
 | Cosa manca | Effetto sul segnale | Quando | Fonte |
 |---|---|---|---|
-| rumore dello strumento | ogni misura sbaglia; ±0,5 MHz è solo **indicativo** (da 0,1 a 2 MHz secondo strumento, lunghezza e tempo di media) | incertezza attesa (passo 3a) e rumore sullo spettro (passo 3b): **fatti** | Bertulessi 2023: *"better than 0.5 °C/10 µε"*; schede OZ Optics e Prysmian DITEST (vedi `docs/fonti.md`) |
+| rumore dello strumento | ogni misura sbaglia; ±0,5 MHz è solo **indicativo** (da 0,1 a 2 MHz secondo strumento, lunghezza e tempo di media) | incertezza attesa (passo 3a) e rumore sullo spettro (passo 3b): **fatti** | Bertulessi 2023: *"better than 0.5 °C/10 µε"*; schede OZ Optics e Prysmian DITEST (vedi `docs/A-fonti.md`) |
 | spettro invece del valore | si riceve la curva intera, il picco va trovato | **fatto** (passo 3b) | Bertulessi 2023 §2.1, Fig. 7b; Soto & Thévenaz 2013 |
 | risoluzione spaziale | lo strumento media su circa 2 m: i passaggi tra tubi si sfumano | **fatto** (passo 3b) | Bertulessi 2023: 20 ns, *"equivalent to a 2 m spatial resolution"* |
 | temperatura dell'acqua | l'acqua che scorre può portare la temperatura del serbatoio, insieme ai consumi | dopo il terreno (T2/T3 fatti) | Agudelo-Vera et al. 2017; Stewart & Bilgin 2020 |

@@ -1,6 +1,6 @@
 """Temperatura del terreno lungo le fibre (passo T2): solo il terreno, l'acqua arriverà dopo.
 
-Fonti (docs/fonti.md, sezione "Temperatura"):
+Fonti (docs/A-fonti.md, sezione "Temperatura"):
   - il tratto libero sente solo la temperatura: C_T = 1 MHz/°C                                   [B23] Eq. 1
   - l'elica la sente anche attraverso la dilatazione del tubo: sensibilità complessiva
     `helix_mhz_per_c`, forbice circa 3,5 ([B23] con K_T = 4) - 8 MHz/°C ([SB20], tubo trattenuto) ⚠️

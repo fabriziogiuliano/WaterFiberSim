@@ -1,5 +1,5 @@
 <!-- nav -->
-| [← 10. Validazione](10-validazione.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 11 di 11 · Parte IV — Conclusioni</sub> |   |
+| [← 10. Validazione](10-validazione.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 11 di 11 · Parte IV — Conclusioni</sub> | [Appendice A. Fonti →](A-fonti.md) |
 |:---|:---:|---:|
 <!-- /nav -->
 
@@ -36,6 +36,6 @@
 
 <!-- nav-fondo -->
 
-| [← 10. Validazione](10-validazione.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 11 di 11 · Parte IV — Conclusioni</sub> |   |
+| [← 10. Validazione](10-validazione.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 11 di 11 · Parte IV — Conclusioni</sub> | [Appendice A. Fonti →](A-fonti.md) |
 |:---|:---:|---:|
 <!-- /nav-fondo -->

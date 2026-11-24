@@ -20,8 +20,11 @@ CAPITOLI = [
     ("09-scheda-tecnica.md", "9. Scheda tecnica dei parametri"),
     ("10-validazione.md", "10. Validazione"),
     ("11-risultati-e-questioni-aperte.md", "11. Risultati e questioni aperte"),
+    ("A-fonti.md", "Appendice A. Fonti"),
+    ("B-fibra-ottica-dfos.md", "Appendice B. Approfondimento sulla fibra"),
+    ("C-diario-sessioni.md", "Appendice C. Diario delle sessioni"),
 ]
-APPENDICI = ["fonti.md", "fibra-ottica-dfos.md", "sessione-2026-11-23.md"]
+N_CAPITOLI = 11
 TOP, BOTTOM = ("<!-- nav -->", "<!-- /nav -->"), ("<!-- nav-fondo -->", "<!-- /nav-fondo -->")
 
 
@@ -43,7 +46,12 @@ def _barra(i: int) -> str:
     """Barra a tre colonne: precedente | indice | successivo (tabella markdown, si allinea anche su GitHub)."""
     prev = f"[← {CAPITOLI[i - 1][1]}]({CAPITOLI[i - 1][0]})" if i > 0 else " "
     nxt = f"[{CAPITOLI[i + 1][1]} →]({CAPITOLI[i + 1][0]})" if i < len(CAPITOLI) - 1 else " "
-    mezzo = "**Indice**" if i == 0 else f"[📖 Indice](00-indice.md)<br><sub>capitolo {i} di {len(CAPITOLI) - 1} · {_parte(i)}</sub>"
+    if i == 0:
+        mezzo = "**Indice**"
+    elif i <= N_CAPITOLI:
+        mezzo = f"[📖 Indice](00-indice.md)<br><sub>capitolo {i} di {N_CAPITOLI} · {_parte(i)}</sub>"
+    else:
+        mezzo = "[📖 Indice](00-indice.md)<br><sub>appendici</sub>"
     return f"| {prev} | {mezzo} | {nxt} |\n|:---|:---:|---:|"
 
 
@@ -53,11 +61,7 @@ def main():
         corpo = _strip(p.read_text())
         barra = _barra(i)
         p.write_text(f"{TOP[0]}\n{barra}\n{TOP[1]}\n\n{corpo}\n{BOTTOM[0]}\n\n{barra}\n{BOTTOM[1]}\n")
-    for f in APPENDICI:
-        p = DOCS / f
-        corpo = _strip(p.read_text())
-        p.write_text(f"{TOP[0]}\n| [📖 Indice del libro](00-indice.md) · appendice |\n|:---:|\n{TOP[1]}\n\n{corpo}")
-    print(f"navigazione aggiornata: {len(CAPITOLI)} capitoli, {len(APPENDICI)} appendici")
+    print(f"navigazione aggiornata: {N_CAPITOLI} capitoli e {len(CAPITOLI) - N_CAPITOLI - 1} appendici")
 
 
 if __name__ == "__main__":

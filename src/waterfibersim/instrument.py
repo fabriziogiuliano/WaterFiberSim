@@ -1,6 +1,6 @@
 """Incertezza attesa dello strumento e tempo di misura, dalle manopole dello scenario.
 
-Modello di Soto & Thévenaz, Opt. Express 21, 31347 (2013) [ST13] (vedi docs/fonti.md):
+Modello di Soto & Thévenaz, Opt. Express 21, 31347 (2013) [ST13] (vedi docs/A-fonti.md):
   - incertezza sul picco con fit parabolico dei punti sopra eta * picco, Eq. 7:
         sigma_nu = (1 / SNR) * sqrt(3 * delta * dnu_B / (8 * sqrt(2) * (1 - eta)^(3/2)))
     (eta = 0,5 -> Eq. 8: sigma_nu = (1 / SNR) * sqrt(3/4 * delta * dnu_B));

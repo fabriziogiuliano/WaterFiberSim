@@ -1,9 +1,9 @@
 <!-- nav -->
-| [📖 Indice del libro](00-indice.md) · appendice |
-|:---:|
+| [← Appendice B. Approfondimento sulla fibra](B-fibra-ottica-dfos.md) | [📖 Indice](00-indice.md)<br><sub>appendici</sub> |   |
+|:---|:---:|---:|
 <!-- /nav -->
 
-# Sessione 2026-11-23 — dump di decisioni, ricerca e piano
+# Appendice C — Diario delle sessioni: decisioni, ricerca e piano
 
 Raccolta di tutto ciò che è stato formulato nella sessione di lavoro del 23/11/2026, per riprendere il lavoro in un altro ambiente senza perdere il filo. Le parti sono in ordine logico, non cronologico.
 
@@ -54,7 +54,7 @@ Raccolta di tutto ciò che è stato formulato nella sessione di lavoro del 23/11
 | Commit | Contenuto |
 |---|---|
 | `93a58ad` | README con piano e passo 1; modello 3D Blender (`blender/tubo_fibra.py` + render `.png`); `.gitignore` |
-| `4ca8674` | `docs/fibra-ottica-dfos.md` (documento di contesto) + `docs/img/dfos-interrogatore.drawio.svg` |
+| `4ca8674` | `docs/B-fibra-ottica-dfos.md` (documento di contesto) + `docs/img/dfos-interrogatore.drawio.svg` |
 | (questo file) | dump della sessione |
 
 **Push non ancora fatto.** Il remote è `git@github.com:fabriziogiuliano/WaterFiberSim.git` e la chiave SSH autentica correttamente come `fabriziogiuliano`, ma il push risponde *Repository not found*: il repo su GitHub non esiste ancora (o ha un nome/owner diverso). Da fare: crearlo vuoto e privato su https://github.com/new, poi `git push -u origin main`.
@@ -298,11 +298,11 @@ Ordine di grandezza del grezzo DAS, per ricordare perché si fa edge: 1000 canal
 
 - [x] **Creare il repo su GitHub** e fare il push (fatto dall'utente).
 - [ ] **Materiale del tubo ospite nel caso MATRIS**: decide se la misura di pressione nella guaina ha senso (§4.2). Chiedere a OR2/OR4 anche rigidezza del composito e tipo di produzione della guaina (avvolgimento di filamenti?).
-- [ ] **Riallineare `docs/fibra-ottica-dfos.md`** all'obiettivo pressione/DSS+DTS (oggi è impostato su perdite/DAS). Precisare che Stajanca et al. 2018 riguarda perdite di **gas**.
+- [ ] **Riallineare `docs/B-fibra-ottica-dfos.md`** all'obiettivo pressione/DSS+DTS (oggi è impostato su perdite/DAS). Precisare che Stajanca et al. 2018 riguarda perdite di **gas**.
 - [ ] Schemi del documento in `.drawio.svg`: fatto quello dell'interrogatore; restano il waterfall (§6) e l'architettura DT (§8), da ripensare dopo il riallineamento.
 - [ ] Passo 1: creare `rete/griglia_3x3.inp`, `rete/tubi.yaml`, `fibre/fibra_A.yaml` e il codice della mappa.
 - [x] Decidere il nome del pacchetto Python e la struttura delle cartelle (vedi §13).
-- [ ] Verificare tutti i riferimenti bibliografici prima della tesi: avviato, stato in [fonti.md](fonti.md).
+- [ ] Verificare tutti i riferimenti bibliografici prima della tesi: avviato, stato in [A-fonti.md](A-fonti.md).
 
 ---
 
@@ -360,9 +360,9 @@ Fatto: `rete/griglia_3x3.inp` (P12 ha diametro 78 mm per via della guaina), `ret
 
 ### 13.2 Architettura del sensore (decisa)
 
-- **Una sola fibra ad anello** sull'interrogatore BOTDA: porta A → **tratto a elica incollato** (sente ε + T) → giunzione → **tratto dritto libero in un tubetto** (sente solo T) → porta B. È la stessa architettura di Bertulessi et al. 2023 (fonte [B23] in [fonti.md](fonti.md)).
+- **Una sola fibra ad anello** sull'interrogatore BOTDA: porta A → **tratto a elica incollato** (sente ε + T) → giunzione → **tratto dritto libero in un tubetto** (sente solo T) → porta B. È la stessa architettura di Bertulessi et al. 2023 (fonte [B23] in [A-fonti.md](A-fonti.md)).
 - **Impulsi di interrogazione (pompa)** escono da A. **Luce di lettura (sonda)**, un tono ottico continuo a frequenza laser − Δν (Δν ≈ 10,8 GHz, scelta dal generatore RF), esce da B. **Si legge in A**, tramite il circolatore C2 e il fotodiodo.
-- L'impulso **modula in ampiezza** la luce di lettura, punto per punto: il tempo dà la posizione, l'altezza del gradino in funzione di Δν dà lo spettro. Spiegazione completa in [fibra-ottica-dfos.md §2.1](fibra-ottica-dfos.md#21-come-funziona-la-botda-passo-per-passo).
+- L'impulso **modula in ampiezza** la luce di lettura, punto per punto: il tempo dà la posizione, l'altezza del gradino in funzione di Δν dà lo spettro. Spiegazione completa in [B-fibra-ottica-dfos.md §2.1](B-fibra-ottica-dfos.md#21-come-funziona-la-botda-passo-per-passo).
 - **L0 = P(z, Δν)**: lo spettro di guadagno Brillouin per ogni metro e ogni misura, con rumore. **L1 = picco ν_B(z, t)**.
 - Ogni punto del tubo compare **due volte** nei dati: z₁ sull'elica e z₂ sul tratto dritto. La differenza tra i due separa pressione e temperatura.
 
@@ -424,7 +424,7 @@ I percorsi della fibra sono **scenari** conservati in `scenario_paths/` e usati 
 - la guaina è CIPP con cura ad acqua, vapore o UV;
 - l'OR7 prevede anche tubi nuovi in composito con sensori integrati, cioè senza tubo ospite.
 
-Tre casi per il simulatore: tubo nuovo in composito / relining su ospite flessibile / relining su ospite rigido. Da chiedere: E e spessore del laminato (D1.1), materiali dei tubi ospite dei dimostratori. **In sospeso:** se citare testualmente il Piano (documento interno) in `fonti.md`.
+Tre casi per il simulatore: tubo nuovo in composito / relining su ospite flessibile / relining su ospite rigido. Da chiedere: E e spessore del laminato (D1.1), materiali dei tubi ospite dei dimostratori. **In sospeso:** se citare testualmente il Piano (documento interno) in `A-fonti.md`.
 
 ### 13.4f Figura del segnale, consumi e profilo a riposo
 
@@ -509,9 +509,15 @@ Opzione scartata: ritorno dritto e ancorato (sentirebbe anche la deformazione as
 
 - `blender/tubo_fibra.py` (spaccato 3D) + `blender/schema_sensore.py` → `blender/tubo_fibra.png`: figura con didascalie, fenomeno fisico, fibra "srotolata" e fonti.
 - `docs/img/dfos-interrogatore.drawio.svg`: schema a blocchi BOTDA ad anello, ricavato da [B23] Fig. 2.
-- `docs/fonti.md`: ogni affermazione con fonte, citazione testuale e stato; prodotti commerciali.
+- `docs/A-fonti.md`: ogni affermazione con fonte, citazione testuale e stato; prodotti commerciali.
 - `docs/papers/sensors-23-06205-v2.pdf`: [B23], licenza CC BY.
 
 ### 13.6 Prossimo passo
 
 Passo 3b e compensazione sul dato rumoroso fatti (§13.4l, §13.4m). Prossimo: temperatura dell'acqua che segue i consumi.
+
+<!-- nav-fondo -->
+
+| [← Appendice B. Approfondimento sulla fibra](B-fibra-ottica-dfos.md) | [📖 Indice](00-indice.md)<br><sub>appendici</sub> |   |
+|:---|:---:|---:|
+<!-- /nav-fondo -->

@@ -1,4 +1,4 @@
-"""Numeri di riferimento della meccanica (docs/fonti.md)."""
+"""Numeri di riferimento della meccanica (docs/A-fonti.md)."""
 
 import math
 
@@ -19,7 +19,7 @@ def pipe(**kw):
 
 def test_pe_dn110_one_bar():
     eps_t, eps_z = wall_strain_ue(pipe(), 0.1)          # 1 bar = 0,1 MPa
-    assert float(eps_t) == pytest.approx(309, abs=1)    # fonti.md: ~309 µε
+    assert float(eps_t) == pytest.approx(309, abs=1)    # A-fonti.md: ~309 µε
     assert float(eps_z) == pytest.approx(39, abs=1)
     eps_f = helix_strain_ue(eps_t, eps_z, 70)
     assert float(eps_f) == pytest.approx(277, abs=1)    # ~277 µε

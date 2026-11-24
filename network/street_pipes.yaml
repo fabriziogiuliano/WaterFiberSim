@@ -1,5 +1,5 @@
 # Mechanical parameters of the pipes in network/street_*.inp and network/single_pipe_*.inp (all PE100 SDR11 DN110: only the default).
-# Dimensions: Uponor / Aliaxis PE100 datasheets (EN 12201-2), see docs/fonti.md.
+# Dimensions: Uponor / Aliaxis PE100 datasheets (EN 12201-2), see docs/A-fonti.md.
 
 default:
   material: PE100

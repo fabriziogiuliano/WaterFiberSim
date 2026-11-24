@@ -1,6 +1,6 @@
 """Dalla pressione interna alla deformazione della parete e della fibra.
 
-Fonti (vedi docs/fonti.md):
+Fonti (vedi docs/A-fonti.md):
 - deformazione circonferenziale sulla superficie esterna, tubo a parete spessa (Lamé):
       eps_theta = (2 - nu) * beta^2 / (1 - beta^2) * p / E,    beta = r_interno / r_esterno
   Bertulessi et al., Sensors 23, 6205 (2023), Eq. 4-6;

@@ -42,7 +42,7 @@ Z_FINE = Z_RIT1 + CAVO
 X_P = 40.0                                # punto del tubo dell'esempio
 Z1 = Z_ELICA0 + X_P * K                   # lo stesso punto sull'elica...
 Z2 = Z_RIT0 + (L_TUBO - X_P)              # ...e sul ritorno (percorso al contrario)
-# Fonti: vedi docs/fonti.md. Coefficienti e parametri del PE da Bertulessi et al., Sensors 23, 6205 (2023).
+# Fonti: vedi docs/A-fonti.md. Coefficienti e parametri del PE da Bertulessi et al., Sensors 23, 6205 (2023).
 C_EPS, C_T = 0.05, 1.0                    # MHz/µε, MHz/°C (fibra standard; Bertulessi 2023, Eq. 1)
 E_PE, NU_PE = 1050.0, 0.4                 # MPa, - (Bertulessi 2023, Tab. 2)
 DE_MM, SP_MM = 110.0, 10.0                # tubo dell'esempio: PE DN110, spessore 10 mm
@@ -53,7 +53,7 @@ EPS_THETA = (2 - NU_PE) * BETA**2 / (1 - BETA**2) * P_1BAR / E_PE * 1e6     # µ
 EPS_Z = (1 - 2 * NU_PE) * BETA**2 / (1 - BETA**2) * P_1BAR / E_PE * 1e6     # µε
 S2 = np.sin(np.radians(ALFA)) ** 2
 EPS_1BAR = EPS_THETA * S2 + EPS_Z * (1 - S2)  # µε sentiti dall'elica per 1 bar
-K_T_ELICA = 6.0                           # MHz/°C sull'elica: forbice 3,5-8 dalle fonti, DA CALIBRARE (docs/fonti.md)
+K_T_ELICA = 6.0                           # MHz/°C sull'elica: forbice 3,5-8 dalle fonti, DA CALIBRARE (docs/A-fonti.md)
 
 
 def box(ax, x, y, w, h, colore="#f4f6f9", bordo="#c9ced6"):
@@ -283,7 +283,7 @@ def main():
          f"tra circa 3,5 e 8 MHz/°C (qui {K_T_ELICA:.0f}): va calibrato in opera. Il simulatore fornisce anche i valori VERI "
          "di pressione, temperatura e allungamento.", False),
         ("Fonti: Bertulessi et al., Sensors 23, 6205 (2023), doi:10.3390/s23136205;  Stewart & Bilgin, PPI (2020);  schede tecniche OZ Optics "
-         "DTS0115 e Prysmian DITEST.  Elenco completo e stato di verifica: docs/fonti.md", False),
+         "DTS0115 e Prysmian DITEST.  Elenco completo e stato di verifica: docs/A-fonti.md", False),
     ]
     y = 0.1
     for testo, grassetto in righe:

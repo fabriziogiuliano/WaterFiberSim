@@ -153,7 +153,7 @@ def check_compensation(root: Path) -> Check:
 def liner_experiments() -> list[dict]:
     """MHz per bar sull'elica (70°) per combinazioni tubo ospite / guaina / strato comprimibile.
 
-    Valori dei materiali (vedi docs/fonti.md): PE100 E 1,1 GPa (scheda), ν 0,4 ([B23]); ghisa E 170 GPa, ν 0,26 (⚠️);
+    Valori dei materiali (vedi docs/A-fonti.md): PE100 E 1,1 GPa (scheda), ν 0,4 ([B23]); ghisa E 170 GPa, ν 0,26 (⚠️);
     guaina CIPP in feltro E 1,724 GPa (minimo ASTM F1216), in vetro UV E 10,3 GPa (scheda Vortex, fogna);
     ν della guaina 0,35 e spessore 6 mm ⚠️; strato comprimibile ipotetico.
     """

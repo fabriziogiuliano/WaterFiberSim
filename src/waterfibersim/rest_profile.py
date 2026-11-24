@@ -5,7 +5,7 @@ Sensors 23, 6205 (2023), Fig. 7a (tubo PN16, fibra fissata all'esterno con nastr
   - tratto a elica: da circa +180 a circa +105 MHz rispetto ai cavi (pre-deformazione della posa);
   - tratto libero per la temperatura: circa +65 MHz (l'articolo non dice perché);
   - cavi: 0.
-Ipotesi dichiarate (vedi docs/fonti.md), nessun dato su tubi lunghi:
+Ipotesi dichiarate (vedi docs/A-fonti.md), nessun dato su tubi lunghi:
   - lungo un'elica avvolta senza interruzioni il profilo cambia in modo CONTINUO: valori estratti a caso in
     [105, 180] MHz in punti di controllo ogni REST_KNOT_M metri di fibra, uniti da segmenti;
     i nodi EPANET (rubinetti) non interrompono la posa, quindi non creano salti;
