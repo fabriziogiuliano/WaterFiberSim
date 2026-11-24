@@ -1,4 +1,4 @@
-<p align="center"><img src="docs/img/logo.svg" alt="WaterFiberSim" width="560"></p>
+![WaterFiberSim](docs/img/logo.svg)
 
 # WaterFiberSim
 
