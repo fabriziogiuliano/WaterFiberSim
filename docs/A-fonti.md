@@ -20,21 +20,73 @@ Ultimo aggiornamento: 2026-11-23.
 
 ## Fonti principali
 
-| Sigla | Riferimento | Dove si trova |
-|---|---|---|
-| <a id="b23"></a>**[B23]** | M. Bertulessi, D. F. Bignami, I. Boschini, M. Longoni, G. Menduni, J. Morosi, "Experimental Investigations of Distributed Fiber Optic Sensors for Water Pipeline Monitoring", *Sensors* 23(13), 6205, 2023. DOI [10.3390/s23136205](https://doi.org/10.3390/s23136205). Politecnico di Milano + Cohaerentia S.r.l. Licenza CC BY | [docs/papers/sensors-23-06205-v2.pdf](papers/sensors-23-06205-v2.pdf) |
-| <a id="oz"></a>**[OZ]** | OZ Optics, *Fiber Optic Distributed Strain and Temperature Sensors (DSTS) – BOTDA Module*, scheda tecnica DTS0115, 1 marzo 2025 | <https://www.ozoptics.com/ALLNEW_PDF/DTS0115.pdf> |
-| <a id="dit"></a>**[DIT]** | Prysmian, *DITEST – Distributed Temperature and Strain Interrogator*, scheda tecnica | <https://asean.prysmian.com/sites/asean.prysmian.com/files/media/documents/Prysmian_DITEST.pdf> |
-| <a id="st13"></a>**[ST13]** | M. A. Soto, L. Thévenaz, "Modeling and evaluating the performance of Brillouin distributed optical fiber sensors", *Opt. Express* 21(25), 31347–31366, 2013. DOI [10.1364/OE.21.031347](https://doi.org/10.1364/OE.21.031347). EPFL. Accesso libero | [docs/papers/oe-21-25-31347.pdf](papers/oe-21-25-31347.pdf) |
-| <a id="sb20"></a>**[SB20]** | H. E. Stewart, Ö. Bilgin, *Thermal Stresses in HDPE Water Pipes*, Final Report to the Plastics Pipe Institute (PPI), agosto 2020 | <https://conduitcalc.plasticpipe.org/pdf/ppi-stewart-and-bilgin-thermal-hdpe-final-report.pdf> |
-| <a id="av17"></a>**[AV17]** | C. M. Agudelo-Vera, M. Blokker, H. de Kater, R. Lafort, "Identifying (subsurface) anthropogenic heat sources that influence temperature in the drinking water distribution system", *Drink. Water Eng. Sci.* 10, 83–91, 2017. DOI [10.5194/dwes-10-83-2017](https://doi.org/10.5194/dwes-10-83-2017). Licenza CC BY 3.0 | <https://dwes.copernicus.org/articles/10/83/2017/dwes-10-83-2017.pdf> |
-| <a id="pp814"></a>**[PP814]** | Performance Pipe (Chevron Phillips Chemical), *Technical Note PP 814-TN: Engineering Considerations for Temperature Change* | <https://www.cpchem.com/sites/default/files/2020-04/PP%20814-TN%20Thermal%20Effects.pdf> |
-| <a id="bl24"></a>**[BL24]** | E. J. M. Blokker, Q. Pan, K. van Laarhoven, "Validation of an Enhanced Drinking Water Temperature Model during Distribution", *Water* 16(19), 2796, 2024. DOI [10.3390/w16192796](https://doi.org/10.3390/w16192796). KWR / TU Delft. Licenza CC BY | [docs/papers/water-16-02796-v2.pdf](papers/water-16-02796-v2.pdf) (copia anche in [TU Delft](https://repository.tudelft.nl/file/File_f998b505-03bc-484a-8e61-77a60e311b3f)) |
-| <a id="ci24"></a>**[CI24]** | C. Cincotta, M. Blokker, C. Bragalli, Z. Kapelan, "Spatial Analysis of Water Temperature in a Drinking Water Distribution System for Climate Change Adaptation", *Eng. Proc.* 69, 127, 2024. DOI [10.3390/engproc2024069127](https://doi.org/10.3390/engproc2024069127). Licenza CC BY | <https://cris.unibo.it/bitstream/11585/987154/1/engproc-69-00127-v2.pdf> |
-| <a id="epa"></a>**[EPA]** | US EPA, *EPANET 2.2 User Manual* (autori e numero di rapporto da riportare dal frontespizio del PDF). Cap. 3 "The Network Model" | <https://epanet-manual.readthedocs.io/en/latest/3_network_model.html> · [PDF EPA](https://www.epa.gov/system/files/documents/2021-07/epanet_users_manual_2.2.0-1.pdf) |
-| <a id="upo"></a>**[UPO]** | Uponor Infra Oy, *PE100 pressure pipes – Technical factsheet*, 09/2020 (cita EN 12201, EN 1555) | <https://brandportal.uponor.com/m/20832399649c7390/original/PE100-2-page-factsheet_EN.pdf> |
-| <a id="alx"></a>**[ALX]** | Aliaxis UK, *GPS PE Blue pipe (PE100) – Product data sheet* (tabella "Pipe dimensions – water applications (BS EN 12201-2)") | <https://www.aliaxis.co.uk/en/downloads/getfile/399950> |
-| <a id="ecl"></a>**[ECL]** | Electrosteel Castings Ltd., pagina prodotto *Ductile Iron Pipes*, tabella "Basic dimension of pipes – Pressure class (as per ISO 2531 and EN 545) and thickness class (as per IS 8329)" (pagina web, non catalogo PDF) | <https://www.electrosteel.com/products/ductile-iron-pipes> |
+Ogni fonte ha un titolo con la sua sigla: i riferimenti nel libro portano qui.
+
+### B23
+
+M. Bertulessi, D. F. Bignami, I. Boschini, M. Longoni, G. Menduni, J. Morosi, "Experimental Investigations of Distributed Fiber Optic Sensors for Water Pipeline Monitoring", *Sensors* 23(13), 6205, 2023. DOI [10.3390/s23136205](https://doi.org/10.3390/s23136205). Politecnico di Milano + Cohaerentia S.r.l. Licenza CC BY  
+Dove si trova: [docs/papers/sensors-23-06205-v2.pdf](papers/sensors-23-06205-v2.pdf)
+
+### OZ
+
+OZ Optics, *Fiber Optic Distributed Strain and Temperature Sensors (DSTS) – BOTDA Module*, scheda tecnica DTS0115, 1 marzo 2025  
+Dove si trova: <https://www.ozoptics.com/ALLNEW_PDF/DTS0115.pdf>
+
+### DIT
+
+Prysmian, *DITEST – Distributed Temperature and Strain Interrogator*, scheda tecnica  
+Dove si trova: <https://asean.prysmian.com/sites/asean.prysmian.com/files/media/documents/Prysmian_DITEST.pdf>
+
+### ST13
+
+M. A. Soto, L. Thévenaz, "Modeling and evaluating the performance of Brillouin distributed optical fiber sensors", *Opt. Express* 21(25), 31347–31366, 2013. DOI [10.1364/OE.21.031347](https://doi.org/10.1364/OE.21.031347). EPFL. Accesso libero  
+Dove si trova: [docs/papers/oe-21-25-31347.pdf](papers/oe-21-25-31347.pdf)
+
+### SB20
+
+H. E. Stewart, Ö. Bilgin, *Thermal Stresses in HDPE Water Pipes*, Final Report to the Plastics Pipe Institute (PPI), agosto 2020  
+Dove si trova: <https://conduitcalc.plasticpipe.org/pdf/ppi-stewart-and-bilgin-thermal-hdpe-final-report.pdf>
+
+### AV17
+
+C. M. Agudelo-Vera, M. Blokker, H. de Kater, R. Lafort, "Identifying (subsurface) anthropogenic heat sources that influence temperature in the drinking water distribution system", *Drink. Water Eng. Sci.* 10, 83–91, 2017. DOI [10.5194/dwes-10-83-2017](https://doi.org/10.5194/dwes-10-83-2017). Licenza CC BY 3.0  
+Dove si trova: <https://dwes.copernicus.org/articles/10/83/2017/dwes-10-83-2017.pdf>
+
+### PP814
+
+Performance Pipe (Chevron Phillips Chemical), *Technical Note PP 814-TN: Engineering Considerations for Temperature Change*  
+Dove si trova: <https://www.cpchem.com/sites/default/files/2020-04/PP%20814-TN%20Thermal%20Effects.pdf>
+
+### BL24
+
+E. J. M. Blokker, Q. Pan, K. van Laarhoven, "Validation of an Enhanced Drinking Water Temperature Model during Distribution", *Water* 16(19), 2796, 2024. DOI [10.3390/w16192796](https://doi.org/10.3390/w16192796). KWR / TU Delft. Licenza CC BY  
+Dove si trova: [docs/papers/water-16-02796-v2.pdf](papers/water-16-02796-v2.pdf) (copia anche in [TU Delft](https://repository.tudelft.nl/file/File_f998b505-03bc-484a-8e61-77a60e311b3f))
+
+### CI24
+
+C. Cincotta, M. Blokker, C. Bragalli, Z. Kapelan, "Spatial Analysis of Water Temperature in a Drinking Water Distribution System for Climate Change Adaptation", *Eng. Proc.* 69, 127, 2024. DOI [10.3390/engproc2024069127](https://doi.org/10.3390/engproc2024069127). Licenza CC BY  
+Dove si trova: <https://cris.unibo.it/bitstream/11585/987154/1/engproc-69-00127-v2.pdf>
+
+### EPA
+
+US EPA, *EPANET 2.2 User Manual* (autori e numero di rapporto da riportare dal frontespizio del PDF). Cap. 3 "The Network Model"  
+Dove si trova: <https://epanet-manual.readthedocs.io/en/latest/3_network_model.html> · [PDF EPA](https://www.epa.gov/system/files/documents/2021-07/epanet_users_manual_2.2.0-1.pdf)
+
+### UPO
+
+Uponor Infra Oy, *PE100 pressure pipes – Technical factsheet*, 09/2020 (cita EN 12201, EN 1555)  
+Dove si trova: <https://brandportal.uponor.com/m/20832399649c7390/original/PE100-2-page-factsheet_EN.pdf>
+
+### ALX
+
+Aliaxis UK, *GPS PE Blue pipe (PE100) – Product data sheet* (tabella "Pipe dimensions – water applications (BS EN 12201-2)")  
+Dove si trova: <https://www.aliaxis.co.uk/en/downloads/getfile/399950>
+
+### ECL
+
+Electrosteel Castings Ltd., pagina prodotto *Ductile Iron Pipes*, tabella "Basic dimension of pipes – Pressure class (as per ISO 2531 and EN 545) and thickness class (as per IS 8329)" (pagina web, non catalogo PDF)  
+Dove si trova: <https://www.electrosteel.com/products/ductile-iron-pipes>
+
 
 [\[B23\]](#b23) è il riferimento più vicino a questo progetto. È un sistema BOTDA su tubi in HDPE con la fibra **avvolta a elica** e un tratto di **ritorno libero per compensare la temperatura**: la stessa architettura disegnata nella figura.
 

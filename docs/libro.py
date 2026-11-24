@@ -56,20 +56,17 @@ def _barra(i: int) -> str:
 
 
 def _sigle(testo_fonti: str) -> list[str]:
-    """Sigle definite nella tabella delle fonti principali dell'appendice A: righe `| **[SIGLA]** |`."""
-    return re.findall(r"^\| (?:<a id=\"[^\"]+\"></a>)?\*\*\[([A-Z0-9]+)\]\*\*", testo_fonti, flags=re.M)
+    """Sigle delle fonti principali: nell'appendice A ognuna ha un titolo `### SIGLA` (ancora valida ovunque)."""
+    i = testo_fonti.index("## Fonti principali")
+    j = testo_fonti.index("\n## ", i + 5)
+    return re.findall(r"^### ([A-Z0-9]+)\s*$", testo_fonti[i:j], flags=re.M)
 
 
 def collega_fonti():
-    """Ogni [SIGLA] nei documenti diventa un link alla sua riga nell'appendice A (con un'ancora per riga)."""
-    fonti = DOCS / "A-fonti.md"
-    testo = fonti.read_text()
-    sigle = _sigle(testo)
-    for sg in sigle:                                     # ancora sulla riga della fonte
-        testo = re.sub(r"^\| \*\*\[" + sg + r"\]\*\*", f'| <a id="{sg.lower()}"></a>**[{sg}]**', testo, flags=re.M)
-    fonti.write_text(testo)
+    """Ogni [SIGLA] nei documenti diventa un link al titolo della sua fonte nell'appendice A."""
+    sigle = _sigle((DOCS / "A-fonti.md").read_text())
     alt = "|".join(sorted(sigle, key=len, reverse=True))
-    pat = re.compile(r"(?<![\[\\*])\[(" + alt + r")\](?!\()")    # non già link, non la definizione in grassetto
+    pat = re.compile(r"(?<![\[\\*])\[(" + alt + r")\](?!\()")    # solo le sigle non già collegate
     files = [DOCS / f for f, _ in CAPITOLI] + [DOCS.parent / "README.md"]
     for p in files:
         t = p.read_text()
