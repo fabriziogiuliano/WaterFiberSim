@@ -20,6 +20,7 @@ Ogni riga confronta un risultato del simulatore con un dato indipendente. Esiti:
 | strumento | passo di campionamento da 125 MS/s; risoluzione da 20 ns | 0.82 m; 2.04 m | 0,8 m; 2 m | [\[B23\]](A-fonti.md#b23) §2.1 | **OK** | con n = 1.468 (⚠️ da scheda della fibra); con n = 1,5 i valori coincidono |
 | dato grezzo | fit parabolico su spettri lorentziani sintetici (SNR 16, δ 1 MHz, 58 MHz) | 0.484 MHz | 0.412 MHz (Eq. 8) | [\[ST13\]](A-fonti.md#st13) Eq. 8 e Appendice | **DIFF** | +17 %: la formula assume una parabola; [\[ST13\]](A-fonti.md#st13): il fattore √(3/4) dipende dalla funzione fittata |
 | temperatura | costante di tempo acqua–terreno, PE DN110 in sabbia, acqua ferma / 0,2 / 0,8 m/s | 2.4 h / 1.3 h / 1.3 h | "minutes to hours" | [\[BL24\]](A-fonti.md#bl24) §1, Eq. 2 | **OK** |  |
+| compensazione | errore di una misura compensata, riferimento mediato su 74 m (S1t) | 0.059 bar (spettri rumorosi + fit) | 0.055 bar (formula di propagazione) | coerenza interna: [\[ST13\]](A-fonti.md#st13) + propagazione degli errori | **OK** | il fit fa circa il 17 % peggio della formula di [\[ST13\]](A-fonti.md#st13): atteso un valore un po' più alto |
 
 ## Esperimenti: la fibra a elica nella guaina (modello a strati)
 
