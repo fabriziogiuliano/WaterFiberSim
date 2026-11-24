@@ -9,8 +9,6 @@
 
 ![Posa della fibra](img/posa_fibra.drawio.svg)
 
-*Schema modificabile in draw.io; si rigenera con `python docs/img/schemi.py`.*
-
 Figura completa con didascalie: [blender/tubo_fibra.png](../blender/tubo_fibra.png).
 
 ## 3.2 Tratti della fibra e grandezze misurate

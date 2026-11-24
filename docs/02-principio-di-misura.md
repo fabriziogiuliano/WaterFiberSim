@@ -49,8 +49,6 @@ Cohaerentia).
 
 ![Interrogatore BOTDA con fibra ad anello: schema a blocchi](img/dfos-interrogatore.drawio.svg)
 
-*Schema modificabile in draw.io.*
-
 | ramo | blocchi | funzione (valori di [\[B23\]](A-fonti.md#b23) §2.1) |
 |---|---|---|
 | sorgente | laser DFB a 1530 nm, accoppiatore 3 dB | un solo laser, diviso nei due rami |

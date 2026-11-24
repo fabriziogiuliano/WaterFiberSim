@@ -19,8 +19,6 @@ rispondere prima di andare in campo.
 
 ![Catena del simulatore](img/catena_simulatore.drawio.svg)
 
-*Schema modificabile in draw.io; si rigenera con `python docs/img/schemi.py`.*
-
 Comandi: `map` (geometria), `run` (segnale vero), `instrument` (incertezza attesa), `measure` (dato grezzo L0),
 `compensate [--measured]` (compensazione), `validate` (campagna di validazione).
 
