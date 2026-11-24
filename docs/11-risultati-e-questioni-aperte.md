@@ -9,7 +9,7 @@
 
 1. **Su tubo in PE la pressione si misura**: circa 13–14 MHz/bar contro 0,4–0,5 MHz di rumore, circa 0,03 bar per
    misura (cap. 5, 6). Le variazioni giornaliere di una rete ben progettata (0,1–0,3 bar) sono visibili.
-2. La catena è coerente con i dati di [B23] e [ST13] entro pochi per cento, fino a 5 bar (cap. 10).
+2. La catena è coerente con i dati di [\[B23\]](A-fonti.md#b23) e [\[ST13\]](A-fonti.md#st13) entro pochi per cento, fino a 5 bar (cap. 10).
 3. La temperatura del terreno e dell'acqua si toglie con il ritorno libero nella stessa guaina; l'errore torna al
    rumore (circa 0,06 bar per misura) **se K è noto** (cap. 7).
 
@@ -32,7 +32,7 @@
 1. Ottenere i dati del laminato MATRIS (OR1) e rifare il cap. 5 con valori veri.
 2. Cercare in letteratura metodi di calibrazione di K in opera.
 3. Perdite d'acqua (effetto su pressione e temperatura).
-4. Contattare il gruppo di [B23] (Politecnico di Milano / Cohaerentia): misure reali sullo stesso schema.
+4. Contattare il gruppo di [\[B23\]](A-fonti.md#b23) (Politecnico di Milano / Cohaerentia): misure reali sullo stesso schema.
 
 <!-- nav-fondo -->
 

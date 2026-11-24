@@ -133,16 +133,16 @@ fibers:
       node: R1
       technique: BOTDA
       channel: 1
-      pulse_width_ns: 20         # pump pulse duration -> spatial resolution c*tau/(2n) ~ 2 m       [B23]
-      adc_sample_rate_msps: 125  # ADC sampling rate   -> sampling interval c/(2n f_s) ~ 0.8 m     [B23]
-      freq_step_mhz: 1           # frequency scan step (delta)                                     [B23] Tab. 1, phase II
-      n_averages: 256            # traces averaged per frequency step (N_AV)                       [B23] Tab. 1
-      scan_window_ghz: [10.75, 11.3]  # must contain every peak (rest profile + pressure + temperature)  [B23] Tab. 1, phase II
-      linewidth_mhz: 58          # Brillouin gain FWHM with a 2 m resolution                       [ST13] §3
-      snr0_db: 0                 # SNR at the fibre input, one trace, at snr0_resolution_m ("realistic")  [ST13] §3
+      pulse_width_ns: 20         # pump pulse duration -> spatial resolution c*tau/(2n) ~ 2 m       [\[B23\]](docs/A-fonti.md#b23)
+      adc_sample_rate_msps: 125  # ADC sampling rate   -> sampling interval c/(2n f_s) ~ 0.8 m     [\[B23\]](docs/A-fonti.md#b23)
+      freq_step_mhz: 1           # frequency scan step (delta)                                     [\[B23\]](docs/A-fonti.md#b23) Tab. 1, phase II
+      n_averages: 256            # traces averaged per frequency step (N_AV)                       [\[B23\]](docs/A-fonti.md#b23) Tab. 1
+      scan_window_ghz: [10.75, 11.3]  # must contain every peak (rest profile + pressure + temperature)  [\[B23\]](docs/A-fonti.md#b23) Tab. 1, phase II
+      linewidth_mhz: 58          # Brillouin gain FWHM with a 2 m resolution                       [\[ST13\]](docs/A-fonti.md#st13) §3
+      snr0_db: 0                 # SNR at the fibre input, one trace, at snr0_resolution_m ("realistic")  [\[ST13\]](docs/A-fonti.md#st13) §3
       snr0_resolution_m: 2
     group_index: 1.468         # fibre group index (v = c/n): TO VERIFY on a datasheet
-    attenuation_db_per_km: 0.2 # fibre loss at 1550 nm (measured 0.211-0.22 dB/km)                       [ST13] §2-3
+    attenuation_db_per_km: 0.2 # fibre loss at 1550 nm (measured 0.211-0.22 dB/km)                       [\[ST13\]](docs/A-fonti.md#st13) §2-3
     calc_step_m: 0.1           # simulator calculation step along the fibre (NOT the instrument sampling)
     sensing_leg:   {layout: helix, angle_deg: 70, bonding: bonded}   # embedded | bonded
     reference_leg: {layout: straight, bonding: loose_tube}
@@ -269,15 +269,15 @@ python -m waterfibersim run scenario_paths/S2_street_downhill.yaml --out out/S2
 python -m waterfibersim instrument scenario_paths/S1_street_flat.yaml --out out/S1
 ```
 
-Dali parametri dell'interrogatore nello scenario calcola, senza ancora simulare il rumore, quanto sbaglierà lo strumento. Modello di Soto & Thévenaz 2013 (`docs/A-fonti.md`, [ST13]):
+Dali parametri dell'interrogatore nello scenario calcola, senza ancora simulare il rumore, quanto sbaglierà lo strumento. Modello di Soto & Thévenaz 2013 (`docs/A-fonti.md`, [\[ST13\]](docs/A-fonti.md#st13)):
 
 ```
-incertezza sul picco   σ_ν = (1/SNR) · √( 3·δ·Δν_B / (8√2·(1−η)^{3/2}) )      [ST13] Eq. 7  (η = 0,5: √(¾·δ·Δν_B)/SNR)
-SNR lungo la fibra     SNR(z) = SNR₀ · (Δz/Δz₀) · √N_AV · e^(−αz)              [ST13] Eq. 9
+incertezza sul picco   σ_ν = (1/SNR) · √( 3·δ·Δν_B / (8√2·(1−η)^{3/2}) )      [\[ST13\]](docs/A-fonti.md#st13) Eq. 7  (η = 0,5: √(¾·δ·Δν_B)/SNR)
+SNR lungo la fibra     SNR(z) = SNR₀ · (Δz/Δz₀) · √N_AV · e^(−αz)              [\[ST13\]](docs/A-fonti.md#st13) Eq. 9
 tempo minimo           passi di frequenza × N_AV × (andata e ritorno sull'anello, 2·L·n/c)
 ```
 
-δ = passo di frequenza, Δν_B = larghezza della campana, N_AV = medie, Δz = risoluzione, α = attenuazione, SNR₀ = 0 dB a 2 m e una traccia (valore "realistico" di [ST13]).
+δ = passo di frequenza, Δν_B = larghezza della campana, N_AV = medie, Δz = risoluzione, α = attenuazione, SNR₀ = 0 dB a 2 m e una traccia (valore "realistico" di [\[ST13\]](docs/A-fonti.md#st13)).
 
 Con le impostazioni di Bertulessi 2023 (20 ns, 1 MHz, 256 medie):
 
@@ -305,10 +305,10 @@ Produce quello che darebbe lo strumento: per ogni misura (di default una all'ora
 
 ```
 punti dello strumento   ogni c/(2·n·f_ADC) ≈ 0,82 m
-ogni punto              media degli spettri locali su c·τ/(2n) ≈ 2 m (finestra centrata)        [B23]
-spettro locale          lorentziana, FWHM 58 MHz, picco normalizzato a 1                        [ST13] Fig. 5
-rumore                  gaussiano, indipendente per frequenza, σ = 1/SNR(z) (SNR dal passo 3a)  [ST13]
-fit di esempio          parabola sui punti entro ±FWHM/2 dalla stima del picco, ricentrata       [ST13]
+ogni punto              media degli spettri locali su c·τ/(2n) ≈ 2 m (finestra centrata)        [\[B23\]](docs/A-fonti.md#b23)
+spettro locale          lorentziana, FWHM 58 MHz, picco normalizzato a 1                        [\[ST13\]](docs/A-fonti.md#st13) Fig. 5
+rumore                  gaussiano, indipendente per frequenza, σ = 1/SNR(z) (SNR dal passo 3a)  [\[ST13\]](docs/A-fonti.md#st13)
+fit di esempio          parabola sui punti entro ±FWHM/2 dalla stima del picco, ricentrata       [\[ST13\]](docs/A-fonti.md#st13)
 ```
 
 File in `out/S1/`: `raw_L0_S1.npz` (L0: 25 × 4831 × 551, circa 130 MB, con etichette), `fit_L1_S1.npz` (picchi stimati), `raw_S1.png`.
@@ -318,7 +318,7 @@ File in `out/S1/`: `raw_L0_S1.npz` (L0: 25 × 4831 × 551, circa 130 MB, con eti
 | elica | 0,50 MHz (≈ 0,035 bar) | 0,43 MHz |
 | riferimento | 0,56 MHz | 0,47 MHz |
 
-- Il fit di esempio fa circa il 17 % peggio della formula (verificato anche su spettri sintetici): la formula assume una parabola, la campana è lorentziana; [ST13] avverte che il fattore numerico dipende dalla forma.
+- Il fit di esempio fa circa il 17 % peggio della formula (verificato anche su spettri sintetici): la formula assume una parabola, la campana è lorentziana; [\[ST13\]](docs/A-fonti.md#st13) avverte che il fattore numerico dipende dalla forma.
 - Dove la finestra di 2 m prende tratti diversi (per esempio elica e riferimento alla giunzione) lo spettro ha più picchi e il fit sbaglia anche di 100 MHz: è un effetto reale della risoluzione, da gestire nell'elaborazione.
 
 ![Dato grezzo L0, scenario S1](docs/img/S1_raw.png)

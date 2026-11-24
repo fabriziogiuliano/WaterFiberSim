@@ -18,7 +18,7 @@ Chi elabora i dati (L1–L3) può così sviluppare e verificare i suoi algoritmi
 
 Follow-up del progetto MATRIS (risanamento delle condotte con guaine polimerizzate in opera), obiettivo OR5
 (*Active Digital Twin*). L'idea: annegare la fibra nella guaina di risanamento, così che il tubo risanato diventi
-anche un sensore (cap. 3). Il riferimento scientifico più vicino è Bertulessi et al. 2023 [B23] (Politecnico di
+anche un sensore (cap. 3). Il riferimento scientifico più vicino è Bertulessi et al. 2023 [\[B23\]](A-fonti.md#b23) (Politecnico di
 Milano, Cohaerentia), che ha provato lo stesso schema su tubi in PE in laboratorio.
 
 ## 1.3 Le domande a cui il simulatore risponde

@@ -55,6 +55,31 @@ def _barra(i: int) -> str:
     return f"| {prev} | {mezzo} | {nxt} |\n|:---|:---:|---:|"
 
 
+def _sigle(testo_fonti: str) -> list[str]:
+    """Sigle definite nella tabella delle fonti principali dell'appendice A: righe `| **[SIGLA]** |`."""
+    return re.findall(r"^\| (?:<a id=\"[^\"]+\"></a>)?\*\*\[([A-Z0-9]+)\]\*\*", testo_fonti, flags=re.M)
+
+
+def collega_fonti():
+    """Ogni [SIGLA] nei documenti diventa un link alla sua riga nell'appendice A (con un'ancora per riga)."""
+    fonti = DOCS / "A-fonti.md"
+    testo = fonti.read_text()
+    sigle = _sigle(testo)
+    for sg in sigle:                                     # ancora sulla riga della fonte
+        testo = re.sub(r"^\| \*\*\[" + sg + r"\]\*\*", f'| <a id="{sg.lower()}"></a>**[{sg}]**', testo, flags=re.M)
+    fonti.write_text(testo)
+    alt = "|".join(sorted(sigle, key=len, reverse=True))
+    pat = re.compile(r"(?<![\[\\*])\[(" + alt + r")\](?!\()")    # non già link, non la definizione in grassetto
+    files = [DOCS / f for f, _ in CAPITOLI] + [DOCS.parent / "README.md"]
+    for p in files:
+        t = p.read_text()
+        dest = "" if p.name == "A-fonti.md" else ("docs/A-fonti.md" if p.name == "README.md" else "A-fonti.md")
+        t2 = pat.sub(lambda m: f"[\\[{m.group(1)}\\]]({dest}#{m.group(1).lower()})", t)
+        if t2 != t:
+            p.write_text(t2)
+    return sigle
+
+
 def main():
     for i, (f, _) in enumerate(CAPITOLI):
         p = DOCS / f
@@ -62,6 +87,7 @@ def main():
         barra = _barra(i)
         p.write_text(f"{TOP[0]}\n{barra}\n{TOP[1]}\n\n{corpo}\n{BOTTOM[0]}\n\n{barra}\n{BOTTOM[1]}\n")
     print(f"navigazione aggiornata: {N_CAPITOLI} capitoli e {len(CAPITOLI) - N_CAPITOLI - 1} appendici")
+    print(f"fonti collegate: {', '.join(collega_fonti())}")
 
 
 if __name__ == "__main__":

@@ -80,6 +80,10 @@ def main(argv=None):
         for r in liner:
             print(f"  {r['mhz_per_bar']:7.2f} MHz/bar  {r['caso']}")
         print(f"written {write_report(checks, liner, Path(a.out))}")
+        libro = Path(a.out).parent / "libro.py"
+        if libro.exists():                       # navigazione del libro e link alle fonti
+            import runpy
+            runpy.run_path(str(libro), run_name="__main__")
 
     if a.cmd == "instrument":
         report_instrument(load_scenario(a.scenario), Path(a.out))

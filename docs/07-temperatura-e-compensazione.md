@@ -7,20 +7,20 @@
 
 ## 7.1 Perché la temperatura è il problema principale
 
-Il ritorno libero sente 1 MHz/°C. L'elica sente anche la **dilatazione del tubo**: tra circa 3,5 ([B23] con K_T) e
-8 MHz/°C ([SB20], tubo trattenuto dal terreno) ⚠️. Quindi **1 °C si legge come 0,25–0,55 bar**.
+Il ritorno libero sente 1 MHz/°C. L'elica sente anche la **dilatazione del tubo**: tra circa 3,5 ([\[B23\]](A-fonti.md#b23) con K_T) e
+8 MHz/°C ([\[SB20\]](A-fonti.md#sb20), tubo trattenuto dal terreno) ⚠️. Quindi **1 °C si legge come 0,25–0,55 bar**.
 
 ## 7.2 Il terreno
 
-- Cambia lentamente: 11–15 °C in 90 giorni alla profondità delle condotte ✅ [SB20].
-- Cambia da punto a punto: fino a 10 °C in città ✅ [AV17] (punti caldi).
+- Cambia lentamente: 11–15 °C in 90 giorni alla profondità delle condotte ✅ [\[SB20\]](A-fonti.md#sb20).
+- Cambia da punto a punto: fino a 10 °C in città ✅ [\[AV17\]](A-fonti.md#av17) (punti caldi).
 - Scenari S1t (raffreddamento uniforme) e S1th (+ punto caldo permanente su P6 e un evento di 3 ore su P3): senza
   compensare, −3,3 bar di errore con 8 °C; punto caldo ed evento sembrano anomalie di pressione. Nel waterfall della
   differenza dalla misura di base il punto caldo è una banda verticale, l'evento un rettangolo.
 
 ## 7.3 L'acqua
 
-L'acqua tende alla temperatura del terreno con una legge esponenziale nel tempo di permanenza ✅ [BL24] Eq. 1–3;
+L'acqua tende alla temperatura del terreno con una legge esponenziale nel tempo di permanenza ✅ [\[BL24\]](A-fonti.md#bl24) Eq. 1–3;
 costante di tempo 1,3–2,4 h nel tubo PE DN110 🧮. Di giorno arriva veloce e "calda" in fondo alla strada, di notte si
 porta al terreno: la temperatura segue i **consumi**. In S1w la variazione giornaliera della pressione letta senza
 compensare ha il **segno sbagliato**.

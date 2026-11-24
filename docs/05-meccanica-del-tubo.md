@@ -7,7 +7,7 @@
 
 ## 5.1 Tubo a un solo strato (Lamé)
 
-La pressione p allarga il tubo. Sulla superficie esterna (dove sta la fibra nella rete di prova) ✅ [B23] Eq. 4–6:
+La pressione p allarga il tubo. Sulla superficie esterna (dove sta la fibra nella rete di prova) ✅ [\[B23\]](A-fonti.md#b23) Eq. 4–6:
 
   ε_θ = (2 − ν) β² / (1 − β²) · p / E,  ε_z = (1 − 2ν) β² / (1 − β²) · p / E  (fondi chiusi),  β = r_int / r_est
 
@@ -48,7 +48,7 @@ circa **7 MHz/bar** (pelle in feltro) o 3 (pelle in vetro) 🧮. Materiale, cree
 
 ## 5.6 Limiti del modello
 
-Elastico: il PE ha creep ✅ [B23] (Burgers). A 5 bar il modello con il rilassamento torna con la misura di [B23]
+Elastico: il PE ha creep ✅ [\[B23\]](A-fonti.md#b23) (Burgers). A 5 bar il modello con il rilassamento torna con la misura di [\[B23\]](A-fonti.md#b23)
 entro il 6 %, a 10 bar sottostima (cap. 10). La temperatura dilata il tubo: cap. 7.
 
 <!-- nav-fondo -->

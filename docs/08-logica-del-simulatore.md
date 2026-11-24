@@ -38,15 +38,15 @@ Comandi: `map` (geometria), `run` (segnale vero), `instrument` (incertezza attes
 | verifica | esito |
 |---|---|
 | idraulica: perdita di carico contro la formula ufficiale di EPANET | coincide |
-| meccanica: spostamento misurato da [B23] a 5 bar (73 MHz) | 69 MHz con il rilassamento del PE, 56 MHz solo elastico |
+| meccanica: spostamento misurato da [\[B23\]](A-fonti.md#b23) a 5 bar (73 MHz) | 69 MHz con il rilassamento del PE, 56 MHz solo elastico |
 | meccanica a 10 bar (200 MHz misurati) | 138 MHz: oltre i 5 bar il PE non è più lineare (creep) |
-| strumento: punto di validazione di [ST13] (0,75 MHz) | 0,76 MHz |
-| strumento con le impostazioni di [B23] (dichiarato < 0,5 MHz) | 0,40 MHz |
+| strumento: punto di validazione di [\[ST13\]](A-fonti.md#st13) (0,75 MHz) | 0,76 MHz |
+| strumento con le impostazioni di [\[B23\]](A-fonti.md#b23) (dichiarato < 0,5 MHz) | 0,40 MHz |
 | tempo di volo: 125 MS/s → 0,8 m; 20 ns → 2 m | 0,82 m; 2,04 m (indice di gruppo da confermare) |
-| fit sugli spettri | +17 % sulla formula: dipende dalla forma della campana, come prevede [ST13] |
+| fit sugli spettri | +17 % sulla formula: dipende dalla forma della campana, come prevede [\[ST13\]](A-fonti.md#st13) |
 | compensazione su dato rumoroso contro formula | 0,059 contro 0,055 bar |
 
-La catena è coerente con le fonti nelle condizioni di [B23] (tubo in PE, pressioni fino a 5 bar). Le due differenze
+La catena è coerente con le fonti nelle condizioni di [\[B23\]](A-fonti.md#b23) (tubo in PE, pressioni fino a 5 bar). Le due differenze
 (creep oltre 5 bar, fattore del fit) sono capite.
 
 ## 5. Cosa abbiamo imparato (risultati scientifici)

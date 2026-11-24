@@ -8,13 +8,13 @@
 ## 4.1 EPANET
 
 L'idraulica è calcolata con EPANET 2.2 (libreria owa-epanet): pressione, carico, portate e velocità ogni 15 minuti.
-EPANET non contiene catalogo di tubi né criteri di progetto ✅ [EPA]; la perdita di carico segue Hazen-Williams, e il
+EPANET non contiene catalogo di tubi né criteri di progetto ✅ [\[EPA\]](A-fonti.md#epa); la perdita di carico segue Hazen-Williams, e il
 simulatore coincide con la formula ufficiale (cap. 10). Lungo un tubo la pressione è lineare tra i nodi.
 
 ## 4.2 Pressione statica e perdita di carico
 
 - **Statica**: senza prelievi la pressione è il dislivello tra il pelo dell'acqua del serbatoio e il punto, circa
-  0,1 bar per metro ✅ [EPA] (carico = quota + altezza di pressione). È relativa all'atmosfera e non dipende dalla quota
+  0,1 bar per metro ✅ [\[EPA\]](A-fonti.md#epa) (carico = quota + altezza di pressione). È relativa all'atmosfera e non dipende dalla quota
   sul mare 🧮.
 - **Perdita di carico**: l'acqua che scorre perde pressione nel verso del flusso; cresce con il quadrato circa della
   portata, quindi nelle ore di punta.
