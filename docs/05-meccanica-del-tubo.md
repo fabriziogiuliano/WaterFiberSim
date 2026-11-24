@@ -44,10 +44,11 @@ un quarto è tolto per vedere dentro:
 1. **tubo ospite**: il tubo esistente; nel modello è lo strato esterno, con il suo modulo elastico (per la ghisa circa
    170 GPa);
 2. **guaina di risanamento**: polimerizzata in opera e aderente al tubo ospite; è lo strato in cui sta la fibra;
-3. **fibra a elica** (andata): annegata nella guaina, a metà spessore nel modello; si allunga con la deformazione
+3. **fibra a elica** (andata, in rosso): annegata nella guaina, a metà spessore nel modello; si allunga con la deformazione
    circonferenziale della guaina e misura quindi la pressione (più la temperatura);
-4. **tubicino con la fibra di riferimento** (ritorno): annegato nella stessa guaina; la fibra al suo interno è libera,
-   non si allunga e misura solo la temperatura (cap. 3 e 7);
+4. **tubicino con la fibra di ritorno**: la stessa fibra (in rosso nella figura, che esce dal tubicino sul davanti)
+   torna indietro dentro un tubicino annegato nella guaina; lì è libera, non si allunga e misura solo la temperatura
+   (cap. 3 e 7);
 5. **acqua in pressione**: la pressione $p$ agisce sulla faccia interna della guaina.
 
 Il modello meccanico segue la stessa sequenza di strati: la pressione si trasmette dalla guaina al tubo ospite, e

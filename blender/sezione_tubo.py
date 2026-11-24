@@ -46,20 +46,20 @@ def costruisci():
     pulisci_scena()
     m_ospite = materiale("tubo ospite", (0.23, 0.24, 0.27), rough=0.55, metal=0.6)
     m_guaina = materiale("guaina", (0.86, 0.62, 0.30), alpha=0.32, rough=0.45)
-    m_acqua = materiale("acqua", (0.45, 0.70, 0.95), alpha=0.6, rough=0.1)
-    m_elica = materiale("fibra a elica", (0.95, 0.25, 0.0), rough=0.35, emissione=0.3)
-    m_tub = materiale("tubicino", (0.97, 0.97, 1.0), alpha=0.1, rough=0.1)
-    m_rif = materiale("fibra di riferimento", (0.02, 0.06, 0.35), rough=0.4)
+    m_acqua = materiale("acqua", (0.45, 0.70, 0.95), alpha=0.18, rough=0.1)
+    m_elica = materiale("fibra", (0.85, 0.03, 0.03), rough=0.3, emissione=0.4)       # una sola fibra: stesso colore
+    m_tub = materiale("tubicino", (0.96, 0.96, 0.98), alpha=0.2, rough=0.15)
+    m_rif = m_elica                                                                  # è la stessa fibra (ritorno)
 
     ospite = tubo("tubo ospite", R_OSPITE, T_OSPITE, 0.0, L_OSPITE, m_ospite)
     guaina = tubo("guaina", R_GUAINA, T_GUAINA, 0.0, L_GUAINA, m_guaina)
     taglia_quarto(ospite, -0.1, L_OSPITE + 0.1)          # spaccato: tolto il quarto verso chi guarda
     taglia_quarto(guaina, -0.1, L_GUAINA + 0.1)
     cilindro_pieno("acqua", R_ACQUA - 0.003, 0.0, L_ACQUA, m_acqua)
-    curva("fibra a elica", elica(0.0, L_GUAINA), 0.03, m_elica)
+    curva("fibra a elica", elica(0.0, L_GUAINA), 0.036, m_elica)
     c = (R_RIF * math.cos(TH_RIF), R_RIF * math.sin(TH_RIF))
     tubo("tubicino", R_TUB, T_TUB, 0.0, L_GUAINA, m_tub, centro=c, vertici=48)
-    curva("fibra di riferimento", [(0.0, c[0], c[1] - 0.008), (L_GUAINA, c[0], c[1] - 0.008)], 0.026, m_rif)
+    curva("fibra di riferimento", [(-0.35, c[0], c[1] - 0.008), (L_GUAINA, c[0], c[1] - 0.006)], 0.02, m_rif)  # esce davanti dal tubicino
 
     # luci e camera
     bpy.ops.object.light_add(type="SUN", location=(0, 0, 6),

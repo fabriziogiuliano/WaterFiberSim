@@ -21,10 +21,11 @@ TESTO, GRIGIO = "#1b1f24", "#5c636a"
 VOCI = [
     ("ospite", (-120, 150), "Tubo ospite", "Il tubo esistente da risanare (per esempio in ghisa)."),
     ("guaina", (60, 170), "Guaina di risanamento", "Polimerizzata in opera dentro il tubo ospite; contiene la fibra."),
-    ("elica", (-150, 150), "Fibra a elica (andata)", "Annegata nella guaina: si allunga quando la pressione dilata il tubo. "
+    ("elica", (-150, 150), "Fibra a elica (andata)", "La fibra, in rosso, è annegata nella guaina: si allunga quando la pressione dilata il tubo. "
                                                     "Sente pressione e temperatura."),
-    ("tubicino", (-60, -170), "Tubicino con la fibra di riferimento (ritorno)",
-     "Annegato nella guaina; la fibra dentro è libera e non viene tirata. Sente solo la temperatura."),
+    ("tubicino", (-60, -170), "Tubicino con la fibra di ritorno",
+     "La stessa fibra torna indietro dentro un tubicino annegato nella guaina: è libera e non viene tirata. "
+     "Sente solo la temperatura (riferimento)."),
     ("acqua", (170, 120), "Acqua in pressione", "Spinge sulle pareti e dilata il tubo."),
 ]
 
