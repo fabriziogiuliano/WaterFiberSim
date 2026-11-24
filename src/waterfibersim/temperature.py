@@ -11,7 +11,8 @@ Modello (ipotesi dichiarate):
   - la misura di base è fatta con il terreno a `baseline_c`; conta solo la variazione da allora:
         dT(z, t) = soil_c - baseline_c + drift_c_per_day * t + punti caldi(z)
   - i punti caldi sono variazioni LOCALI in più dalla misura di base (per esempio sotto il sole d'estate),
-    con rampe di `HOTSPOT_RAMP_M` metri ai bordi (il terreno non ha salti di temperatura);
+    con rampe di `HOTSPOT_RAMP_M` metri ai bordi (il terreno non ha salti di temperatura); con `from_h`/`to_h`
+    diventano EVENTI presenti solo in quell'intervallo di ore (per esempio una fonte di calore temporanea);
   - elica e riferimento sullo stesso tubo, nello stesso punto, hanno la stessa temperatura;
   - cavi e giunzione sono nello stesso terreno (stesso dT di fondo, senza punti caldi).
 
@@ -44,6 +45,7 @@ ALPHA_WATER = 0.14e-6         # diffusività termica [m²/s]
 LAMBDA_WATER = 0.57           # conducibilità termica [W/(m·K)]
 NU_WATER = 1.0e-6             # viscosità cinematica [m²/s] ⚠️ valore di manuale, non da [BL24]
 _HOTSPOT_KEYS = {"pipe", "from_m", "to_m", "delta_c"}
+_HOTSPOT_OPTIONAL = {"from_h", "to_h"}
 
 
 @dataclass(frozen=True)
@@ -52,6 +54,8 @@ class Hotspot:
     from_m: float            # lungo il tubo, dal nodo di inizio dell'.inp
     to_m: float
     delta_c: float           # variazione in più dalla misura di base
+    from_h: float | None = None   # facoltativo: ora di inizio dell'evento (assente = sempre presente)
+    to_h: float | None = None     # facoltativo: ora di fine dell'evento
 
 
 @dataclass(frozen=True)
@@ -82,14 +86,18 @@ def parse_temperature(raw: dict | None, pipes: set[str]) -> SoilTemperature | No
         raise ValueError(f"temperature: missing {sorted(missing)}")
     hs = []
     for i, h in enumerate(raw.get("hotspots") or []):
-        unknown = set(h) - _HOTSPOT_KEYS
-        if unknown or set(h) != _HOTSPOT_KEYS:
-            raise ValueError(f"temperature.hotspots[{i}]: keys must be {sorted(_HOTSPOT_KEYS)}")
+        unknown = set(h) - _HOTSPOT_KEYS - _HOTSPOT_OPTIONAL
+        if unknown or not _HOTSPOT_KEYS <= set(h):
+            raise ValueError(f"temperature.hotspots[{i}]: keys must be {sorted(_HOTSPOT_KEYS)} "
+                             f"(optional {sorted(_HOTSPOT_OPTIONAL)})")
+        if ("from_h" in h) != ("to_h" in h) or ("from_h" in h and not h["from_h"] < h["to_h"]):
+            raise ValueError(f"temperature.hotspots[{i}]: give both from_h and to_h, with from_h < to_h")
         if h["pipe"] not in pipes:
             raise ValueError(f"temperature.hotspots[{i}]: pipe {h['pipe']} not in the network")
         if not h["from_m"] < h["to_m"]:
             raise ValueError(f"temperature.hotspots[{i}]: from_m must be below to_m")
-        hs.append(Hotspot(h["pipe"], float(h["from_m"]), float(h["to_m"]), float(h["delta_c"])))
+        hs.append(Hotspot(h["pipe"], float(h["from_m"]), float(h["to_m"]), float(h["delta_c"]),
+                          float(h["from_h"]) if "from_h" in h else None, float(h["to_h"]) if "to_h" in h else None))
     water = None
     if raw.get("water") is not None:
         w = raw["water"]
@@ -118,14 +126,18 @@ def delta_t_c(temp: SoilTemperature | None, fmap: pd.DataFrame, times_s: np.ndar
     T, Z = len(times_s), len(fmap)
     if temp is None:
         return np.zeros((T, Z))
-    local = np.zeros(Z)
     pipe = fmap["pipe"].to_numpy()
     s = fmap["s_pipe_m"].to_numpy()
+    hours = np.asarray(times_s, dtype=float) / 3600
+    base = temp.soil_c - temp.baseline_c + temp.drift_c_per_day * hours / 24
+    out = np.repeat(base[:, None], Z, axis=1)
     for h in temp.hotspots:
         m = pipe == h.pipe
-        local[m] += _hotspot_profile(s[m], h)
-    base = temp.soil_c - temp.baseline_c + temp.drift_c_per_day * np.asarray(times_s, dtype=float) / 86_400
-    return base[:, None] + local[None, :]
+        prof = np.zeros(Z)
+        prof[m] = _hotspot_profile(s[m], h)
+        on = np.ones(T) if h.from_h is None else ((hours >= h.from_h) & (hours < h.to_h)).astype(float)
+        out += on[:, None] * prof[None, :]          # evento: presente solo tra from_h e to_h
+    return out
 
 
 def heat_rate_per_s(pipe, velocity_m_s: float, w: WaterTemperature) -> float:

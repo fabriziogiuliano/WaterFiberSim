@@ -174,8 +174,8 @@ def plot_true_signal(sig, path: str | Path, fiber_id: str | None = None) -> Path
     h = sig.times_s / 3600
     z = f["z_m"].to_numpy()
 
-    fig = plt.figure(figsize=(15, 20), dpi=100)
-    gs = fig.add_gridspec(4, 1, height_ratios=[1, 1, 1.6, 1.1], hspace=0.6, top=0.94)
+    fig = plt.figure(figsize=(15, 26), dpi=100)
+    gs = fig.add_gridspec(5, 1, height_ratios=[1, 1, 1.6, 1.6, 1.1], hspace=0.6, top=0.95)
     consumi = "" if sig.demand_multiplier == 1 else f", consumi \u00d7{sig.demand_multiplier:g}"
     temp_txt = ("con la temperatura del terreno, NON compensata" if np.any(sig.delta_t_c != 0)
                 else "temperatura costante")
@@ -270,8 +270,24 @@ def plot_true_signal(sig, path: str | Path, fiber_id: str | None = None) -> Path
     ax.set_title(f"Grafico 2 \u2014 differenza rispetto alla misura di base: \u0394\u03bd_B = \u03bd_B \u2212 \u03bd_B a vuoto. "
                  f"\nFibra a elica sui tubi in PE {medio} in media; riferimento e cavi " + ("solo temperatura" if con_temp else "0"), fontsize=11, loc="left", pad=16)
 
-    # grafico 3: variazione rispetto alla media del giorno
+    # grafico 3: waterfall della differenza dalla misura di base (tutto: pressione, temperatura, eventi)
     ax = fig.add_subplot(gs[2])
+    im = ax.imshow(dnu, aspect="auto", origin="lower", cmap="viridis",
+                   extent=[z[0], z[-1], h[0], h[-1] + (h[1] - h[0])])
+    cb = fig.colorbar(im, ax=ax, label="\u0394\u03bd_B = \u03bd_B \u2212 misura di base [MHz]", pad=0.25,
+                      location="bottom", shrink=0.4, aspect=40)
+    cbs = cb.ax.secondary_xaxis("top", functions=(lambda m: m / mhz_per_bar, lambda b: b * mhz_per_bar))
+    cbs.set_xlabel(f"[bar] (sull'elica: 1 bar = {k_txt} MHz)" + (", APPARENTE" if con_temp else ""), color="#2b8a3e",
+                   fontsize=9)
+    cbs.tick_params(colors="#2b8a3e", labelsize=8)
+    bande(ax)
+    ax.set_ylabel("ora del giorno [h]")
+    ax.set_xlabel("z = distanza lungo la fibra dalla porta A [m]")
+    ax.set_title("Grafico 3 \u2014 waterfall: tempo \u00d7 posizione della differenza dalla misura di base (tutto quello "
+                 "che è cambiato dalla misura di base: pressione, temperatura, eventi)", fontsize=11, loc="left", pad=16)
+
+    # grafico 4: variazione rispetto alla media del giorno
+    ax = fig.add_subplot(gs[3])
     var = dnu - dnu.mean(axis=0)
     v = np.abs(var).max()
     im = ax.imshow(var, aspect="auto", origin="lower", cmap="RdBu_r", vmin=-v, vmax=v,
@@ -284,8 +300,8 @@ def plot_true_signal(sig, path: str | Path, fiber_id: str | None = None) -> Path
     bande(ax)
     ax.set_ylabel("ora del giorno [h]")
     ax.set_xlabel("z = distanza lungo la fibra dalla porta A [m]")
-    ax.set_title("Grafico 3 \u2014 tempo \u00d7 posizione: VARIAZIONE nella giornata (rosso = pressione più alta della media); "
-                 "sigle arancioni = elica, blu = riferimento", fontsize=11, loc="left", pad=16)
+    ax.set_title("Grafico 4 \u2014 tempo \u00d7 posizione: VARIAZIONE nella giornata, cioè meno la media del giorno di ogni "
+                 "punto (ciò che è costante nel giorno qui sparisce)", fontsize=11, loc="left", pad=16)
 
     def punto(pid, leg):
         m = np.flatnonzero((f["pipe"] == pid).to_numpy() & (f["leg"] == leg).to_numpy())
@@ -296,8 +312,8 @@ def plot_true_signal(sig, path: str | Path, fiber_id: str | None = None) -> Path
     colori = plt.get_cmap("Oranges")(np.linspace(0.45, 0.95, len(tubi)))
     punti = {pid: punto(pid, "sensing") for pid in tubi}
 
-    # grafico 4: tutti i tubi nel tempo: Δν_B a metà di ciascun tubo (a destra la pressione in bar)
-    ax = fig.add_subplot(gs[3])
+    # grafico 5: tutti i tubi nel tempo: Δν_B a metà di ciascun tubo (a destra la pressione in bar)
+    ax = fig.add_subplot(gs[4])
     for pid, c in zip(tubi, colori):
         j = punti[pid]
         esc = f"{np.ptp(dnu[:, j]):.1f} MHz = {np.ptp(press[:, j]):.2f} bar".replace(".", ",")
@@ -309,10 +325,10 @@ def plot_true_signal(sig, path: str | Path, fiber_id: str | None = None) -> Path
     ax.set_xlabel("ora del giorno [h]")
     ax.legend(loc="upper center", bbox_to_anchor=(0.5, -0.2), fontsize=9, ncol=2, frameon=False)
     if len(tubi) > 1:
-        t4 = ("Grafico 4 \u2014 nel tempo, fibra a elica a metà di OGNI tubo: segue la pressione; i cali più forti "
+        t4 = ("Grafico 5 \u2014 nel tempo, fibra a elica a metà di OGNI tubo: segue la pressione; i cali più forti "
               "sono nei tubi più lontani dal serbatoio (si somma la perdita di carico dei tubi a monte)")
     else:
-        t4 = "Grafico 4 \u2014 nel tempo, fibra a elica a metà del tubo: segue la pressione (cala quando si preleva)"
+        t4 = "Grafico 5 \u2014 nel tempo, fibra a elica a metà del tubo: segue la pressione (cala quando si preleva)"
     ax.set_title(t4, fontsize=11, loc="left")
 
     path = Path(path)

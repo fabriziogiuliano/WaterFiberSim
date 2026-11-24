@@ -15,6 +15,8 @@ temperature:                 # soil only (water temperature: later). Values: see
     # position, length and +3 °C CHOSEN to show the effect; only the order of magnitude is sourced:
     # up to ~7 °C warmer hotspots, ~10 °C between locations at 1 m depth in a city            [AV17]
     - {pipe: P6, from_m: 20, to_m: 60, delta_c: 3}
+    # EVENT with a time window (CHOSEN to show it in the waterfall): +4 °C on P3 from 14:00 to 17:00 only
+    - {pipe: P3, from_m: 30, to_m: 70, delta_c: 4, from_h: 14, to_h: 17}
 
 fibers:
   - id: S1th

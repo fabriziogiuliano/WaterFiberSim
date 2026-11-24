@@ -73,7 +73,7 @@ Tutte entrano nell'incertezza di una misura attraverso il modello di Soto & Thé
 - **Se lo cambi.** σ ∝ 1/SNR₀ e ∝ √Δν_B. Con questi valori il modello dà 0,40 MHz per le impostazioni di [B23], che
   dichiara meno di 0,5 MHz ✅ (cap. 10).
 - **Da sapere.** [B23] dichiara SNR > 40 dB, che con [ST13] darebbe incertezze 500 volte più piccole: definizioni
-  diverse ⚠️. Questo parametro va **tarata sullo strumento vero**, il giorno che lo si sceglie.
+  diverse ⚠️. Questo parametro va **tarato sullo strumento vero**, il giorno che lo si sceglie.
 
 ### 9.1.6 Fibra: `attenuation_db_per_km`, `group_index`, `calc_step_m`
 
@@ -142,8 +142,11 @@ Entrano nella deformazione della fibra (cap. 5): Lamé (uno o più strati) e ε_
 
 - **Valore.** S1t: 18 → 10 °C, −0,15 °C/giorno ✅ [SB20] (11–15 °C in 90 giorni); punti caldi fino a 7–10 °C ✅ [AV17],
   posizione e ampiezza ⚠️ scelte. `delta_c` può essere positivo o negativo.
-- **Effetto.** ΔT dalla misura di base, uguale per elica e ritorno nello stesso punto. Il punto caldo è costante nel
-  giorno: si vede nella differenza dalla misura di base, non nella variazione giornaliera.
+- **Eventi.** Un punto caldo può avere un orario (`from_h`, `to_h`): allora è un **evento**, presente solo in quelle ore
+  (in S1th: +4 °C su P3 dalle 14 alle 17, scelto per mostrare l'effetto).
+- **Effetto.** ΔT dalla misura di base, uguale per elica e ritorno nello stesso punto. Nel waterfall della differenza
+  dalla misura di base (grafico 3 della figura del segnale) un punto caldo permanente è una banda verticale, un evento
+  un rettangolo; nella variazione giornaliera (grafico 4) il punto caldo permanente sparisce, l'evento resta.
 
 ### 9.3.3 Acqua: `water.source_c`, `soil_k_w_mk`, `pipe_k_w_mk`, `tsoi`
 

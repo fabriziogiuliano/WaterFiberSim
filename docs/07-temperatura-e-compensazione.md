@@ -14,8 +14,9 @@ Il ritorno libero sente 1 MHz/°C. L'elica sente anche la **dilatazione del tubo
 
 - Cambia lentamente: 11–15 °C in 90 giorni alla profondità delle condotte ✅ [SB20].
 - Cambia da punto a punto: fino a 10 °C in città ✅ [AV17] (punti caldi).
-- Scenari S1t (raffreddamento uniforme) e S1th (+ punto caldo): senza compensare, −3,3 bar di errore con 8 °C; il
-  punto caldo sembra un'anomalia di pressione.
+- Scenari S1t (raffreddamento uniforme) e S1th (+ punto caldo permanente su P6 e un evento di 3 ore su P3): senza
+  compensare, −3,3 bar di errore con 8 °C; punto caldo ed evento sembrano anomalie di pressione. Nel waterfall della
+  differenza dalla misura di base il punto caldo è una banda verticale, l'evento un rettangolo.
 
 ## 7.3 L'acqua
 
