@@ -10,7 +10,7 @@ from pathlib import Path
 
 from .fiber import load_scenario
 from .fibermap import build_map, fiber_length_m
-from .plot import plot_compensation, plot_map, plot_true_signal, plot_uncertainty
+from .plot import plot_compensation, plot_map, plot_raw, plot_true_signal, plot_uncertainty
 from .simulate import simulate_true
 
 
@@ -35,6 +35,12 @@ def main(argv=None):
     c.add_argument("scenario")
     c.add_argument("--out", default="out")
     c.add_argument("--hour", type=int, default=8)
+    ms = sub.add_parser("measure", help="raw data L0: noisy Brillouin spectra of the instrument + example fit (3b)")
+    ms.add_argument("scenario")
+    ms.add_argument("--out", default="out")
+    ms.add_argument("--hours", type=float, default=24)
+    ms.add_argument("--every-min", type=float, default=60, help="one instrument measurement every N minutes")
+    ms.add_argument("--seed", type=int, default=0)
     a = ap.parse_args(argv)
 
     if a.cmd == "map":
@@ -56,6 +62,9 @@ def main(argv=None):
 
     if a.cmd == "compensate":
         report_compensation(load_scenario(a.scenario), Path(a.out), a.hour)
+
+    if a.cmd == "measure":
+        report_measure(load_scenario(a.scenario), Path(a.out), a.hours, a.every_min, a.seed)
 
     if a.cmd == "run":
         sc = load_scenario(a.scenario)
@@ -145,6 +154,39 @@ def report_compensation(sc, out: Path, hour: int) -> None:
             print(f"  random error, one measurement, reference averaged over {L:5.0f} m: {float(tot):.3f} bar "
                   f"(helix {hel:.3f}, temperature {float(th):.3f})")
         png = plot_compensation(sc, sig, f, out / f"compensation_{f.id}.png", hour)
+        print(f"  written {png}")
+
+
+def report_measure(sc, out: Path, hours: float, every_min: float, seed: int) -> None:
+    import numpy as np
+
+    from .instrument import helix_mhz_per_bar
+    from .measure import fit_peak_mhz, simulate_raw
+
+    sig = simulate_true(sc, duration_s=int(hours * 3600), seed=seed)
+    for f in sc.fibers:
+        print(describe_instrument(f))
+        raw = simulate_raw(sig, f, every_min, seed)
+        path = raw.save(out)
+        fw = f.interrogator.linewidth_mhz
+        nu = fit_peak_mhz(raw.spectra, raw.freq_mhz, fw)
+        nu_b = fit_peak_mhz(raw.baseline_spectra, raw.freq_mhz, fw)
+        np.savez_compressed(out / f"fit_L1_{f.id}.npz", z_m=raw.z_m, times_s=raw.times_s, nu_fit_mhz=nu,
+                            baseline_fit_mhz=nu_b)
+        leg = raw.points["leg"].to_numpy()
+        uni = np.abs(raw.nu_true_mean - raw.nu_true_center) < 0.05      # punti lontani dai cambi di tratto
+        err = nu - raw.nu_true_mean
+        T, Z, F = raw.spectra.shape
+        print(f"  L0: {T} measurements x {Z} points x {F} frequencies -> {path} ({path.stat().st_size / 1e6:.0f} MB)")
+        for L in ("sensing", "reference", "lead"):
+            m = (leg == L)[None, :] & uni
+            if m.any():
+                print(f"  fit error on {L:9s} (uniform stretches): std {np.nanstd(err[m]):.3f} MHz, "
+                      f"mean {np.nanmean(err[m]):+.3f}; expected [ST13] {raw.sigma_expected_mhz[leg == L].mean():.3f} MHz")
+        print(f"  largest errors where the 2 m window mixes different stretches: max |{np.nanmax(abs(err)):.1f}| MHz; "
+              f"failed fits: {int(np.isnan(nu).sum())}")
+        k = float(np.nanmean(list(helix_mhz_per_bar(sc, f, sig.coef).values())))
+        png = plot_raw(raw, nu, nu_b, fw, out / f"raw_{f.id}.png", k)
         print(f"  written {png}")
 
 

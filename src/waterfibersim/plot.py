@@ -8,6 +8,7 @@ import matplotlib
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 
 from .fiber import Scenario
@@ -438,4 +439,60 @@ def plot_compensation(scenario: Scenario, sig, fiber, path: str | Path, hour: in
     ax.legend(loc="upper right", fontsize=9)
     ax.set_title("Grafico 3 — errore casuale di UNA misura compensata (differenza dalla misura di base), "
                  "in funzione della media del riferimento ([ST13] + propagazione degli errori)", fontsize=11, loc="left")
+    return _save(fig, path)
+
+
+def plot_raw(raw, nu_fit: np.ndarray, nu_fit_base: np.ndarray, fwhm: float, path: str | Path, k_bar: float) -> Path:
+    """Grafico 1: spettri grezzi di esempio. Grafico 2: picco stimato contro vero. Grafico 3: errore del fit."""
+    import numpy as np
+
+    leg = raw.points["leg"].to_numpy()
+    z = raw.z_m
+    t = min(len(raw.times_s) - 1, int(np.argmin(abs(raw.times_s / 3600 - 8))))
+    fig = plt.figure(figsize=(15, 15), dpi=100)
+    gs = fig.add_gridspec(3, 1, height_ratios=[1.1, 1, 1], hspace=0.5)
+    fig.suptitle(f"Dato grezzo L0 (spettri Brillouin con rumore) e fit di esempio, fibra {raw.fiber_id} (passo 3b)",
+                 fontsize=15, fontweight="bold", x=0.02, ha="left")
+
+    ax = fig.add_subplot(gs[0])
+    sens = np.flatnonzero(leg == "sensing")
+    ref = np.flatnonzero(leg == "reference")
+    j_edge = sens[-1] + 1                          # a cavallo tra elica e giunzione / riferimento: picchi mescolati
+    picks = [(sens[len(sens) // 2], "#ff6a00", "elica, a metà"), (ref[len(ref) // 2], "#1f5fbf", "riferimento, a metà"),
+             (j_edge, "#495057", "a cavallo tra elica e riferimento (la media su 2 m mescola due picchi)")]
+    for j, c, lab in picks:
+        ax.plot(raw.freq_mhz, raw.spectra[t, j], color=c, lw=0.6, alpha=0.8,
+                label=f"{lab}: z = {z[j]:.1f} m, picco stimato {nu_fit[t, j]:.1f} MHz".replace(".", ","))
+        ax.axvline(raw.nu_true_mean[t, j], color=c, lw=1, ls=":")
+    ax.set_xlabel("frequenza della scansione (differenza pompa − sonda) [MHz]")
+    ax.set_ylabel("guadagno normalizzato")
+    ax.legend(loc="upper left", fontsize=8.5)
+    snr = 1 / (raw.sigma_expected_mhz / raw.sigma_expected_mhz.min()).min()
+    ax.set_title(f"Grafico 1 — tre spettri grezzi alle {raw.times_s[t] / 3600:02.0f}:00 (una riga per frequenza: "
+                 f"{len(raw.freq_mhz)} frequenze); linee puntinate = ν_B vera media nella finestra", fontsize=11, loc="left")
+
+    ax = fig.add_subplot(gs[1])
+    ax.plot(z, nu_fit[t], ".", ms=1.5, color="#c92a2a", label="picco stimato dal fit (L1 di esempio)")
+    ax.plot(z, raw.nu_true_mean[t], color="#212529", lw=1, label="ν_B vera, media sulla risoluzione (etichetta)")
+    ax.plot(z, nu_fit_base, ".", ms=1, color="#868e96", label="misura di base stimata (0 bar)")
+    ax.set_xlabel("z = distanza lungo la fibra dalla porta A [m] (un punto ogni campionamento dello strumento)")
+    ax.set_ylabel("ν_B [MHz]")
+    ax.legend(loc="lower left", fontsize=8.5, markerscale=6)
+    ax.set_title("Grafico 2 — frequenza Brillouin stimata dal fit, contro quella vera", fontsize=11, loc="left")
+
+    ax = fig.add_subplot(gs[2])
+    err = nu_fit[t] - raw.nu_true_mean[t]
+    ax.plot(z, err, ".", ms=1.5, color="#c92a2a", label="errore del fit, una misura")
+    ax.plot(z, raw.sigma_expected_mhz, color="#2b8a3e", lw=1.5, label="±σ attesa (Soto & Thévenaz 2013, Eq. 7)")
+    ax.plot(z, -raw.sigma_expected_mhz, color="#2b8a3e", lw=1.5)
+    lim = 6 * raw.sigma_expected_mhz.max()
+    ax.set_ylim(-lim, lim)
+    ax.set_xlabel("z [m]")
+    ax.set_ylabel("errore [MHz]")
+    sec = ax.secondary_yaxis("right", functions=(lambda m: m / k_bar, lambda b: b * k_bar))
+    sec.set_ylabel(f"[bar] sull'elica\n(1 bar = {k_bar:.1f} MHz)".replace(".", ","), color="#2b8a3e", fontsize=9)
+    sec.tick_params(colors="#2b8a3e")
+    ax.legend(loc="lower left", fontsize=8.5, markerscale=6)
+    ax.set_title("Grafico 3 — errore del picco stimato (fit − vero): rumore dentro la banda attesa; fuori banda solo dove "
+                 "la finestra di 2 m mescola tratti diversi", fontsize=11, loc="left")
     return _save(fig, path)

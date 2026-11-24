@@ -130,6 +130,18 @@ Differenza da tenere a mente: in [B23] la fibra è fissata **all'esterno** del t
 | Un afflusso rapido di acqua fredda (1–4 °C) cambia la temperatura del tubo in poco tempo | ✅ | [SB20] §1: *"Additional stress changes can occur because of a rapid influx of cold water … The cold water temperature is between 33 and 40°F (1 and 4°C)"* |
 | Equazione della temperatura del terreno con la profondità (onda annuale smorzata) | ⚠️ non letta | T. Kusuda, P. R. Achenbach, *Earth temperature and thermal diffusivity at selected stations in the United States*, NBS Report 8972, 1965, DOI [10.6028/NBS.RPT.8972](https://doi.org/10.6028/NBS.RPT.8972). PDF oltre 10 MB, non scaricato in automatico |
 
+### Dato grezzo L0 (passo 3b)
+
+| Affermazione | Stato | Fonte e citazione |
+|---|---|---|
+| Lo spettro di guadagno Brillouin locale ha forma lorentziana | ✅ | [ST13] Fig. 5: *"The distribution maps a resonant Lorentzian profile and the peak gain frequency must be determined"* |
+| Ogni punto dello strumento è una media su 2 m di fibra: nel simulatore lo spettro è la media degli spettri locali in una finestra centrata | ✅ principio, 🧮 finestra centrata | [B23] §2.1: *"strain and temperature variations are integrated on a spatial interval of 2 m"* |
+| Rumore gaussiano indipendente su ogni frequenza, con σ = 1/SNR sulla curva normalizzata | ✅ | [ST13] Appendice: *"the measured Brillouin traces are affected by additive Gaussian uncorrelated noise"*; §3: σ *"directly representing the inverse of the local SNR"* |
+| Fit di esempio: stima grezza, poi parabola ai minimi quadrati sui punti sopra metà picco, ricentrando la finestra | ✅ | [ST13] §3: *"discard all experimental points below a given fraction of the peak value (e.g. 50%)… parabolic fit"*; Appendice: *"an iterative multi-pass fitting procedure can be carried out to adjust recursively the frequency range"* |
+| Con lorentziane, il fit parabolico dà un errore circa il 17 % più grande della formula (0,48 contro 0,41 MHz su spettri sintetici; 0,50 contro 0,43 su S1) | 🧮 | Calcolato dal simulatore. Coerente con [ST13] Appendice: *"Only the numerical factor √(3/4) can be reasonably taken as specific to the type of function fitted"* |
+| Dove la finestra di 2 m prende tratti con frequenze diverse (giunzione, cambi di tratto) lo spettro ha più picchi e il fit può sbagliare di decine di MHz | 🧮 | Calcolato dal simulatore (S1: fino a 117 MHz alla giunzione) |
+| Semplificazioni: ampiezza del guadagno normalizzata (l'attenuazione entra solo nell'SNR), niente polarizzazione, niente svuotamento della pompa, misura istantanea | — | Scelte del simulatore; [ST13] §2: regime di piccolo guadagno senza svuotamento |
+
 ### Compensazione della temperatura (passo T3)
 
 | Affermazione | Stato | Fonte o motivo |

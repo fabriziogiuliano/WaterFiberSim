@@ -291,6 +291,34 @@ Con le impostazioni di Bertulessi 2023 (20 ns, 1 MHz, 256 medie):
 
 ![Incertezza attesa, scenario S1](docs/img/S1_uncertainty.png)
 
+## Passo 3b — dato grezzo L0: spettri con rumore
+
+```bash
+python -m waterfibersim measure scenario_paths/S1_street_flat.yaml --out out/S1 [--every-min 60]
+```
+
+Produce quello che darebbe lo strumento: per ogni misura (di default una all'ora) e ogni punto dello strumento (ogni 0,82 m), lo **spettro Brillouin intero** sulla finestra di scansione (551 frequenze a 1 MHz), con il rumore. Più la misura di base (anch'essa rumorosa), le etichette vere e un **fit di esempio**.
+
+```
+punti dello strumento   ogni c/(2·n·f_ADC) ≈ 0,82 m
+ogni punto              media degli spettri locali su c·τ/(2n) ≈ 2 m (finestra centrata)        [B23]
+spettro locale          lorentziana, FWHM 58 MHz, picco normalizzato a 1                        [ST13] Fig. 5
+rumore                  gaussiano, indipendente per frequenza, σ = 1/SNR(z) (SNR dal passo 3a)  [ST13]
+fit di esempio          parabola sui punti entro ±FWHM/2 dalla stima del picco, ricentrata       [ST13]
+```
+
+File in `out/S1/`: `raw_L0_S1.npz` (L0: 25 × 4831 × 551, circa 130 MB, con etichette), `fit_L1_S1.npz` (picchi stimati), `raw_S1.png`.
+
+| tratto | errore del fit misurato | previsto da Soto & Thévenaz (Eq. 7) |
+|---|---|---|
+| elica | 0,50 MHz (≈ 0,035 bar) | 0,43 MHz |
+| riferimento | 0,56 MHz | 0,47 MHz |
+
+- Il fit di esempio fa circa il 17 % peggio della formula (verificato anche su spettri sintetici): la formula assume una parabola, la campana è lorentziana; [ST13] avverte che il fattore numerico dipende dalla forma.
+- Dove la finestra di 2 m prende tratti diversi (per esempio elica e riferimento alla giunzione) lo spettro ha più picchi e il fit sbaglia anche di 100 MHz: è un effetto reale della risoluzione, da gestire nell'elaborazione.
+
+![Dato grezzo L0, scenario S1](docs/img/S1_raw.png)
+
 ## Temperatura del terreno e compensazione (passi T2 e T3)
 
 **T2 — la temperatura nel segnale.** Uno scenario può avere una sezione `temperature` (facoltativa): terreno alla misura di base e oggi, deriva stagionale, sensibilità dell'elica alla temperatura, variazioni locali (`hotspots`, con `delta_c` positivo o negativo). Il riferimento sente 1 MHz/°C; l'elica sente anche la dilatazione del tubo: **3,5–8 MHz/°C** secondo le fonti (⚠️ da calibrare), contro 14,5 MHz/bar per la pressione. Quindi **1 °C si legge come 0,24–0,55 bar**. Scenari di prova: **S1t** (strada S1, terreno 8 °C più freddo che alla misura di base, uniforme) e **S1th** (in più un punto caldo di +3 °C su P6, scelto per mostrare l'effetto).
@@ -329,9 +357,9 @@ Il **profilo a riposo** c'è già: ogni metro ha la sua frequenza a tubo vuoto (
 
 | Cosa manca | Effetto sul segnale | Quando | Fonte |
 |---|---|---|---|
-| rumore dello strumento | ogni misura sbaglia; ±0,5 MHz è solo **indicativo** (da 0,1 a 2 MHz secondo strumento, lunghezza e tempo di media) | incertezza attesa calcolata (passo 3a, sopra); rumore sullo spettro al passo 3b | Bertulessi 2023: *"better than 0.5 °C/10 µε"*; schede OZ Optics e Prysmian DITEST (vedi `docs/fonti.md`) |
-| spettro invece del valore | si riceve la curva intera, il picco va trovato | passo 3 | Bertulessi 2023 §2.1, Fig. 7b |
-| risoluzione spaziale | lo strumento media su circa 2 m: i passaggi tra tubi si sfumano | passo 3 | Bertulessi 2023: 20 ns, *"equivalent to a 2 m spatial resolution"* |
+| rumore dello strumento | ogni misura sbaglia; ±0,5 MHz è solo **indicativo** (da 0,1 a 2 MHz secondo strumento, lunghezza e tempo di media) | incertezza attesa (passo 3a) e rumore sullo spettro (passo 3b): **fatti** | Bertulessi 2023: *"better than 0.5 °C/10 µε"*; schede OZ Optics e Prysmian DITEST (vedi `docs/fonti.md`) |
+| spettro invece del valore | si riceve la curva intera, il picco va trovato | **fatto** (passo 3b) | Bertulessi 2023 §2.1, Fig. 7b; Soto & Thévenaz 2013 |
+| risoluzione spaziale | lo strumento media su circa 2 m: i passaggi tra tubi si sfumano | **fatto** (passo 3b) | Bertulessi 2023: 20 ns, *"equivalent to a 2 m spatial resolution"* |
 | temperatura dell'acqua | l'acqua che scorre può portare la temperatura del serbatoio, insieme ai consumi | dopo il terreno (T2/T3 fatti) | Agudelo-Vera et al. 2017; Stewart & Bilgin 2020 |
 | creep del PE | la deformazione arriva in ritardo e continua a crescere | più avanti | Bertulessi 2023, modello di Burgers, Fig. 8 |
 | trasferimento alla fibra < 100 % | la fibra sente solo una parte della deformazione | da decidere | ⚠️ oggi ipotesi: 100 % |
