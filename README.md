@@ -1,4 +1,4 @@
-![WaterFiberSim](docs/img/logo.png)
+![WaterFiberSim](docs/img/logo-scuro.png)
 
 # WaterFiberSim
 
