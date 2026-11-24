@@ -1,5 +1,5 @@
 <!-- nav -->
-| [← 5. Meccanica del tubo e della guaina](05-meccanica-del-tubo.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 6 di 12 · Parte II — I modelli</sub> | [7. Temperatura e compensazione →](07-temperatura-e-compensazione.md) |
+| [← 5. Meccanica del tubo e della guaina](05-meccanica-del-tubo.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 6 di 13 · Parte II — I modelli</sub> | [7. Temperatura e compensazione →](07-temperatura-e-compensazione.md) |
 |:---|:---:|---:|
 <!-- /nav -->
 
@@ -66,10 +66,10 @@ tratti diversi (giunzione, cavi) gli spettri hanno più picchi e il fit sbaglia:
 Tempo minimo di una misura: passi × medie × andata e ritorno sull'anello, 3–6 s (calcolo nostro); lo strumento reale ha tempi morti
 ([\[B23\]](A-fonti.md#b23): 7–20 s). Molto meno del passo idraulico (15 min).
 
-Parametri: cap. 10, sezione 4. Effetto sulla compensazione: cap. 7.
+Parametri: cap. 10, sezione 4. Effetto sulla compensazione: cap. 7. Esperimenti sullo scenario S1: cap. 12, §12.3–12.4.
 
 <!-- nav-fondo -->
 
-| [← 5. Meccanica del tubo e della guaina](05-meccanica-del-tubo.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 6 di 12 · Parte II — I modelli</sub> | [7. Temperatura e compensazione →](07-temperatura-e-compensazione.md) |
+| [← 5. Meccanica del tubo e della guaina](05-meccanica-del-tubo.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 6 di 13 · Parte II — I modelli</sub> | [7. Temperatura e compensazione →](07-temperatura-e-compensazione.md) |
 |:---|:---:|---:|
 <!-- /nav-fondo -->

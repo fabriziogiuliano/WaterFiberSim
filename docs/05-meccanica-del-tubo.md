@@ -1,5 +1,5 @@
 <!-- nav -->
-| [← 4. Rete idraulica e scenari](04-rete-idraulica-e-scenari.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 5 di 12 · Parte II — I modelli</sub> | [6. Modello dello strumento e dato grezzo →](06-strumento-e-dato-grezzo.md) |
+| [← 4. Rete idraulica e scenari](04-rete-idraulica-e-scenari.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 5 di 13 · Parte II — I modelli</sub> | [6. Modello dello strumento e dato grezzo →](06-strumento-e-dato-grezzo.md) |
 |:---|:---:|---:|
 <!-- /nav -->
 
@@ -77,7 +77,7 @@ perché è incomprimibile: conta la rigidezza **confinata**, non solo il modulo 
 ## 5.5 Strato comprimibile (ipotesi)
 
 Uno strato di 10 mm con rigidezza confinata circa 70 MPa tra una pelle sottile (con la fibra) e la ghisa restituisce
-circa **7 MHz/bar** (pelle in feltro) o 3 (pelle in vetro) (calcolo nostro). Materiale, creep e durata da verificare (cap. 12).
+circa **7 MHz/bar** (pelle in feltro) o 3 (pelle in vetro) (calcolo nostro). Materiale, creep e durata da verificare (cap. 13).
 
 ## 5.6 Limiti del modello
 
@@ -86,6 +86,6 @@ entro il 6 %, a 10 bar sottostima (cap. 11). La temperatura dilata il tubo: cap.
 
 <!-- nav-fondo -->
 
-| [← 4. Rete idraulica e scenari](04-rete-idraulica-e-scenari.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 5 di 12 · Parte II — I modelli</sub> | [6. Modello dello strumento e dato grezzo →](06-strumento-e-dato-grezzo.md) |
+| [← 4. Rete idraulica e scenari](04-rete-idraulica-e-scenari.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 5 di 13 · Parte II — I modelli</sub> | [6. Modello dello strumento e dato grezzo →](06-strumento-e-dato-grezzo.md) |
 |:---|:---:|---:|
 <!-- /nav-fondo -->

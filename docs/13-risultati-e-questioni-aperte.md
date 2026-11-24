@@ -1,9 +1,9 @@
 <!-- nav -->
-| [← 11. Validazione](11-validazione.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 12 di 12 · Parte IV — Conclusioni</sub> | [Appendice A. Fonti →](A-fonti.md) |
+| [← 12. Esperimenti preliminari](12-esperimenti-preliminari.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 13 di 13 · Parte IV — Esperimenti e conclusioni</sub> | [Appendice A. Fonti →](A-fonti.md) |
 |:---|:---:|---:|
 <!-- /nav -->
 
-# 12. Risultati e questioni aperte
+# 13. Risultati e questioni aperte
 
 ## 12.1 Risultati
 
@@ -36,6 +36,6 @@
 
 <!-- nav-fondo -->
 
-| [← 11. Validazione](11-validazione.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 12 di 12 · Parte IV — Conclusioni</sub> | [Appendice A. Fonti →](A-fonti.md) |
+| [← 12. Esperimenti preliminari](12-esperimenti-preliminari.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 13 di 13 · Parte IV — Esperimenti e conclusioni</sub> | [Appendice A. Fonti →](A-fonti.md) |
 |:---|:---:|---:|
 <!-- /nav-fondo -->

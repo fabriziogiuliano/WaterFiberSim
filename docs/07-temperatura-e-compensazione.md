@@ -1,5 +1,5 @@
 <!-- nav -->
-| [← 6. Modello dello strumento e dato grezzo](06-strumento-e-dato-grezzo.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 7 di 12 · Parte II — I modelli</sub> | [8. Guida all'uso →](08-guida-all-uso.md) |
+| [← 6. Modello dello strumento e dato grezzo](06-strumento-e-dato-grezzo.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 7 di 13 · Parte II — I modelli</sub> | [8. Guida all'uso →](08-guida-all-uso.md) |
 |:---|:---:|---:|
 <!-- /nav -->
 
@@ -37,7 +37,7 @@ e si toglie K·$\Delta T$ dall'elica (calcolo nostro). Comandi: `compensate` (se
 | la media sfuma le variazioni locali | fino a 0,58–0,65 bar ai bordi di un punto caldo | media **adattiva** → 0,19–0,22 |
 | rumore della misura di base | uguale in tutte le misure ("congelato") | mediare 10 misure di base → circa 3 volte meno |
 
-Il modello degli errori coincide con il dato rumoroso (0,059 contro 0,055 bar, cap. 11).
+Il modello degli errori coincide con il dato rumoroso (0,059 contro 0,055 bar, cap. 11). Gli esperimenti sugli scenari S1th e S1w, con figure e tabelle, sono nel cap. 12, §12.5–12.6.
 
 ## 7.5 Questioni aperte
 
@@ -46,6 +46,6 @@ rispetto alle ore (calcolo nostro)). Cap. 11.
 
 <!-- nav-fondo -->
 
-| [← 6. Modello dello strumento e dato grezzo](06-strumento-e-dato-grezzo.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 7 di 12 · Parte II — I modelli</sub> | [8. Guida all'uso →](08-guida-all-uso.md) |
+| [← 6. Modello dello strumento e dato grezzo](06-strumento-e-dato-grezzo.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 7 di 13 · Parte II — I modelli</sub> | [8. Guida all'uso →](08-guida-all-uso.md) |
 |:---|:---:|---:|
 <!-- /nav-fondo -->

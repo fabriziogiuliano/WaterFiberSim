@@ -1,5 +1,5 @@
 <!-- nav -->
-| [← 1. Introduzione](01-introduzione.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 2 di 12 · Parte I — Problema e principio di misura</sub> | [3. Configurazione del sensore →](03-il-sensore-sul-tubo.md) |
+| [← 1. Introduzione](01-introduzione.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 2 di 13 · Parte I — Problema e principio di misura</sub> | [3. Configurazione del sensore →](03-il-sensore-sul-tubo.md) |
 |:---|:---:|---:|
 <!-- /nav -->
 
@@ -107,6 +107,6 @@ medie e tempo di misura): per uno strumento scelto, `snr0_db` va tarato sui suoi
 
 <!-- nav-fondo -->
 
-| [← 1. Introduzione](01-introduzione.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 2 di 12 · Parte I — Problema e principio di misura</sub> | [3. Configurazione del sensore →](03-il-sensore-sul-tubo.md) |
+| [← 1. Introduzione](01-introduzione.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 2 di 13 · Parte I — Problema e principio di misura</sub> | [3. Configurazione del sensore →](03-il-sensore-sul-tubo.md) |
 |:---|:---:|---:|
 <!-- /nav-fondo -->

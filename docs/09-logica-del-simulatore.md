@@ -1,5 +1,5 @@
 <!-- nav -->
-| [← 8. Guida all'uso](08-guida-all-uso.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 9 di 12 · Parte III — Simulatore</sub> | [10. Parametri del simulatore →](10-parametri-del-simulatore.md) |
+| [← 8. Guida all'uso](08-guida-all-uso.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 9 di 13 · Parte III — Simulatore</sub> | [10. Parametri del simulatore →](10-parametri-del-simulatore.md) |
 |:---|:---:|---:|
 <!-- /nav -->
 
@@ -77,6 +77,6 @@ rumori dello strumento; transitori (colpo d'ariete, DAS); perdite d'acqua (passo
 
 <!-- nav-fondo -->
 
-| [← 8. Guida all'uso](08-guida-all-uso.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 9 di 12 · Parte III — Simulatore</sub> | [10. Parametri del simulatore →](10-parametri-del-simulatore.md) |
+| [← 8. Guida all'uso](08-guida-all-uso.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 9 di 13 · Parte III — Simulatore</sub> | [10. Parametri del simulatore →](10-parametri-del-simulatore.md) |
 |:---|:---:|---:|
 <!-- /nav-fondo -->

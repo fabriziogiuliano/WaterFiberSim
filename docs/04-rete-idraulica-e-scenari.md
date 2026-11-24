@@ -1,5 +1,5 @@
 <!-- nav -->
-| [← 3. Configurazione del sensore](03-il-sensore-sul-tubo.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 4 di 12 · Parte II — I modelli</sub> | [5. Meccanica del tubo e della guaina →](05-meccanica-del-tubo.md) |
+| [← 3. Configurazione del sensore](03-il-sensore-sul-tubo.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 4 di 13 · Parte II — I modelli</sub> | [5. Meccanica del tubo e della guaina →](05-meccanica-del-tubo.md) |
 |:---|:---:|---:|
 <!-- /nav -->
 
@@ -41,6 +41,6 @@ Tutti i parametri della rete: cap. 10, sezione 1.
 
 <!-- nav-fondo -->
 
-| [← 3. Configurazione del sensore](03-il-sensore-sul-tubo.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 4 di 12 · Parte II — I modelli</sub> | [5. Meccanica del tubo e della guaina →](05-meccanica-del-tubo.md) |
+| [← 3. Configurazione del sensore](03-il-sensore-sul-tubo.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 4 di 13 · Parte II — I modelli</sub> | [5. Meccanica del tubo e della guaina →](05-meccanica-del-tubo.md) |
 |:---|:---:|---:|
 <!-- /nav-fondo -->

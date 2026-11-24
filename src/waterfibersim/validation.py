@@ -197,7 +197,7 @@ def write_report(checks: list[Check], liner: list[dict], path: Path) -> Path:
     L = ["# 11. Validazione del simulatore", "",
          "*Pagina generata da `python -m waterfibersim validate` (poi `python docs/navigazione.py` per la navigazione).*", "",
          "Ogni riga confronta un risultato del simulatore con un dato indipendente. Esiti: **OK** entro la tolleranza; "
-         "**DIFF** differenza capita e spiegata nella nota; **KO** da indagare. Commento e conclusioni nel [capitolo 9](09-logica-del-simulatore.md) e nel [capitolo 12](12-risultati-e-questioni-aperte.md).",
+         "**DIFF** differenza capita e spiegata nella nota; **KO** da indagare. Commento e conclusioni nel [capitolo 9](09-logica-del-simulatore.md) e nel [capitolo 13](13-risultati-e-questioni-aperte.md).",
          "## 11.1 Confronto con riferimenti indipendenti", "", "| area | cosa | simulatore | riferimento | fonte | esito | nota |", "|---|---|---|---|---|---|---|"]
     for c in checks:
         L.append(f"| {c.area} | {c.cosa} | {c.nostro} | {c.riferimento} | {c.fonte} | **{c.esito}** | {c.nota} |")

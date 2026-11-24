@@ -33,8 +33,9 @@ parametri, le verifiche e i risultati. Ogni capitolo rimanda agli altri; le font
 10. [Parametri del simulatore](10-parametri-del-simulatore.md)
 11. [Validazione](11-validazione.md)
 
-**Parte IV — Conclusioni**
-12. [Risultati e questioni aperte](12-risultati-e-questioni-aperte.md)
+**Parte IV — Esperimenti e conclusioni**
+12. [Esperimenti preliminari](12-esperimenti-preliminari.md)
+13. [Risultati e questioni aperte](13-risultati-e-questioni-aperte.md)
 
 **Appendici**
 A. [Fonti e stato di verifica](A-fonti.md) — ogni affermazione con fonte e stato  
@@ -45,7 +46,7 @@ C. [Diario delle sessioni e decisioni](C-diario-sessioni.md) — le decisioni in
 
 - Chi deve **usare** il simulatore: capitolo 8 (guida all'uso), poi i capitoli 4 e 10.
 - Chi vuole capire **la fisica**: capitoli 2, 3, 5, 6, 7.
-- Chi vuole sapere **se funziona**: capitoli 10 e 11.
+- Chi vuole sapere **se funziona**: capitoli 11 (validazione) e 12 (esperimenti preliminari).
 
 Accanto alle affermazioni, nei capitoli: la fonte citata tra parentesi quadre (link all'appendice A); "(calcolo
 nostro)" per i risultati ricavati da noi con formule o con il simulatore; "(da verificare)" per i valori scelti o

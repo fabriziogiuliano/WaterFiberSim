@@ -20,12 +20,13 @@ CAPITOLI = [
     ("09-logica-del-simulatore.md", "9. Logica del simulatore"),
     ("10-parametri-del-simulatore.md", "10. Parametri del simulatore"),
     ("11-validazione.md", "11. Validazione"),
-    ("12-risultati-e-questioni-aperte.md", "12. Risultati e questioni aperte"),
+    ("12-esperimenti-preliminari.md", "12. Esperimenti preliminari"),
+    ("13-risultati-e-questioni-aperte.md", "13. Risultati e questioni aperte"),
     ("A-fonti.md", "Appendice A. Fonti"),
     ("B-fibra-ottica-dfos.md", "Appendice B. Sensori distribuiti in fibra ottica"),
     ("C-diario-sessioni.md", "Appendice C. Diario delle sessioni"),
 ]
-N_CAPITOLI = 12
+N_CAPITOLI = 13
 TOP, BOTTOM = ("<!-- nav -->", "<!-- /nav -->"), ("<!-- nav-fondo -->", "<!-- /nav-fondo -->")
 
 
@@ -36,7 +37,7 @@ def _strip(testo: str) -> str:
 
 
 PARTI = {1: "Parte I — Problema e principio di misura", 4: "Parte II — I modelli", 8: "Parte III — Simulatore",
-         12: "Parte IV — Conclusioni"}
+         12: "Parte IV — Esperimenti e conclusioni"}
 
 
 def _parte(i: int) -> str:

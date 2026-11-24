@@ -1,5 +1,5 @@
 <!-- nav -->
-| [← 10. Parametri del simulatore](10-parametri-del-simulatore.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 11 di 12 · Parte III — Simulatore</sub> | [12. Risultati e questioni aperte →](12-risultati-e-questioni-aperte.md) |
+| [← 10. Parametri del simulatore](10-parametri-del-simulatore.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 11 di 13 · Parte III — Simulatore</sub> | [12. Esperimenti preliminari →](12-esperimenti-preliminari.md) |
 |:---|:---:|---:|
 <!-- /nav -->
 
@@ -7,7 +7,7 @@
 
 *Pagina generata da `python -m waterfibersim validate` (poi `python docs/navigazione.py` per la navigazione).*
 
-Ogni riga confronta un risultato del simulatore con un dato indipendente. Esiti: **OK** entro la tolleranza; **DIFF** differenza capita e spiegata nella nota; **KO** da indagare. Commento e conclusioni nel [capitolo 9](09-logica-del-simulatore.md) e nel [capitolo 12](12-risultati-e-questioni-aperte.md).
+Ogni riga confronta un risultato del simulatore con un dato indipendente. Esiti: **OK** entro la tolleranza; **DIFF** differenza capita e spiegata nella nota; **KO** da indagare. Commento e conclusioni nel [capitolo 9](09-logica-del-simulatore.md) e nel [capitolo 13](13-risultati-e-questioni-aperte.md).
 ## 11.1 Confronto con riferimenti indipendenti
 
 | area | cosa | simulatore | riferimento | fonte | esito | nota |
@@ -43,6 +43,6 @@ Spostamento Brillouin sull'elica a 70° per 1 bar; fibra a metà guaina (o della
 
 <!-- nav-fondo -->
 
-| [← 10. Parametri del simulatore](10-parametri-del-simulatore.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 11 di 12 · Parte III — Simulatore</sub> | [12. Risultati e questioni aperte →](12-risultati-e-questioni-aperte.md) |
+| [← 10. Parametri del simulatore](10-parametri-del-simulatore.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 11 di 13 · Parte III — Simulatore</sub> | [12. Esperimenti preliminari →](12-esperimenti-preliminari.md) |
 |:---|:---:|---:|
 <!-- /nav-fondo -->

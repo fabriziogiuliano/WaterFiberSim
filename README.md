@@ -13,7 +13,7 @@ L'elaborazione dei dati (da L0 alla pressione stimata) è il lavoro di chi usa i
 
 **Documentazione: [indice](docs/00-indice.md).** Per usare il simulatore basta la
 [guida all'uso (cap. 8)](docs/08-guida-all-uso.md). Cosa è dimostrato e quali sono i limiti:
-[validazione (cap. 11)](docs/11-validazione.md) e [risultati e questioni aperte (cap. 12)](docs/12-risultati-e-questioni-aperte.md).
+[validazione (cap. 11)](docs/11-validazione.md), [esperimenti preliminari (cap. 12)](docs/12-esperimenti-preliminari.md) e [risultati e questioni aperte (cap. 13)](docs/13-risultati-e-questioni-aperte.md).
 
 ## Il sistema
 
@@ -60,7 +60,7 @@ Ogni modello è confrontato con un dato indipendente ([cap. 11](docs/11-validazi
 | incertezza sul picco, modello dello strumento | 0,76 MHz | 0,75 MHz misurati (Soto e Thévenaz 2013) |
 | errore di una misura compensata in temperatura | 0,059 bar | 0,055 bar (propagazione degli errori) |
 
-Cosa ne risulta ([cap. 12](docs/12-risultati-e-questioni-aperte.md)):
+Cosa ne risulta ([cap. 13](docs/13-risultati-e-questioni-aperte.md)):
 - **su tubo in PE la pressione si misura**: circa 13–14 MHz/bar contro 0,4–0,5 MHz di rumore, cioè circa 0,03 bar per
   misura (0,06 bar dopo la compensazione della temperatura); le variazioni giornaliere di una rete (0,1–0,3 bar) sono visibili;
 - **la temperatura si toglie** con il ritorno libero nella stessa guaina, se la sensibilità termica dell'elica è

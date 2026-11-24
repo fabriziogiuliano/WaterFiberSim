@@ -1,5 +1,5 @@
 <!-- nav -->
-| [← 2. Principio di misura (BOTDA)](02-principio-di-misura.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 3 di 12 · Parte I — Problema e principio di misura</sub> | [4. Rete idraulica e scenari →](04-rete-idraulica-e-scenari.md) |
+| [← 2. Principio di misura (BOTDA)](02-principio-di-misura.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 3 di 13 · Parte I — Problema e principio di misura</sub> | [4. Rete idraulica e scenari →](04-rete-idraulica-e-scenari.md) |
 |:---|:---:|---:|
 <!-- /nav -->
 
@@ -49,6 +49,6 @@ riparte (cavo, cambio di tubo) (da verificare) ipotesi (appendice A).
 
 <!-- nav-fondo -->
 
-| [← 2. Principio di misura (BOTDA)](02-principio-di-misura.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 3 di 12 · Parte I — Problema e principio di misura</sub> | [4. Rete idraulica e scenari →](04-rete-idraulica-e-scenari.md) |
+| [← 2. Principio di misura (BOTDA)](02-principio-di-misura.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 3 di 13 · Parte I — Problema e principio di misura</sub> | [4. Rete idraulica e scenari →](04-rete-idraulica-e-scenari.md) |
 |:---|:---:|---:|
 <!-- /nav-fondo -->

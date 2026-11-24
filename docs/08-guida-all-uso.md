@@ -1,5 +1,5 @@
 <!-- nav -->
-| [← 7. Temperatura e compensazione](07-temperatura-e-compensazione.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 8 di 12 · Parte III — Simulatore</sub> | [9. Logica del simulatore →](09-logica-del-simulatore.md) |
+| [← 7. Temperatura e compensazione](07-temperatura-e-compensazione.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 8 di 13 · Parte III — Simulatore</sub> | [9. Logica del simulatore →](09-logica-del-simulatore.md) |
 |:---|:---:|---:|
 <!-- /nav -->
 
@@ -271,6 +271,6 @@ Il simulatore controlla gli ingressi e si ferma con un messaggio che indica il p
 
 <!-- nav-fondo -->
 
-| [← 7. Temperatura e compensazione](07-temperatura-e-compensazione.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 8 di 12 · Parte III — Simulatore</sub> | [9. Logica del simulatore →](09-logica-del-simulatore.md) |
+| [← 7. Temperatura e compensazione](07-temperatura-e-compensazione.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 8 di 13 · Parte III — Simulatore</sub> | [9. Logica del simulatore →](09-logica-del-simulatore.md) |
 |:---|:---:|---:|
 <!-- /nav-fondo -->

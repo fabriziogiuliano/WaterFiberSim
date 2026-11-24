@@ -1,5 +1,5 @@
 <!-- nav -->
-| [← 9. Logica del simulatore](09-logica-del-simulatore.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 10 di 12 · Parte III — Simulatore</sub> | [11. Validazione →](11-validazione.md) |
+| [← 9. Logica del simulatore](09-logica-del-simulatore.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 10 di 13 · Parte III — Simulatore</sub> | [11. Validazione →](11-validazione.md) |
 |:---|:---:|---:|
 <!-- /nav -->
 
@@ -136,7 +136,7 @@ $\Delta\nu$ = $C_\varepsilon$ · $\varepsilon$.
 - **Se lo cambi (grafico 1).** 1 °C non compensato vale 0,24–0,55 bar apparenti.
 - **Se è sbagliata (grafico 2).** Errore sistematico = ΔK·$\Delta T$ / (MHz per bar): con 1 MHz/°C di errore e 10 °C dalla misura
   di base, 0,69 bar; con l'escursione stagionale (11–15 °C [\[SB20\]](A-fonti.md#sb20)) anche di più. Non cala con le medie.
-- **Consiglio.** È il parametro più incerto e più pesante: va **calibrato in opera** (metodo da cercare, cap. 12).
+- **Consiglio.** È il parametro più incerto e più pesante: va **calibrato in opera** (metodo da cercare, cap. 13).
 
 ### 10.3.2 Temperatura del terreno: `baseline_c`, `soil_c`, `drift_c_per_day`, `hotspots`
 
@@ -260,6 +260,6 @@ circa 3–6 s per misura (tempi morti esclusi).
 
 <!-- nav-fondo -->
 
-| [← 9. Logica del simulatore](09-logica-del-simulatore.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 10 di 12 · Parte III — Simulatore</sub> | [11. Validazione →](11-validazione.md) |
+| [← 9. Logica del simulatore](09-logica-del-simulatore.md) | [📖 Indice](00-indice.md)<br><sub>capitolo 10 di 13 · Parte III — Simulatore</sub> | [11. Validazione →](11-validazione.md) |
 |:---|:---:|---:|
 <!-- /nav-fondo -->

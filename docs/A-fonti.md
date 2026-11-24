@@ -1,5 +1,5 @@
 <!-- nav -->
-| [← 12. Risultati e questioni aperte](12-risultati-e-questioni-aperte.md) | [📖 Indice](00-indice.md)<br><sub>appendici</sub> | [Appendice B. Sensori distribuiti in fibra ottica →](B-fibra-ottica-dfos.md) |
+| [← 13. Risultati e questioni aperte](13-risultati-e-questioni-aperte.md) | [📖 Indice](00-indice.md)<br><sub>appendici</sub> | [Appendice B. Sensori distribuiti in fibra ottica →](B-fibra-ottica-dfos.md) |
 |:---|:---:|---:|
 <!-- /nav -->
 
@@ -373,6 +373,6 @@ Vengono dal [dump del 2026-11-23](C-diario-sessioni.md) e sono **citate a memori
 
 <!-- nav-fondo -->
 
-| [← 12. Risultati e questioni aperte](12-risultati-e-questioni-aperte.md) | [📖 Indice](00-indice.md)<br><sub>appendici</sub> | [Appendice B. Sensori distribuiti in fibra ottica →](B-fibra-ottica-dfos.md) |
+| [← 13. Risultati e questioni aperte](13-risultati-e-questioni-aperte.md) | [📖 Indice](00-indice.md)<br><sub>appendici</sub> | [Appendice B. Sensori distribuiti in fibra ottica →](B-fibra-ottica-dfos.md) |
 |:---|:---:|---:|
 <!-- /nav-fondo -->
