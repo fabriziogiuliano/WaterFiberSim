@@ -1,3 +1,8 @@
+<!-- nav -->
+| [📖 Indice del libro](00-indice.md) · appendice |
+|:---:|
+<!-- /nav -->
+
 # Sensori distribuiti in fibra ottica su condotte idriche
 
 Questo documento spiega come funziona un sensore distribuito in fibra ottica (DFOS, *Distributed Fibre Optic Sensing*), perché una perdita "si sente" lungo il tubo e come la fibra si inserisce nel Digital Twin dell'OR5 di MATRIS come tecnologia abilitante per un progetto successivo. Serve per capire prima di simulare: il codice verrà dopo, a piccoli passi.

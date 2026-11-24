@@ -46,6 +46,9 @@ def main(argv=None):
     ms.add_argument("--hours", type=float, default=24)
     ms.add_argument("--every-min", type=float, default=60, help="one instrument measurement every N minutes")
     ms.add_argument("--seed", type=int, default=0)
+    va = sub.add_parser("validate", help="validation campaign: every hypothesis against an independent reference")
+    va.add_argument("--out", default="docs/10-validazione.md")
+    va.add_argument("--quick", action="store_true", help="skip the slow check on noisy data")
     a = ap.parse_args(argv)
 
     if a.cmd == "map":
@@ -61,6 +64,15 @@ def main(argv=None):
                   f"(every {f.calc_step_m} m)")
             print(describe_instrument(f))
         print(f"written {csv} and {png}")
+
+    if a.cmd == "validate":
+        from .validation import run_all, write_report
+        checks, liner = run_all(Path.cwd(), with_noise=not a.quick)
+        for c in checks:
+            print(f"  [{c.esito:4s}] {c.area:13s} {c.cosa}: {c.nostro} vs {c.riferimento}")
+        for r in liner:
+            print(f"  {r['mhz_per_bar']:7.2f} MHz/bar  {r['caso']}")
+        print(f"written {write_report(checks, liner, Path(a.out))}")
 
     if a.cmd == "instrument":
         report_instrument(load_scenario(a.scenario), Path(a.out))

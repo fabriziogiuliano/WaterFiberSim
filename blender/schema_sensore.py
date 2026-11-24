@@ -21,7 +21,7 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
-from matplotlib.patches import Circle, FancyArrowPatch, FancyBboxPatch, Rectangle
+from matplotlib.patches import Circle, Ellipse, FancyArrowPatch, FancyBboxPatch, Rectangle
 
 QUI = Path(__file__).parent
 RENDER, INFO, USCITA = QUI / "tubo_fibra_3d.png", QUI / "tubo_fibra_3d.json", QUI / "tubo_fibra.png"
@@ -71,10 +71,14 @@ def riga(fs):
 
 def paragrafo(fig, x, y, n, titolo, testo, larghezza, colore_n=TESTO, fs=13.5, stacco=0.9):
     """Numero tondo + titolo in grassetto + testo a capo dopo `larghezza` caratteri. Ritorna la y successiva."""
-    # numeri a due cifre: niente spazi e carattere più piccolo, così il cerchio resta della stessa misura
-    fig.text(x, y, f" {n} " if n < 10 else f"{n}", fontsize=14 if n < 10 else 11.5, fontweight="bold", color="white",
-             va="top", ha="left", bbox=dict(boxstyle="circle,pad=0.25" if n < 10 else "circle,pad=0.42",
-                                            fc=colore_n, ec="none"))
+    # cerchio disegnato come forma (raggio fisso in pixel), numero centrato: stessa misura per 1 o 2 cifre
+    r_px = 17
+    W, H = fig.get_size_inches() * fig.dpi
+    w, h = 2 * r_px / W, 2 * r_px / H
+    cx, cy = x + w / 2, y - h / 2 + 0.002
+    fig.patches.append(Ellipse((cx, cy), w, h, transform=fig.transFigure, fc=colore_n, ec="none", figure=fig))
+    fig.text(cx, cy, str(n), fontsize=14 if n < 10 else 12, fontweight="bold", color="white", ha="center",
+             va="center")
     fig.text(x + 0.03, y, titolo, fontsize=fs + 2, fontweight="bold", va="top", color=TESTO)
     y -= riga(fs + 2) * 1.15
     righe = []

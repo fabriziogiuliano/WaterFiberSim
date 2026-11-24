@@ -2,6 +2,7 @@
 
 import math
 
+import numpy as np
 import pytest
 
 from waterfibersim.brillouin import brillouin_shift_mhz
@@ -37,9 +38,34 @@ def test_helix_limits():
     assert float(helix_strain_ue(100, 10, 45)) == pytest.approx(55)
 
 
-def test_liner_not_silently_ignored():
-    with pytest.raises(NotImplementedError):
-        wall_strain_ue(pipe(liner=Liner(6, 8)), 0.1)
+def test_multilayer_one_layer_equals_lame():
+    """Un solo strato: il modello a strati coincide con la formula chiusa sulla superficie esterna."""
+    from waterfibersim.mechanics import multilayer_strain_ue, pipe_layers
+
+    p = pipe()
+    layers, r = pipe_layers(p)
+    et, ez = multilayer_strain_ue(layers, 0.1, r)
+    et0, ez0 = wall_strain_ue(p, 0.1)
+    assert float(et) == pytest.approx(float(et0), rel=1e-9)
+    assert float(ez) == pytest.approx(float(ez0), rel=1e-9)
+
+
+def test_multilayer_split_layer_is_neutral():
+    """Lo stesso materiale spezzato in due strati incollati dà lo stesso risultato."""
+    from waterfibersim.mechanics import Layer, multilayer_strain_ue
+
+    one = [Layer(0.045, 0.055, 1.0, 0.4)]
+    two = [Layer(0.045, 0.050, 1.0, 0.4), Layer(0.050, 0.055, 1.0, 0.4)]
+    for r in (0.045, 0.05, 0.055):
+        assert np.allclose(multilayer_strain_ue(one, 0.1, r), multilayer_strain_ue(two, 0.1, r))
+
+
+def test_liner_in_rigid_host_feels_little():
+    """Guaina (8 GPa) dentro ghisa (170 GPa): la fibra nella guaina sente molto meno che su un tubo in PE."""
+    rigid = pipe(outer_diameter_mm=222, wall_thickness_mm=6.3, E_GPa=170, nu=0.26, liner=Liner(6, 8))
+    et, _ = wall_strain_ue(rigid, 0.1)
+    pe, _ = wall_strain_ue(pipe(), 0.1)
+    assert float(et) < 0.05 * float(pe)
 
 
 def test_demand_multiplier_increases_daily_variation():

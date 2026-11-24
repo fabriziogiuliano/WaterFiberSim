@@ -23,7 +23,7 @@ _SI_FLOW_UNITS = {en.LPS, en.LPM, en.MLD, en.CMH, en.CMD, en.CMS}
 
 # chiavi ammesse in pipes.yaml (uguali agli attributi Python)
 _PIPE_KEYS = {"material", "outer_diameter_mm", "wall_thickness_mm", "E_GPa", "nu", "depth_m", "liner"}
-_LINER_KEYS = {"thickness_mm", "E_GPa"}
+_LINER_KEYS = {"thickness_mm", "E_GPa", "nu"}
 
 # tolleranza sul confronto tra diametro interno dal YAML e diametro dell'.inp
 _DIAMETER_TOL_MM = 0.5
@@ -35,6 +35,7 @@ class Liner:
 
     thickness_mm: float
     E_GPa: float
+    nu: float | None = None      # Poisson della guaina; se assente, valore provvisorio in mechanics.py (⚠️)
 
 
 @dataclass(frozen=True)

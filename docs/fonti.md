@@ -1,3 +1,8 @@
+<!-- nav -->
+| [📖 Indice del libro](00-indice.md) · appendice |
+|:---:|
+<!-- /nav -->
+
 # Fonti e stato di verifica
 
 Questo file elenca le affermazioni tecniche usate nel progetto: nella figura [blender/tubo_fibra.png](../blender/tubo_fibra.png), nel README e nei parametri del simulatore. Per ognuna dice da dove viene e se è stata verificata.
@@ -160,6 +165,18 @@ Differenza da tenere a mente: in [B23] la fibra è fissata **all'esterno** del t
 | Nella strada S1 l'acqua impiega circa 20 minuti a percorrere 1 km al picco e ore di notte: di giorno porta gran parte della differenza tra serbatoio e terreno, di notte quasi nulla. La temperatura dell'acqua cambierebbe quindi **insieme ai consumi**, come la pressione | 🧮 | Velocità dal modello idraulico (0,83 m/s al picco all'inizio della strada), costante di tempo sopra |
 | EPANET può simulare una grandezza che tende a un valore limite con legge del primo ordine (reazione con concentrazione limite), forma uguale a [BL24] Eq. 1 | ⚠️ da verificare | Manuale EPANET, reazioni di qualità con *limiting concentration*: da leggere e citare prima di usarlo; [CI24] usa invece EPANET-MSX |
 | Il tubo in PE ha una sua inerzia termica: la parete (10 mm) segue l'acqua con un ritardo; il riferimento libero in un tubetto potrebbe seguire con un ritardo diverso dall'elica | ⚠️ da verificare | Conseguenza fisica; [B23] Eq. 9 introduce K_T *"for considering the thermal inertia of the pipe"*. Diffusività termica del PE da trovare |
+
+### Guaina e modello a strati; validazione
+
+| Affermazione | Stato | Fonte e citazione |
+|---|---|---|
+| Perdita di carico Hazen-Williams: h = A·q^1,852, A = 4,727·C^−1,852·d^−4,871·L (piedi, cfs) | ✅ | [EPA] Tab. 3.1 *"Pipe Headloss Formulas for Full Flow (for headloss in feet and flow rate in cfs)"*. Il simulatore (EPANET) coincide con la formula (`validate`) |
+| Modello a strati (Lamé, strati incollati, fondi chiusi): con uno strato coincide con la formula chiusa | 🧮 | Scienza delle costruzioni; verificato nei test |
+| Guaina CIPP: modulo a flessione minimo 1724 MPa (250 000 psi) | ⚠️ | ASTM F1216 Tab. 1, letto solo nel riassunto di una ricerca (anteprima iteh); da leggere sulla norma |
+| Guaina CIPP in vetro con resina UV: modulo a flessione circa 10 300 MPa (scheda di una guaina per fognature) | ⚠️ | Vortex, *EnviroCure UV* TDS (letta nel riassunto di una ricerca); per acquedotto servono dati del laminato MATRIS |
+| Guaina in ghisa integra: circa 0,4–0,5 MHz/bar sull'elica; in ghisa con rigidezza ridotta a 1/10: 2,5–3,8; in PE: 3–10 | 🧮 | Modello a strati con i valori sopra (`validate`, [cap. 10](10-validazione.md)). **Corregge** il "circa 0,2 MHz/bar" detto prima a voce per P0 |
+| Strato comprimibile di 10 mm con rigidezza confinata circa 70 MPa tra guaina e ghisa: circa 7 MHz/bar (pelle in feltro) o 3 (pelle in vetro) | 🧮, ⚠️ materiale ipotetico | Modello a strati; idea dell'utente |
+| [B23] PN16 a 5 bar: 73 MHz misurati contro 69 MHz del modello con il rilassamento E2; a 10 bar 200 contro 138 | 🧮 | [B23] §3.1 e Tab. 2; il PE oltre i 5 bar non è lineare (creep) |
 
 ### Compensazione della temperatura (passo T3)
 
