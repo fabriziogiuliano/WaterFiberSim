@@ -496,3 +496,42 @@ def plot_raw(raw, nu_fit: np.ndarray, nu_fit_base: np.ndarray, fwhm: float, path
     ax.set_title("Grafico 3 — errore del picco stimato (fit − vero): rumore dentro la banda attesa; fuori banda solo dove "
                  "la finestra di 2 m mescola tratti diversi", fontsize=11, loc="left")
     return _save(fig, path)
+
+
+def plot_compensation_measured(raw, curves: dict, path: str | Path, zoom=None, frozen: dict | None = None) -> Path:
+    """Compensazione sul dato rumoroso. curves: nome -> (pressione stimata (Ti, Zi), colore)."""
+    import numpy as np
+
+    z = raw.z_m
+    t = min(len(raw.times_s) - 1, int(np.argmin(abs(raw.times_s / 3600 - 8))))
+    any_est = next(iter(curves.values()))[0]
+    H = np.flatnonzero(np.isfinite(any_est[t]))
+    n_plots = 3 if frozen else 2
+    fig = plt.figure(figsize=(15, 5 * n_plots), dpi=100)
+    gs = fig.add_gridspec(n_plots, 1, hspace=0.5)
+    fig.suptitle(f"Compensazione della temperatura sul dato misurato (spettri rumorosi), fibra {raw.fiber_id}",
+                 fontsize=15, fontweight="bold", x=0.02, ha="left")
+    for g, (lo, hi, titolo) in enumerate([(z[H].min(), z[H].max(), "tutta l'elica"),
+                                          (zoom or (z[H].min(), z[H].max())) + ("zoom",)]):
+        ax = fig.add_subplot(gs[g])
+        m = H[(z[H] >= lo) & (z[H] <= hi)]
+        for name, (est, c) in curves.items():
+            ax.plot(z[m], est[t, m], ".-" if g else ".", ms=2 if g else 1, lw=0.6, color=c, label=name)
+        ax.plot(z[m], raw.pressure_bar[t, m], color="#212529", lw=2.5, label="pressione vera")
+        ax.set_xlim(lo, hi)
+        ax.set_xlabel("z = distanza lungo la fibra dalla porta A [m] (punti dello strumento sull'elica)")
+        ax.set_ylabel("pressione [bar]")
+        ax.legend(loc="lower left", fontsize=8.5, markerscale=4)
+        ax.set_title(f"Grafico {g + 1} — UNA misura alle {raw.times_s[t] / 3600:02.0f}:00, {titolo}" +
+                     (" (punto caldo)" if g and zoom else ""), fontsize=11, loc="left")
+    if frozen:
+        ax = fig.add_subplot(gs[2])
+        for name, (err_t, c) in frozen.items():
+            ax.plot(z, err_t, ".", ms=1.5, color=c, label=name)
+        ax.axhline(0, color="#212529", lw=1)
+        ax.set_xlabel("z [m]")
+        ax.set_ylabel("errore medio nel tempo [bar]")
+        ax.legend(loc="lower left", fontsize=8.5, markerscale=6)
+        ax.set_title("Grafico 3 — errore MEDIATO su tutte le misure della giornata: quello che resta è il rumore "
+                     "\"congelato\" della misura di base (uguale in ogni misura)", fontsize=11, loc="left")
+    return _save(fig, path)

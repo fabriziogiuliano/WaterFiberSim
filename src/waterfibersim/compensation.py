@@ -114,3 +114,79 @@ def random_error_bar(scenario: Scenario, fiber: Fiber, helix_mhz_per_c: float, r
     helix = math.sqrt(2) * s / k
     thermal = math.sqrt(2) * (helix_mhz_per_c / coef.c_t_mhz_per_c) * s / np.sqrt(n_ref) / k
     return np.sqrt(helix ** 2 + thermal ** 2), helix, thermal
+
+
+# --- sul dato misurato (picchi stimati dagli spettri rumorosi, passo 3b) ------------------------------------------
+
+PRE_MEDIAN_M = 10.0        # ipotesi: mediana su 10 m come valore di confronto del filtro adattivo (robusto al rumore)
+TOL_SIGMAS = 2.0           # ipotesi: soglia del filtro adattivo = 2 deviazioni standard del rumore del riferimento
+
+
+def mixed_window_mask(raw, fiber: Fiber) -> np.ndarray:
+    """True dove la finestra di 2 m del punto tocca un altro tratto (cavo, giunzione, ...): spettri a più picchi."""
+    leg = raw.points["leg"].to_numpy()
+    z = raw.z_m
+    change = np.flatnonzero(leg[1:] != leg[:-1])
+    if len(change) == 0:
+        return np.zeros(len(z), bool)
+    zc = (z[change] + z[change + 1]) / 2
+    return np.min(np.abs(z[:, None] - zc[None, :]), axis=1) < fiber.spatial_resolution_m
+
+
+def noise_sigma_from_data(x: np.ndarray) -> float:
+    """Rumore di una sequenza lungo z stimato dai dati: 1,4826 * mediana(|differenze|) / sqrt(2) (🧮, robusto)."""
+    d = np.diff(x, axis=-1)
+    return float(1.4826 * np.nanmedian(np.abs(d)) / np.sqrt(2))
+
+
+def _average_along(x: np.ndarray, n: int, mode: str, tol: float, n_pre: int) -> np.ndarray:
+    """x: (T, R) lungo z. moving = media mobile; adaptive = media dei vicini entro tol dalla mediana locale (n_pre)."""
+    if n <= 1:
+        return x
+    if mode == "moving":
+        return pd.DataFrame(x.T).rolling(n, center=True, min_periods=1).mean().to_numpy().T
+    if mode != "adaptive":
+        raise ValueError(f"unknown averaging mode {mode!r}")
+    center = pd.DataFrame(x.T).rolling(max(1, n_pre), center=True, min_periods=1).median().to_numpy().T
+    half = n // 2
+    out = np.empty_like(x)
+    for t in range(x.shape[0]):
+        w = np.lib.stride_tricks.sliding_window_view(np.pad(x[t], half, constant_values=np.nan), 2 * half + 1)
+        ok = np.abs(w - center[t][:, None]) <= tol
+        out[t] = np.nansum(np.where(ok, w, 0.0), axis=1) / np.maximum(ok.sum(axis=1), 1)
+    return out
+
+
+def compensate_measured(raw, nu_fit: np.ndarray, nu_base: np.ndarray, scenario: Scenario, fiber: Fiber,
+                        helix_mhz_per_c: float, ref_avg_m: float = 0.0, mode: str = "moving",
+                        tol_sigmas: float = TOL_SIGMAS, pre_m: float = PRE_MEDIAN_M,
+                        coef: BrillouinCoefficients = BrillouinCoefficients()) -> np.ndarray:
+    """Pressione stimata (Ti, Zi) sui punti dell'elica validi (NaN altrove), dai picchi stimati e dalla misura di base.
+
+    Come compensated_pressure_bar, ma sui punti dello strumento: dnu = picco - picco della misura di base;
+    dT dal riferimento (punti validi), mediato secondo `mode`, interpolato tubo per tubo nel punto del tubo.
+    Soglia del filtro adattivo = tol_sigmas * rumore del riferimento stimato dai dati.
+    """
+    P = raw.points
+    leg, pipe, s = P["leg"].to_numpy(), P["pipe"].to_numpy(), P["s_pipe_m"].to_numpy()
+    bad = mixed_window_mask(raw, fiber)
+    dnu = nu_fit - nu_base[None, :]
+    R = np.flatnonzero((leg == "reference") & ~bad)
+    R = R[np.argsort(raw.z_m[R])]
+    H = np.flatnonzero((leg == "sensing") & ~bad)
+    dT = dnu[:, R] / coef.c_t_mhz_per_c
+    n = max(1, int(round(ref_avg_m / fiber.sampling_interval_m))) if ref_avg_m > 0 else 1
+    tol = tol_sigmas * noise_sigma_from_data(dT)
+    dT = _average_along(dT, n, mode, tol, int(round(pre_m / fiber.sampling_interval_m)))
+    k = helix_mhz_per_bar(scenario, fiber, coef)
+    out = np.full(dnu.shape, np.nan)
+    for pid in pd.unique(pipe[H]):
+        h = H[pipe[H] == pid]
+        sel = pipe[R] == pid
+        if not sel.any():
+            continue
+        order = np.argsort(s[R][sel])
+        rs, dTp = s[R][sel][order], dT[:, sel][:, order]
+        dT_h = np.array([np.interp(s[h], rs, dTp[t]) for t in range(dnu.shape[0])])
+        out[:, h] = (dnu[:, h] - helix_mhz_per_c * dT_h) / k[pid]
+    return out

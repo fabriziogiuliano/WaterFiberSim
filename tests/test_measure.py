@@ -38,3 +38,21 @@ def test_raw_shapes_and_no_noise_fit():
     nu = fit_peak_mhz(raw.spectra, raw.freq_mhz, f.interrogator.linewidth_mhz)
     uni = (np.abs(raw.nu_true_mean - raw.nu_true_center) < 0.05) & (leg == "sensing")[None, :]
     assert np.nanstd((nu - raw.nu_true_mean)[uni]) < 1.5 * raw.sigma_expected_mhz.max()
+
+
+def test_compensation_on_measured_data():
+    """S1t (8 °C più freddo, uniforme): compensazione sul dato rumoroso con media mobile di 74 m: errore < 0,1 bar."""
+    from waterfibersim.compensation import compensate_measured
+
+    os.chdir(ROOT)
+    sc = load_scenario(ROOT / "scenario_paths" / "S1t_street_flat_soil.yaml")
+    f = sc.fibers[0]
+    sig = simulate_true(sc, duration_s=2 * 3600, step_s=3600)
+    raw = simulate_raw(sig, f, every_min=60, seed=2)
+    fw = f.interrogator.linewidth_mhz
+    nu = fit_peak_mhz(raw.spectra, raw.freq_mhz, fw)
+    nb = fit_peak_mhz(raw.baseline_spectra, raw.freq_mhz, fw)
+    est = compensate_measured(raw, nu, nb, sc, f, sc.temperature.helix_mhz_per_c, 74, "moving")
+    e = est - raw.pressure_bar
+    assert abs(np.nanmean(e)) < 0.02
+    assert np.nanstd(e) < 0.1

@@ -10,7 +10,7 @@ from pathlib import Path
 
 from .fiber import load_scenario
 from .fibermap import build_map, fiber_length_m
-from .plot import plot_compensation, plot_map, plot_raw, plot_true_signal, plot_uncertainty
+from .plot import plot_compensation, plot_compensation_measured, plot_map, plot_raw, plot_true_signal, plot_uncertainty
 from .simulate import simulate_true
 
 
@@ -35,6 +35,11 @@ def main(argv=None):
     c.add_argument("scenario")
     c.add_argument("--out", default="out")
     c.add_argument("--hour", type=int, default=8)
+    c.add_argument("--measured", action="store_true", help="on the noisy measured data (spectra + fit, step 3b)")
+    c.add_argument("--hours", type=float, default=24)
+    c.add_argument("--every-min", type=float, default=60)
+    c.add_argument("--baseline-repeats", type=int, default=1, help="baseline measurements averaged")
+    c.add_argument("--seed", type=int, default=0)
     ms = sub.add_parser("measure", help="raw data L0: noisy Brillouin spectra of the instrument + example fit (3b)")
     ms.add_argument("scenario")
     ms.add_argument("--out", default="out")
@@ -60,7 +65,10 @@ def main(argv=None):
     if a.cmd == "instrument":
         report_instrument(load_scenario(a.scenario), Path(a.out))
 
-    if a.cmd == "compensate":
+    if a.cmd == "compensate" and a.measured:
+        report_compensation_measured(load_scenario(a.scenario), Path(a.out), a.hours, a.every_min,
+                                     a.baseline_repeats, a.seed)
+    elif a.cmd == "compensate":
         report_compensation(load_scenario(a.scenario), Path(a.out), a.hour)
 
     if a.cmd == "measure":
@@ -187,6 +195,73 @@ def report_measure(sc, out: Path, hours: float, every_min: float, seed: int) -> 
               f"failed fits: {int(np.isnan(nu).sum())}")
         k = float(np.nanmean(list(helix_mhz_per_bar(sc, f, sig.coef).values())))
         png = plot_raw(raw, nu, nu_b, fw, out / f"raw_{f.id}.png", k)
+        print(f"  written {png}")
+
+
+def report_compensation_measured(sc, out: Path, hours: float, every_min: float, repeats: int, seed: int) -> None:
+    import warnings
+
+    import numpy as np
+
+    from .compensation import compensate_measured, mixed_window_mask
+    from .measure import fit_peak_mhz, simulate_raw
+
+    if sc.temperature is None:
+        raise SystemExit("this scenario has no `temperature` section: nothing to compensate")
+    out.mkdir(parents=True, exist_ok=True)
+    sig = simulate_true(sc, duration_s=int(hours * 3600), seed=seed)
+    K = sc.temperature.helix_mhz_per_c
+    for f in sc.fibers:
+        fw = f.interrogator.linewidth_mhz
+        L_eq = (K / sig.coef.c_t_mhz_per_c) ** 2 * f.spatial_resolution_m
+        runs = {}
+        for rep in sorted({repeats, 10}):
+            raw = simulate_raw(sig, f, every_min, seed, baseline_repeats=rep)
+            runs[rep] = (raw, fit_peak_mhz(raw.spectra, raw.freq_mhz, fw), fit_peak_mhz(raw.baseline_spectra, raw.freq_mhz, fw))
+        raw = runs[repeats][0]
+        P = raw.points
+        bad = mixed_window_mask(raw, f)
+        H = np.flatnonzero((P["leg"].to_numpy() == "sensing") & ~bad)
+        hot = np.zeros(len(raw.z_m), bool)
+        for hs in sc.temperature.hotspots:
+            hot |= (P["pipe"].to_numpy() == hs.pipe) & (P["s_pipe_m"].between(hs.from_m - 15, hs.to_m + 15)).to_numpy()
+        far, near = H[~hot[H]], H[hot[H]]
+        strategies = [("point by point", 0.0, "moving"), ("moving 20 m", 20.0, "moving"),
+                      (f"moving {L_eq:.0f} m", L_eq, "moving"), (f"adaptive {L_eq:.0f} m", L_eq, "adaptive")]
+        print(f"fiber {f.id}: {len(raw.times_s)} measurements, helix points used {len(H)} "
+              f"(excluded {int(bad.sum())} points whose 2 m window mixes stretches), K = {K:g} MHz/degC")
+        print(f"  {'strategy':22s} {'baseline':>8s}  {'random (1 sigma)':>16s}  {'frozen (baseline)':>17s}  {'hotspot bias':>12s}")
+        results = {}
+        for rep, (rw, nu, nb) in runs.items():
+            for name, L, mode in strategies:
+                est = compensate_measured(rw, nu, nb, sc, f, K, L, mode)
+                e = est - rw.pressure_bar
+                with warnings.catch_warnings():
+                    warnings.simplefilter("ignore", RuntimeWarning)       # colonne fuori dall'elica: tutte NaN
+                    e_t = np.nanmean(e, axis=0)
+                rand = np.nanstd(e[:, far] - e_t[far])
+                froz = np.nanstd(e_t[far])
+                hb = np.nanmax(abs(e_t[near])) if len(near) else float("nan")
+                print(f"  {name:22s} {'x' + str(rep):>8s}  {rand:13.3f} bar  {froz:14.3f} bar  {hb:9.3f} bar")
+                results[(name, rep)] = (est, e_t)
+        zoom = None
+        if len(near):
+            zoom = (raw.z_m[near].min() - 100, raw.z_m[near].max() + 100)
+        colors = ["#ced4da", "#69db7c", "#2b8a3e", "#1971c2"]
+        it = {"point by point": "punto per punto", "moving": "media mobile", "adaptive": "media adattiva"}
+
+        def ital(n):
+            for a_, b_ in it.items():
+                n = n.replace(a_, b_)
+            return n
+
+        curves = {f"{ital(n)} (misura di base ×{repeats})": (results[(n, repeats)][0], c)
+                  for (n, _, _), c in zip(strategies, colors)}
+        ad = strategies[-1][0]
+        frozen = {f"punto per punto, misura di base ×{repeats}": (results[(strategies[0][0], repeats)][1], "#adb5bd"),
+                  f"{ital(ad)}, misura di base ×{repeats}": (results[(ad, repeats)][1], "#1971c2"),
+                  f"{ital(ad)}, misura di base ×10 (media di 10)": (results[(ad, 10)][1], "#c92a2a")}
+        png = plot_compensation_measured(raw, curves, out / f"compensation_measured_{f.id}.png", zoom, frozen)
         print(f"  written {png}")
 
 

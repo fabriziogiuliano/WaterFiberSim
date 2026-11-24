@@ -351,6 +351,22 @@ temperature:
 
 ![Compensazione, scenario S1th](docs/img/S1th_compensation.png)
 
+### Compensazione sul dato misurato (spettri rumorosi)
+
+`python -m waterfibersim compensate scenario_paths/S1th_street_flat_soil_hotspot.yaml --measured --out out/S1th [--baseline-repeats N]`: stessa compensazione, ma sui picchi stimati dagli spettri rumorosi del passo 3b (picco − picco della misura di base). I punti la cui finestra di 2 m mescola tratti diversi sono esclusi.
+
+| errore sulla pressione [bar], 25 misure, K giusto | casuale, per misura | congelato (base ×1) | congelato (base ×10) | vicino al punto caldo (S1th) |
+|---|---|---|---|---|
+| punto per punto | 0,185 | 0,193 | 0,073 | rumoroso |
+| media mobile 74 m | 0,042 | 0,043 | 0,016 | fino a 0,65 |
+| media adattiva 74 m | 0,050 | 0,049 | 0,018 | fino a 0,22 |
+
+- Il modello del passo T3 è confermato: con la media mobile su 74 m l'errore di una misura è circa 0,06 bar.
+- La media adattiva regge il rumore se il confronto si fa con una **mediana su 10 m** e la soglia è **2 volte il rumore del riferimento stimato dai dati** (⚠️ scelte); con una soglia fissa di 0,5 °C non media quasi nulla.
+- **Il rumore della misura di base è "congelato"**: uguale in tutte le misure successive, non si riduce mediando nel tempo. Rimedio: misura di base come media di più misure (con 10, circa 3 volte meno).
+
+![Compensazione sul dato misurato, scenario S1th](docs/img/S1th_compensation_measured.png)
+
 ### Cosa il simulatore non fa ancora
 
 Il **profilo a riposo** c'è già: ogni metro ha la sua frequenza a tubo vuoto (elica da +105 a +180 MHz, tratto libero +65 MHz, come in Bertulessi 2023 Fig. 7a; forma casuale, `--seed`: continua lungo un'elica avvolta senza interruzioni, con un salto solo dove la posa riparte, cioè dopo un cavo o dove cambia il tubo; ipotesi, vedi `docs/fonti.md`), e la misura di base lo cancella. Per il resto il segnale è **ideale**: la frequenza segue la pressione in modo esatto e proporzionale. È la **verità** (le etichette). Quello che riceverà chi elabora i dati (L0) sarà questa verità con i disturbi reali, aggiunti uno alla volta:

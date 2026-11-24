@@ -11,7 +11,9 @@ Dal segnale vero (calcolato fine, ogni calc_step_m) allo spettro di ogni punto d
   5. rumore: gaussiano, indipendente per ogni frequenza, sigma = 1 / SNR(z)          [ST13] §3 e Appendice:
      "additive Gaussian uncorrelated noise"; "the noise amplitude σ … directly representing the inverse of the
      local SNR". SNR(z) da instrument.snr_linear (medie, risoluzione, attenuazione).
-Misura di base: stessi passi con il segnale a 0 bar e alla temperatura della misura di base, rumore indipendente.
+Misura di base: stessi passi con il segnale a 0 bar e alla temperatura della misura di base, rumore indipendente;
+se si mediano `baseline_repeats` misure di base, il loro rumore cala come 1/sqrt(n) (🧮). ATTENZIONE: il rumore della
+misura di base è lo stesso in tutte le misure successive: non si riduce mediando nel tempo.
 
 Fit di esempio ([ST13] §3): stima grezza del picco (massimo dello spettro lisciato su 5 punti), poi parabola ai
 minimi quadrati sui punti entro ±FWHM/2 dalla stima (equivale a eta = 0,5), nu = -b / (2a); la finestra si
@@ -83,7 +85,8 @@ def _window_spectra(nu_calc: np.ndarray, idx: np.ndarray, half: int, freq: np.nd
     return out
 
 
-def simulate_raw(sig, fiber: Fiber, every_min: float = 60.0, seed: int = 0) -> RawMeasurement:
+def simulate_raw(sig, fiber: Fiber, every_min: float = 60.0, seed: int = 0, baseline_repeats: int = 1) -> RawMeasurement:
+    """baseline_repeats: quante misure di base si mediano (il loro rumore cala come 1/sqrt(n))."""
     i = fiber.interrogator
     f = sig.fiber_map
     calc = np.flatnonzero(f["fiber"].to_numpy() == fiber.id)
@@ -115,7 +118,7 @@ def simulate_raw(sig, fiber: Fiber, every_min: float = 60.0, seed: int = 0) -> R
         nu_m[k] = window_mean(nu)
     base = sig.baseline_mhz[calc]
     base_spectra = _window_spectra(base, idx, half, freq, i.linewidth_mhz) \
-        + rng.normal(size=(len(z_inst), len(freq))) * sigma_noise[:, None]
+        + rng.normal(size=(len(z_inst), len(freq))) * sigma_noise[:, None] / np.sqrt(baseline_repeats)
 
     k_fit = 3 * i.freq_step_mhz * i.linewidth_mhz / (8 * np.sqrt(2) * 0.5 ** 1.5)
     points = f.iloc[calc[idx]][["leg", "pipe", "s_pipe_m"]].reset_index(drop=True)
