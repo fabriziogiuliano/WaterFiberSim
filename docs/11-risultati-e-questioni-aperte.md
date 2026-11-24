@@ -19,7 +19,7 @@
    errori di temperatura (cap. 5). Su ospite in PE o degradato la fibra sente 2,5–10 MHz/bar.
 2. **Calibrazione di K** (sensibilità dell'elica alla temperatura): ±1 bar di errore sistematico possibile (cap. 7).
 3. **Proprietà del laminato della guaina** (modulo, spessore, Poisson, comportamento della fibra nella polimerizzazione):
-   oggi valori di letteratura per guaine da fogna ⚠️ (cap. 9).
+   oggi valori di letteratura per guaine da fogna (da verificare) (cap. 9).
 4. **Creep del PE** oltre i 5 bar e nel tempo (cap. 5, 10).
 
 ## 11.3 Ipotesi da verificare

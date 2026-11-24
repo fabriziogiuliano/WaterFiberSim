@@ -12,20 +12,20 @@ lo strumento così com'è e ne riproduce l'uscita: gli spettri e la loro incerte
 ## 2.1 Diffusione Brillouin: dipendenza da deformazione e temperatura
 
 La luce che attraversa la fibra interagisce con le onde acustiche del vetro e una parte torna indietro con la frequenza
-spostata di circa 10,8 GHz [\[B23\]](A-fonti.md#b23). Lo spostamento, la **frequenza Brillouin** ν_B, varia linearmente con temperatura e
+spostata di circa 10,8 GHz [\[B23\]](A-fonti.md#b23). Lo spostamento, la **frequenza Brillouin** $\nu_B$, varia linearmente con temperatura e
 deformazione [\[B23\]](A-fonti.md#b23) Eq. 1, [\[OZ\]](A-fonti.md#oz):
 
-  **Δν_B = C_T · ΔT + C_ε · ε**
+$$\Delta\nu_B = C_T\,\Delta T + C_\varepsilon\,\varepsilon$$
 
 dove:
 
 | simbolo | nome | unità | valore |
 |---|---|---|---|
-| Δν_B | variazione della frequenza Brillouin rispetto a uno stato di riferimento | MHz | misurata |
-| ΔT | variazione di temperatura della fibra | °C | — |
-| ε | deformazione (allungamento relativo) della fibra; 1 µε = 1 µm di allungamento per metro | µε | — |
-| C_T | coefficiente di temperatura | MHz/°C | circa 1 |
-| C_ε | coefficiente di deformazione | MHz/µε | circa 0,05 |
+| $\Delta\nu_B$ | variazione della frequenza Brillouin rispetto a uno stato di riferimento | MHz | misurata |
+| $\Delta T$ | variazione di temperatura della fibra | °C | — |
+| $\varepsilon$ | deformazione (allungamento relativo) della fibra; 1 µε = 1 µm di allungamento per metro | µε | — |
+| $C_T$ | coefficiente di temperatura | MHz/°C | circa 1 |
+| $C_\varepsilon$ | coefficiente di deformazione | MHz/µε | circa 0,05 |
 
 I coefficienti dipendono dal cavo e dal modo in cui la fibra è vincolata [\[B23\]](A-fonti.md#b23), e vanno quindi calibrati (cap. 7).
 
@@ -35,9 +35,9 @@ Secondo [\[OZ\]](A-fonti.md#oz) e [\[B23\]](A-fonti.md#b23):
 1. la fibra forma un **anello** con i due capi collegati allo strumento (porta A e porta B);
 2. due luci laser percorrono l'anello **in versi opposti**: una a impulsi (*pump*, impulso di interrogazione) e una
    continua (*probe*, luce di lettura);
-3. dove la differenza di frequenza tra le due luci coincide con la ν_B locale, la luce continua viene **amplificata**;
+3. dove la differenza di frequenza tra le due luci coincide con la $\nu_B$ locale, la luce continua viene **amplificata**;
 4. la posizione si ricava dal tempo di arrivo del segnale, come in un OTDR: circa 10 ns per metro di andata e
-   ritorno 🧮;
+   ritorno (calcolo nostro);
 5. la grandezza si ricava **scansionando** la differenza di frequenza e stimando il **picco** dello spettro Brillouin.
 
 Rispetto alla BOTDR, che usa un solo capo della fibra, la BOTDA offre misure più accurate e portate maggiori [\[OZ\]](A-fonti.md#oz).
@@ -49,17 +49,27 @@ Cohaerentia).
 
 ![Interrogatore BOTDA con fibra ad anello: schema a blocchi](img/dfos-interrogatore.drawio.svg)
 
+Come si legge lo schema:
+- **ramo arancione (impulsi):** il laser, dopo l'accoppiatore, passa per un modulatore comandato dal generatore di
+  impulsi e per l'amplificatore; il circolatore C2 manda gli impulsi nella fibra dalla porta A;
+- **ramo blu (luce di lettura):** l'altro ramo del laser passa per un modulatore comandato dal generatore RF, che ne
+  sposta la frequenza di $\Delta\nu$, e per il depolarizzatore; il circolatore C1 la manda nella fibra dalla porta B;
+- **sulla fibra:** le frecce indicano il verso delle due luci, opposto in ogni tratto. Gli impulsi partono da A,
+  percorrono l'elica, la giunzione e il ritorno, e arrivano in B, dove non si leggono; la luce di lettura fa il percorso
+  inverso e rientra in A;
+- **ramo verde (lettura):** la luce di lettura rientrata da A è deviata da C2 al fotodiodo, campionata dall'ADC ed
+  elaborata.
 | ramo | blocchi | funzione (valori di [\[B23\]](A-fonti.md#b23) §2.1) |
 |---|---|---|
 | sorgente | laser DFB a 1530 nm, accoppiatore 3 dB | un solo laser, diviso nei due rami |
-| luce di lettura (sonda) | generatore RF, modulatore Mach-Zehnder, depolarizzatore, circolatore C1 | tono continuo a frequenza laser − Δν (Δν ≈ 10,8 GHz, scansionata), immesso dalla porta B |
+| luce di lettura (sonda) | generatore RF, modulatore Mach-Zehnder, depolarizzatore, circolatore C1 | tono continuo a frequenza laser − $\Delta\nu$ ($\Delta\nu$ ≈ 10,8 GHz, scansionata), immesso dalla porta B |
 | impulso (pompa) | generatore di impulsi, modulatore, amplificatore EDFA, circolatore C2 | impulsi di 20 ns (risoluzione circa 2 m) ripetuti a 30 kHz, immessi dalla porta A |
 | ricezione | circolatore C2, fotodiodo da 125 MHz, ADC da 125 MS/s | la luce di lettura rientra dalla porta A ed è campionata ogni 0,8 m di fibra |
-| elaborazione | ricostruzione dello spettro | per ogni posizione lo spettro di guadagno Brillouin e il suo picco ν_B |
+| elaborazione | ricostruzione dello spettro | per ogni posizione lo spettro di guadagno Brillouin e il suo picco $\nu_B$ |
 
 ## 2.4 Relazione con il simulatore
 
-Il simulatore non riproduce i blocchi interni: parte da ν_B vera lungo la fibra e produce gli spettri che lo strumento
+Il simulatore non riproduce i blocchi interni: parte da $\nu_B$ vera lungo la fibra e produce gli spettri che lo strumento
 restituirebbe (dato grezzo L0, §1.1), insieme alle etichette vere dei livelli successivi, con la risoluzione, il passo,
 la scansione e il rumore impostati nello scenario. Il modello dell'incertezza è quello di Soto & Thévenaz [\[ST13\]](A-fonti.md#st13) (cap. 6); ogni parametro è studiato nel **cap. 9**.
 
@@ -71,16 +81,18 @@ di questi strumenti; il resto (pressione, compensazione) è elaborazione dei dat
 
 | strumento | tecnica e configurazione | portata | risoluzione spaziale | passo dei punti | accuratezza / ripetibilità dichiarata | tempo di misura | dati in uscita | stato |
 |---|---|---|---|---|---|---|---|---|
-| **Prysmian DITEST** [\[DIT\]](A-fonti.md#dit) | BOTDA ad anello o BOTDR; 4 canali (fino a 20) | 80 km per canale (anello fino a 160 km) | 1–20 m | 0,25–10 m | < 2 °C o < 40 µε (1σ) a 80 km, 5 m, 20 min | 1 s – 30 min | file txt/csv; protocolli Modbus, DNP3, IEC 61850 (opzioni) | ✅ scheda letta |
-| **OZ Optics Foresight DSTS**, modulo BOTDA [\[OZ\]](A-fonti.md#oz) | BOTDA ad anello (combinazione con BOTDR opzionale); 2–251 canali | 100 km | 0,1–50 m (secondo il modello) | fino a 5 cm | ±2 µε, ±0,1 °C (2σ) | da 1 s (scansione completa) | — | ✅ scheda letta |
-| **Neubrex NBX-7031** [\[NBX\]](A-fonti.md#nbx) | Brillouin PPP-BOTDA + Rayleigh TW-COTDR, su ordinazione | 50 m – 27 km (fino a 80 km nella versione UX) | fino a 2 cm (impulsi da 0,2 ns) | 5 cm (minimo 1 cm) | — | da 5 s | — | ✅ pagina prodotto letta |
-| **Cohaerentia** (Milano) | BOTDA ad anello | — | 2 m in [\[B23\]](A-fonti.md#b23) | 0,8 m in [\[B23\]](A-fonti.md#b23) | migliore di 0,5 °C / 10 µε in [\[B23\]](A-fonti.md#b23) | 7–20 s in [\[B23\]](A-fonti.md#b23) | — | ⚠️ usato in [\[B23\]](A-fonti.md#b23); nessuna scheda prodotto trovata |
+| **Prysmian DITEST** [\[DIT\]](A-fonti.md#dit) | BOTDA ad anello o BOTDR; 4 canali (fino a 20) | 80 km per canale (anello fino a 160 km) | 1–20 m | 0,25–10 m | < 2 °C o < 40 µε (1σ) a 80 km, 5 m, 20 min | 1 s – 30 min | file txt/csv; protocolli Modbus, DNP3, IEC 61850 (opzioni) | verificato scheda letta |
+| **OZ Optics Foresight DSTS**, modulo BOTDA [\[OZ\]](A-fonti.md#oz) | BOTDA ad anello (combinazione con BOTDR opzionale); 2–251 canali | 100 km | 0,1–50 m (secondo il modello) | fino a 5 cm | ±2 µε, ±0,1 °C (2σ) | da 1 s (scansione completa) | — | verificato scheda letta |
+| **Neubrex NBX-7031** [\[NBX\]](A-fonti.md#nbx) | Brillouin PPP-BOTDA + Rayleigh TW-COTDR, su ordinazione | 50 m – 27 km (fino a 80 km nella versione UX) | fino a 2 cm (impulsi da 0,2 ns) | 5 cm (minimo 1 cm) | — | da 5 s | — | verificato pagina prodotto letta |
+| **Cohaerentia** (Milano) | BOTDA ad anello | — | 2 m in [\[B23\]](A-fonti.md#b23) | 0,8 m in [\[B23\]](A-fonti.md#b23) | migliore di 0,5 °C / 10 µε in [\[B23\]](A-fonti.md#b23) | 7–20 s in [\[B23\]](A-fonti.md#b23) | — | da verificare usato in [\[B23\]](A-fonti.md#b23); nessuna scheda prodotto trovata |
 
-Altri strumenti trovati ma **non** adatti così come sono, o non verificati: fibrisTerre fTB 5020 (BOFDA, nel dominio della
-frequenza; scheda non letta ⚠️); Viavi MTS-8000 DTSS (BOTDR, un capo solo; scheda non letta ⚠️). Dettagli e link
-nell'appendice A, sezione "Prodotti commerciali".
+Altri strumenti sono emersi dalla ricerca ma **non sono stati analizzati né verificati**: la loro scheda non è stata
+letta. Sono [fibrisTerre fTB 5020](https://polytec.com/fileadmin/website/optical-systems/faseroptische-messtechnik/pdf/ftb5020-datenblatt.pdf)
+(tecnica BOFDA, nel dominio della frequenza) e
+[Viavi MTS-8000 DTSS](https://www.lasercomponents.com/fileadmin/user_upload/home/Datasheets/viavi/mts-8000-dtss.pdf)
+(tecnica BOTDR, con un solo capo della fibra). L'elenco completo è nell'appendice A, sezione "Prodotti commerciali".
 
-**Come impostare il simulatore per riprodurre uno strumento** (🧮, con Δz = c·τ/(2n) e Δz = c/(2·n·f), n = 1,468):
+**Come impostare il simulatore per riprodurre uno strumento.** Valori calcolati da noi con le formule del §6.1 (n = 1,468):
 
 | impostazione dello strumento | `pulse_width_ns` | `adc_sample_rate_msps` |
 |---|---|---|

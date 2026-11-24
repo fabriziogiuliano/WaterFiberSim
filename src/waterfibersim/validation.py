@@ -100,7 +100,7 @@ def checks_instrument(root: Path) -> list[Check]:
     out.append(Check("strumento", "passo di campionamento da 125 MS/s; risoluzione da 20 ns",
                      f"{f.sampling_interval_m:.2f} m; {f.spatial_resolution_m:.2f} m", "0,8 m; 2 m",
                      "[B23] §2.1", "OK" if abs(f.sampling_interval_m - 0.8) < 0.05 else "KO",
-                     f"con n = {f.group_index} (⚠️ da scheda della fibra); con n = 1,5 i valori coincidono"))
+                     f"con n = {f.group_index} (da verificare sulla scheda della fibra); con n = 1,5 i valori coincidono"))
     return out
 
 

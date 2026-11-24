@@ -44,8 +44,10 @@ C. [Diario delle sessioni e decisioni](C-diario-sessioni.md) — le decisioni in
 - Chi vuole capire **la fisica**: capitoli 2, 3, 5, 6, 7.
 - Chi vuole sapere **se funziona**: capitoli 10 e 11.
 
-Simboli usati per le affermazioni (come nell'appendice A): ✅ verificato su una fonte letta · 🧮 calcolato ·
-⚠️ scelto o da verificare.
+Accanto alle affermazioni, nei capitoli: la fonte citata tra parentesi quadre (link all'appendice A); "(calcolo
+nostro)" per i risultati ricavati da noi con formule o con il simulatore; "(da verificare)" per i valori scelti o
+non ancora confermati da una fonte. Nell'appendice A lo stato di ogni affermazione è indicato con ✅ (verificato su
+una fonte letta), 🧮 (calcolo nostro), ⚠️ (scelto o da verificare).
 
 La navigazione in cima e in fondo a ogni capitolo si rigenera con `python docs/navigazione.py`.
 

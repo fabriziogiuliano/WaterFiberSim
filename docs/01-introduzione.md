@@ -21,7 +21,7 @@ Nel documento i dati sono indicati per livello di elaborazione:
 | livello | contenuto | esempio |
 |---|---|---|
 | **L0** — dato grezzo | per ogni punto della fibra e ogni misura, lo spettro Brillouin (potenza in funzione della frequenza), con il rumore | 551 valori per punto |
-| **L1** — frequenza Brillouin | il picco dello spettro in ogni punto, ν_B(z, t) | 11 095,3 MHz |
+| **L1** — frequenza Brillouin | il picco dello spettro in ogni punto, $\nu_B(z,t)$ | 11 095,3 MHz |
 | **L2** — grandezze fisiche della fibra | deformazione e temperatura, dopo la sottrazione della misura di base e la compensazione | 277 µε; +1,2 °C |
 | **L3** — informazione sulla rete | pressione dell'acqua lungo i tubi ed eventuali anomalie | 4,7 bar in P5 alle 08:00 |
 
